@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistique | Yuko Vape</title>
+    <title>Qui Sommes-Nous | Yuko Vape</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
@@ -15,28 +15,29 @@
 
         .container { padding: 150px 5% 50px 5%; max-width: 1000px; margin: 0 auto; text-align: center; }
         h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; font-weight: 900; }
-        .intro-text { color: #888; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        
+        /* RETOUR DU TEXTE IMPORTANT */
+        .intro-text { color: #ccc; margin-bottom: 40px; max-width: 850px; margin-left: auto; margin-right: auto; line-height: 1.8; font-size: 1.05rem; text-align: justify; }
+        .highlight { color: #fff; font-weight: 700; border-bottom: 2px solid #007bff; }
 
-        /* BOÎTE LOGISTIQUE PRINCIPALE */
         .logistics-box {
             background: #080808;
             border: 1px solid #1a1a1a;
             border-radius: 20px;
             padding: 40px 20px;
-            margin-top: 20px;
+            margin-top: 40px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         .hub-title { color: #007bff; font-size: 0.8rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
         .hub-desc { color: #555; font-size: 0.85rem; margin-bottom: 40px; }
 
-        /* --- NOUVEAU DASHBOARD (POUR REMPLIR LE VIDE) --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 60px;
-            padding: 0 10%;
+            padding: 0 5%;
         }
 
         .stat-card {
@@ -44,14 +45,11 @@
             border: 1px solid rgba(255,255,255,0.05);
             padding: 25px;
             border-radius: 12px;
-            transition: 0.3s;
         }
-        .stat-card:hover { border-color: #007bff; background: rgba(0,123,255,0.02); }
         .stat-label { font-size: 0.65rem; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
         .stat-value { font-size: 1.5rem; font-weight: 900; color: #fff; }
         .stat-sub { font-size: 0.6rem; color: #007bff; font-weight: 700; margin-top: 5px; text-transform: uppercase; }
 
-        /* --- CARTE --- */
         .map-wrapper {
             position: relative;
             width: 100%;
@@ -67,7 +65,6 @@
         .dot { border-radius: 50%; }
         .label-box { margin-top: 10px; padding: 6px 12px; border-radius: 4px; text-align: center; font-size: 0.65rem; font-weight: 900; }
 
-        /* Positions */
         .m-pl { top: 38%; left: 63%; }
         .m-pl .dot { width: 12px; height: 12px; background: #fff; box-shadow: 0 0 15px #fff; }
         .m-pl .label-box { background: #fff; color: #000; }
@@ -78,7 +75,7 @@
         .dot-blue { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
         .label-blue { background: rgba(0,0,0,0.9); border: 1px solid #007bff; color: #fff; }
 
-        footer { padding: 60px; text-align: center; color: #222; font-size: 0.7rem; letter-spacing: 2px; }
+        footer { padding: 60px; text-align: center; border-top: 1px solid #111; color: #222; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -94,7 +91,10 @@
 
     <div class="container">
         <h1>Qui Sommes-Nous</h1>
-        <p class="intro-text">Spécialiste de la distribution B2B, nous opérons un réseau logistique optimisé pour garantir la croissance de votre point de vente.</p>
+        
+        <p class="intro-text">
+            Spécialiste européen de la distribution de puffs en gros, <span class="highlight">Yuko Vape</span> accompagne aujourd'hui plus d'une centaine de boutiques et revendeurs indépendants en France, Belgique et Suisse. Grâce à notre centre logistique stratégique situé en <span class="highlight">Pologne</span> et nos partenaires internationaux, nous offrons le luxe d'une <span class="highlight">livraison garantie en 1 semaine</span> en Europe. Notre modèle nous permet de rivaliser directement avec les tarifs des grossistes asiatiques, tout en assurant une réactivité locale et un suivi sans faille.
+        </p>
 
         <div class="logistics-box">
             <div class="hub-title">Hub Logistique Europe Centrale</div>

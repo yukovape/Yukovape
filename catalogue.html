@@ -3,112 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogue Inventaire | Yuko Vape</title>
+    <title>Commande B2B | Yuko Vape</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
-        
-        nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
-        .nav-logo { font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: white; }
+        nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
+        .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; }
         .nav-logo span { color: #007bff; }
-        .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; }
-
-        .container { padding: 140px 5% 80px 5%; max-width: 1200px; margin: 0 auto; }
-        .cat-header { text-align: center; margin-bottom: 60px; }
-        .cat-header h1 { font-weight: 900; font-size: 3rem; text-transform: uppercase; margin: 0; }
-        .live-badge { display: inline-block; margin-top: 15px; padding: 8px 15px; background: rgba(0, 255, 136, 0.1); border: 1px solid #00ff88; color: #00ff88; border-radius: 50px; font-size: 0.7rem; font-weight: 900; }
-
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
-        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; transition: 0.4s; }
-        .product-card:hover { border-color: #007bff; transform: translateY(-10px); }
-
-        /* Conteneur image optimisé pour tes nouveaux visuels */
-        .img-container { width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid #222; }
-        .product-img { width: 100%; height: auto; display: block; }
-
-        .brand-name { font-size: 0.8rem; text-transform: uppercase; color: #007bff; font-weight: 900; }
-        .model-name { font-size: 1.8rem; font-weight: 900; margin: 5px 0; }
-        .capacity { font-size: 1.1rem; color: #eee; margin-bottom: 20px; }
-        .capacity span { color: #007bff; font-weight: 900; }
-
-        .flavour-title { font-size: 0.7rem; text-transform: uppercase; color: #555; font-weight: 900; margin-bottom: 10px; display: block; }
-        .flavour-list { display: flex; flex-wrap: wrap; gap: 6px; height: 100px; overflow-y: auto; margin-bottom: 25px; padding-right: 5px; }
-        .flavour-tag { background: #111; border: 1px solid #222; padding: 5px 10px; border-radius: 4px; font-size: 0.7rem; color: #888; }
         
-        .btn-order { display: block; text-align: center; padding: 15px; background: #fff; color: #000; text-decoration: none; border-radius: 8px; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
-        .btn-order:hover { background: #007bff; color: white; }
+        .container { padding: 140px 5% 80px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+        
+        /* Visuel Produit */
+        .product-view { position: sticky; top: 140px; height: fit-content; }
+        .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; text-align: center; }
+        .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+        
+        /* Panier / Commande */
+        .order-zone { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; }
+        h2 { font-weight: 900; text-transform: uppercase; margin-top: 0; }
+        
+        .add-box-btn { width: 100%; padding: 15px; background: transparent; border: 2px dashed #007bff; color: #007bff; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
+        .add-box-btn:hover { background: rgba(0,123,255,0.1); }
 
-        footer { text-align: center; padding: 40px; color: #222; font-size: 0.7rem; text-transform: uppercase; }
+        .box-item { background: #111; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border: 1px solid #222; animation: slideIn 0.3s ease; }
+        select { background: #000; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 5px; width: 60%; font-family: 'Montserrat'; }
+        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; }
+
+        .summary { background: #000; border: 1px solid #007bff; padding: 20px; border-radius: 12px; margin-top: 30px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
+        .total-row { display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px; margin-top: 10px; font-size: 1.5rem; font-weight: 900; }
+
+        .btn-tg { display: block; width: 100%; padding: 20px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; margin-top: 20px; box-sizing: border-box; }
+        .btn-tg.disabled { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .product-view { position: relative; top: 0; } }
     </style>
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="nav-logo">Yuko <span>Vape</span></a>
-    <div class="nav-links">
-        <a href="index.html">Accueil</a>
-        <a href="catalogue.html">Catalogue</a>
-        <a href="about.html">Qui sommes-nous ?</a>
-        <a href="https://t.me/TON_ID" style="color: #007bff;">Telegram</a>
-    </div>
 </nav>
 
 <div class="container">
-    <div class="cat-header">
-        <span class="live-badge">● INVENTAIRE DISPONIBLE - HUB KOMORNIKI</span>
-        <h1>Catalogue Grossiste</h1>
+    <div class="product-view">
+        <div class="img-card">
+            <img src="Gemini_Generated_Image_ar5ajear5ajear5a.jpg" class="product-img">
+            <h2 style="margin:0;">RAZZ BAR 30K</h2>
+            <p style="color:#555; font-size: 0.75rem; letter-spacing: 1px;">MINIMUM : 3 BOÎTES (30 PCS)</p>
+        </div>
     </div>
 
-    <div class="product-grid">
+    <div class="order-zone">
+        <h2>Votre Panier B2B</h2>
+        <p style="color:#666; font-size:0.8rem; margin-bottom:25px;">Ajoutez vos boîtes de 10 pièces et choisissez vos parfums.</p>
         
-        <div class="product-card">
-            <div class="img-container">
-                <img src="jnr_puff.jpg" class="product-img" alt="JNR Falcon-X">
+        <div id="cart-items">
             </div>
-            <span class="brand-name">JNR</span>
-            <h2 class="model-name">FALCON-X</h2>
-            <div class="capacity">Capacité : <span>18,000 PUFFS</span></div>
-            
-            <span class="flavour-title">Saveurs :</span>
-            <div class="flavour-list">
-                <div class="flavour-tag">Black Ice</div><div class="flavour-tag">Blue Razz Cherry</div>
-                <div class="flavour-tag">Blue Razz Ice</div><div class="flavour-tag">Cherry Watermelon Freeze</div>
-                <div class="flavour-tag">Fizzy Cherry Cola</div><div class="flavour-tag">Dragon Fruit</div>
-                <div class="flavour-tag">Hawaii</div><div class="flavour-tag">Tropicana Zest</div>
-                <div class="flavour-tag">Love 66</div><div class="flavour-tag">Kiwi Passion Fruit Guava</div>
-                <div class="flavour-tag">Mango Passion</div><div class="flavour-tag">Peach Berry</div>
-                <div class="flavour-tag">Strawberry Ice</div><div class="flavour-tag">Watermelon Ice</div>
-                <div class="flavour-tag">White Peach Razz</div>
+
+        <button class="add-box-btn" onclick="addBox()">+ AJOUTER UNE BOÎTE (10 PCS)</button>
+
+        <div class="summary">
+            <div class="price-row">
+                <span>Quantité totale :</span>
+                <span id="total-qty">0 pcs</span>
             </div>
-            <a href="https://t.me/TON_ID" class="btn-order">Commander sur Telegram</a>
+            <div class="price-row">
+                <span>Prix unitaire :</span>
+                <span id="unit-price" style="color:#007bff; font-weight:900;">6.70 €</span>
+            </div>
+            <div class="total-row">
+                <span>TOTAL</span>
+                <span id="grand-total">0.00 €</span>
+            </div>
+            <p id="min-warn" style="color:#ff4444; font-size:0.65rem; font-weight:900; margin-top:10px;">COMMANDE MINIMALE : 30 PIÈCES (3 BOÎTES)</p>
         </div>
 
-        <div class="product-card">
-            <div class="img-container">
-                <img src="Gemini_Generated_Image_ar5ajear5ajear5a.jpg" class="product-img" alt="Razz Bar 30K">
-            </div>
-            <span class="brand-name">Razz Bar</span>
-            <h2 class="model-name">ULTRA SERIES</h2>
-            <div class="capacity">Capacité : <span>30,000 PUFFS</span></div>
-            
-            <span class="flavour-title">Saveurs :</span>
-            <div class="flavour-list">
-                <div class="flavour-tag">Triple Melon</div><div class="flavour-tag">Strawberry Ice</div>
-                <div class="flavour-tag">Sour Apple</div><div class="flavour-tag">Mango Peach Watermelon</div>
-                <div class="flavour-tag">Strawberry Banana</div><div class="flavour-tag">Blueberry Ice</div>
-                <div class="flavour-tag">Juicy Peach Ice</div><div class="flavour-tag">Strawberry Kiwi</div>
-                <div class="flavour-tag">Watermelon Ice</div><div class="flavour-tag">Summer Dream</div>
-                <div class="flavour-tag">Mixed Berries</div><div class="flavour-tag">Blue Razz Ice</div>
-                <div class="flavour-tag">Lemon Lime</div><div class="flavour-tag">Cola Ice</div>
-                <div class="flavour-tag">Blackberry Ice</div>
-            </div>
-            <a href="https://t.me/TON_ID" class="btn-order">Commander sur Telegram</a>
-        </div>
-
+        <a href="#" id="tg-submit" class="btn-tg disabled">Envoyer la commande sur Telegram</a>
     </div>
 </div>
 
-<footer>&copy; 2026 YUKO VAPE - Distribution Premium</footer>
+<script>
+    const flavors = [
+        "Triple Melon", "Strawberry Ice", "Sour Apple", "Mango Peach Watermelon", 
+        "Strawberry Banana", "Blueberry Ice", "Juicy Peach Ice", "Strawberry Kiwi", 
+        "Watermelon Ice", "Summer Dream", "Strawberry Watermelon", "Mixed Berries", 
+        "Blue Razz Ice", "Lemon Lime", "Cola Ice", "Blackberry Ice"
+    ];
+
+    let boxes = [];
+
+    function addBox() {
+        const id = Date.now();
+        boxes.push({ id: id, flavor: flavors[0] });
+        renderCart();
+    }
+
+    function removeBox(id) {
+        boxes = boxes.filter(b => b.id !== id);
+        renderCart();
+    }
+
+    function updateFlavor(id, flavor) {
+        const box = boxes.find(b => b.id === id);
+        if (box) box.flavor = flavor;
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cart-items');
+        container.innerHTML = '';
+        
+        boxes.forEach((box, index) => {
+            const div = document.createElement('div');
+            div.className = 'box-item';
+            div.innerHTML = `
+                <span style="font-weight:900; font-size:0.8rem; color:#444;">#${index+1} BOÎTE</span>
+                <select onchange="updateFlavor(${box.id}, this.value)">
+                    ${flavors.map(f => `<option value="${f}" ${box.flavor === f ? 'selected' : ''}>${f}</option>`).join('')}
+                </select>
+                <span class="remove-btn" onclick="removeBox(${box.id})">×</span>
+            `;
+            container.appendChild(div);
+        });
+
+        calculate();
+    }
+
+    function calculate() {
+        let qty = boxes.length * 10;
+        let price = 6.70;
+
+        if (qty >= 70) price = 5.20;
+        else if (qty >= 50) price = 6.10;
+
+        let total = qty * price;
+
+        document.getElementById('total-qty').innerText = qty + " pcs";
+        document.getElementById('unit-price').innerText = price.toFixed(2) + " €";
+        document.getElementById('grand-total').innerText = total.toFixed(2) + " €";
+
+        const btn = document.getElementById('tg-submit');
+        const warn = document.getElementById('min-warn');
+
+        if (qty >= 30) {
+            btn.classList.remove('disabled');
+            warn.style.display = 'none';
+        } else {
+            btn.classList.add('disabled');
+            warn.style.display = 'block';
+        }
+
+        // Préparation du message
+        let detailParfums = boxes.map((b, i) => `Boîte ${i+1}: ${b.flavor}`).join('\n');
+        let message = `Bonjour Yuko Vape, commande Razz Bar 30K :\n\n${detailParfums}\n\nTotal: ${qty} pièces\nPrix unitaire: ${price.toFixed(2)}€\nTOTAL: ${total.toFixed(2)}€`;
+        btn.href = "https://t.me/TON_ID?text=" + encodeURIComponent(message);
+    }
+
+    // On commence avec 3 boîtes par défaut
+    for(let i=0; i<3; i++) addBox();
+</script>
 
 </body>
 </html>

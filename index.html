@@ -17,17 +17,21 @@
         
         /* Section Hero */
         .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); padding: 0 10%; }
+        
+        /* Logo Central - Ajouté ici */
+        .hero-logo-img { height: 120px; width: auto; margin-bottom: 30px; } 
+
         .hero p.subtitle { color: #007bff; letter-spacing: 4px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px; }
         h1 { font-size: 4rem; margin: 10px 0; font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
         .hero p.tagline { color: #888; font-size: 1.2rem; margin-bottom: 40px; max-width: 600px; }
         
         /* Boutons */
         .btn-group { display: flex; gap: 20px; }
-        .btn { padding: 15px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: 0.4s; font-size: 1rem; }
+        .btn { padding: 15px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: 0.4s; font-size: 1rem; cursor: pointer; border: none; }
         .btn-primary { background: #007bff; color: white; box-shadow: 0 10px 20px rgba(0,123,255,0.2); }
         .btn-primary:hover { background: #0056b3; transform: translateY(-3px); }
-        .btn-telegram { background: #229ED9; color: white; display: flex; align-items: center; gap: 10px; }
-        .btn-telegram:hover { background: #1c81b1; transform: translateY(-3px); }
+        .btn-telegram { background: transparent; color: #229ED9; border: 2px solid #229ED9; display: flex; align-items: center; gap: 10px; }
+        .btn-telegram:hover { background: rgba(34, 158, 217, 0.1); transform: translateY(-3px); }
 
         /* Features */
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 100px 10%; background: #000; }
@@ -43,18 +47,20 @@
         <div class="nav-links">
             <a href="#">Catalogue</a>
             <a href="#">Grossiste</a>
-            <a href="https://t.me/TON_ID_TELEGRAM" class="btn btn-telegram" style="display: inline-block; padding: 10px 20px; margin-left: 20px;">Telegram</a>
+            <a href="#telegram-button" style="color: #229ED9; margin-left: 20px; font-weight: bold; text-decoration: none;">Telegram</a>
         </div>
     </nav>
 
     <section class="hero">
+        <img src="logo.png" alt="Yuko Vape Central Logo" class="hero-logo-img">
+
         <p class="subtitle">Premium Vape Supply</p>
         <h1>Qualité. Fiabilité.<br>Vitesse.</h1>
         <p class="tagline">Livraison en 1 semaine dans toute l'Europe.</p>
         
         <div class="btn-group">
             <a href="#" class="btn btn-primary">Voir le Catalogue</a>
-            <a href="https://t.me/TON_ID_TELEGRAM" class="btn btn-telegram">Rejoindre Telegram</a>
+            <a id="telegram-button" href="https://t.me/TON_ID_TELEGRAM" class="btn btn-telegram">Passer commande sur Telegram</a>
         </div>
     </section>
 

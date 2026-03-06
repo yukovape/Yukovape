@@ -10,18 +10,19 @@
         body { margin: 0; font-family: 'Inter', sans-serif; background: #050505; color: white; overflow-x: hidden; }
         
         /* Barre de navigation */
-        nav { display: flex; justify-content: space-between; padding: 20px 5%; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
+        nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
         .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
         .nav-logo span { color: #007bff; }
-        .nav-links a { color: #888; margin-left: 25px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a { color: #888; margin-left: 30px; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
         
         /* Section Hero */
         .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); padding: 0 10%; }
         
-        /* LOGO XXL EN CODE */
-        .hero-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; text-transform: uppercase; margin-bottom: 40px; }
+        /* LOGO XXL */
+        .hero-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; text-transform: uppercase; margin-bottom: 50px; }
         .hero-logo-yuko { 
-            font-size: 10rem; /* Taille massive */
+            font-size: 10rem; 
             line-height: 0.8; 
             letter-spacing: -5px; 
             background: linear-gradient(to bottom, #fff 40%, #888 100%);
@@ -31,30 +32,39 @@
         }
         .hero-logo-vape { 
             font-size: 5rem; 
-            color: #007bff; /* Bleu électrique pour le contraste */
+            color: #007bff; 
             line-height: 0.8; 
-            letter-spacing: 15px; /* Très espacé pour le style luxe */
+            letter-spacing: 15px; 
             margin-top: 10px;
             margin-left: 15px;
         }
 
         h1 { font-size: 2.5rem; margin: 20px 0 10px 0; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
-        .hero p.tagline { color: #666; font-size: 1.1rem; margin-bottom: 50px; letter-spacing: 1px; }
+        .hero p.tagline { color: #666; font-size: 1.1rem; margin-bottom: 60px; letter-spacing: 1px; }
         
-        /* Boutons */
-        .btn-group { display: flex; gap: 20px; }
-        .btn { padding: 18px 40px; border-radius: 4px; font-weight: bold; text-decoration: none; transition: 0.4s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-primary { background: #fff; color: #000; }
-        .btn-primary:hover { background: #007bff; color: #fff; transform: translateY(-3px); }
-        .btn-telegram { border: 1px solid #229ED9; color: #229ED9; }
-        .btn-telegram:hover { background: #229ED9; color: #fff; transform: translateY(-3px); }
+        /* BOUTONS AGRANDIS */
+        .btn-group { display: flex; gap: 25px; align-items: center; }
+        .btn { 
+            padding: 22px 50px; /* Taille augmentée ici */
+            border-radius: 5px; 
+            font-weight: 800; 
+            text-decoration: none; 
+            transition: 0.4s; 
+            font-size: 1.1rem; /* Texte plus grand */
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+        .btn-primary { background: #fff; color: #000; box-shadow: 0 15px 30px rgba(255,255,255,0.1); }
+        .btn-primary:hover { background: #007bff; color: #fff; transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,123,255,0.3); }
+        .btn-telegram { border: 2px solid #229ED9; color: #229ED9; }
+        .btn-telegram:hover { background: #229ED9; color: #fff; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(34,158,217,0.3); }
 
         /* Features */
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 80px 10%; background: #000; border-top: 1px solid #1a1a1a; }
-        .feature-card { padding: 40px; text-align: center; border: 1px solid #111; transition: 0.3s; }
-        .feature-card:hover { background: #050505; border-color: #222; }
-        .feature-card h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; color: #fff; }
-        .feature-card p { color: #555; font-size: 0.85rem; line-height: 1.6; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 100px 10%; background: #000; border-top: 1px solid #1a1a1a; }
+        .feature-card { padding: 45px; text-align: center; border: 1px solid #111; transition: 0.3s; }
+        .feature-card:hover { background: #080808; border-color: #333; }
+        .feature-card h3 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; color: #fff; }
+        .feature-card p { color: #555; font-size: 0.9rem; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -62,7 +72,6 @@
         <div class="nav-logo">Yuko <span>Vape</span></div>
         <div class="nav-links">
             <a href="#">Catalogue</a>
-            <a href="#">Grossiste</a>
             <a href="https://t.me/TON_ID" style="color: #229ED9; font-weight: bold;">Telegram</a>
         </div>
     </nav>

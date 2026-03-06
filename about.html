@@ -30,7 +30,6 @@
         
         .highlight { color: #fff; font-weight: 700; border-bottom: 2px solid #007bff; }
 
-        /* SECTION CARTE AVANCÉE */
         .map-container {
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
@@ -58,7 +57,7 @@
         /* Marqueur Komorniki */
         .location-dot {
             position: absolute;
-            top: 41%; /* Ajusté pour Komorniki sur ce tracé */
+            top: 41%; 
             left: 55%;
             transform: translate(-50%, -50%);
             z-index: 10;
@@ -68,13 +67,13 @@
         .dot-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(0, 123, 255, 0.2); border-radius: 50%; animation: pulse 2s infinite; }
         .city-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #007bff; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
 
-        /* Infos de transit flottantes */
+        /* Infos de transit flottantes - Harmonisées à 5-7 jours */
         .transit-info { position: absolute; font-size: 0.65rem; font-weight: 900; color: #444; text-transform: uppercase; letter-spacing: 1px; text-align: center; pointer-events: none; }
         .transit-info span { color: #007bff; font-size: 0.85rem; display: block; margin-top: 2px; }
 
-        /* Positions spécifiques des labels pays */
+        /* Positions corrigées pour alignement parfait */
         .t-fr { top: 75%; left: 15%; }
-        .t-be { top: 55%; left: 22%; }
+        .t-be { top: 48%; left: 24%; } /* Ajusté pour la Belgique */
         .t-ch { top: 80%; left: 40%; }
 
         @keyframes pulse {
@@ -121,7 +120,7 @@
                         <path d="M440,205 Q280,250 180,350">
                             <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
                         </path>
-                        <path d="M440,205 Q320,190 240,240">
+                        <path d="M440,205 Q320,195 255,235">
                             <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
                         </path>
                         <path d="M440,205 Q400,320 360,380">
@@ -130,8 +129,7 @@
                     </g>
 
                     <circle cx="180" cy="350" r="4" fill="#007bff" opacity="0.6" />
-                    <circle cx="240" cy="240" r="4" fill="#007bff" opacity="0.6" />
-                    <circle cx="360" cy="380" r="4" fill="#007bff" opacity="0.6" />
+                    <circle cx="255" cy="235" r="4" fill="#007bff" opacity="0.6" /> <circle cx="360" cy="380" r="4" fill="#007bff" opacity="0.6" />
                 </svg>
                 
                 <div class="location-dot">
@@ -141,7 +139,7 @@
                 </div>
 
                 <div class="transit-info t-fr">FRANCE <span>5-7 JOURS</span></div>
-                <div class="transit-info t-be">BELGIQUE <span>4-6 JOURS</span></div>
+                <div class="transit-info t-be">BELGIQUE <span>5-7 JOURS</span></div>
                 <div class="transit-info t-ch">SUISSE <span>5-7 JOURS</span></div>
             </div>
         </div>

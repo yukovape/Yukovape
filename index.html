@@ -4,44 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yuko Vape | Premium Wholesale</title>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Montserrat:wght@800&display=swap');
-    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Montserrat:wght@900&display=swap');
+        
         body { margin: 0; font-family: 'Inter', sans-serif; background: #050505; color: white; overflow-x: hidden; }
         
         /* Barre de navigation */
-        nav { display: flex; justify-content: space-between; padding: 20px 5%; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
-        .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.5rem; text-transform: uppercase; color: white; }
-        .nav-logo span { color: #001F4F; /* Bleu foncé de ton logo original */ }
-        .nav-links a { color: #888; margin-left: 25px; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-        .nav-links a:hover { color: white; }
+        nav { display: flex; justify-content: space-between; padding: 20px 5%; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
+        .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-logo span { color: #007bff; }
+        .nav-links a { color: #888; margin-left: 25px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         
         /* Section Hero */
         .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); padding: 0 10%; }
         
-        /* LOGO CENTRAL EN CODE - Parfaitement intégré */
-        .hero-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 30px; }
-        .hero-logo-yuko { font-size: 6rem; color: white; line-height: 0.9; }
-        .hero-logo-vape { font-size: 4rem; color: #001F4F; /* Bleu foncé de ton logo original */ line-height: 0.9; }
+        /* LOGO XXL EN CODE */
+        .hero-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; text-transform: uppercase; margin-bottom: 40px; }
+        .hero-logo-yuko { 
+            font-size: 10rem; /* Taille massive */
+            line-height: 0.8; 
+            letter-spacing: -5px; 
+            background: linear-gradient(to bottom, #fff 40%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));
+        }
+        .hero-logo-vape { 
+            font-size: 5rem; 
+            color: #007bff; /* Bleu électrique pour le contraste */
+            line-height: 0.8; 
+            letter-spacing: 15px; /* Très espacé pour le style luxe */
+            margin-top: 10px;
+            margin-left: 15px;
+        }
 
-        .hero p.subtitle { color: #007bff; letter-spacing: 4px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px; }
-        h1 { font-size: 4rem; margin: 10px 0; font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
-        .hero p.tagline { color: #888; font-size: 1.2rem; margin-bottom: 40px; max-width: 600px; }
+        h1 { font-size: 2.5rem; margin: 20px 0 10px 0; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+        .hero p.tagline { color: #666; font-size: 1.1rem; margin-bottom: 50px; letter-spacing: 1px; }
         
         /* Boutons */
         .btn-group { display: flex; gap: 20px; }
-        .btn { padding: 15px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: 0.4s; font-size: 1rem; cursor: pointer; border: none; }
-        .btn-primary { background: #001F4F; /* Bleu foncé de ton logo original */ color: white; box-shadow: 0 10px 20px rgba(0,31,79,0.2); }
-        .btn-primary:hover { background: #001233; transform: translateY(-3px); }
-        .btn-telegram { background: transparent; color: #229ED9; border: 2px solid #229ED9; display: flex; align-items: center; gap: 10px; }
-        .btn-telegram:hover { background: rgba(34, 158, 217, 0.1); transform: translateY(-3px); }
+        .btn { padding: 18px 40px; border-radius: 4px; font-weight: bold; text-decoration: none; transition: 0.4s; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: #fff; color: #000; }
+        .btn-primary:hover { background: #007bff; color: #fff; transform: translateY(-3px); }
+        .btn-telegram { border: 1px solid #229ED9; color: #229ED9; }
+        .btn-telegram:hover { background: #229ED9; color: #fff; transform: translateY(-3px); }
 
         /* Features */
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 100px 10%; background: #000; }
-        .feature-card { background: linear-gradient(145deg, #0f0f0f, #050505); padding: 40px; border-radius: 20px; border: 1px solid #1a1a1a; transition: 0.3s; }
-        .feature-card:hover { border-color: #007bff; transform: translateY(-10px); }
-        .feature-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
-        .feature-card p { color: #666; font-size: 0.9rem; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 80px 10%; background: #000; border-top: 1px solid #1a1a1a; }
+        .feature-card { padding: 40px; text-align: center; border: 1px solid #111; transition: 0.3s; }
+        .feature-card:hover { background: #050505; border-color: #222; }
+        .feature-card h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; color: #fff; }
+        .feature-card p { color: #555; font-size: 0.85rem; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -50,7 +63,7 @@
         <div class="nav-links">
             <a href="#">Catalogue</a>
             <a href="#">Grossiste</a>
-            <a href="#telegram-button" style="color: #229ED9; margin-left: 20px; font-weight: bold; text-decoration: none;">Telegram</a>
+            <a href="https://t.me/TON_ID" style="color: #229ED9; font-weight: bold;">Telegram</a>
         </div>
     </nav>
 
@@ -60,20 +73,19 @@
             <div class="hero-logo-vape">VAPE</div>
         </div>
 
-        <p class="subtitle">Premium Vape Supply</p>
-        <h1>Qualité. Fiabilité.<br>Vitesse.</h1>
+        <h1>Qualité. Fiabilité. Vitesse.</h1>
         <p class="tagline">Livraison en 1 semaine dans toute l'Europe.</p>
         
         <div class="btn-group">
             <a href="#" class="btn btn-primary">Voir le Catalogue</a>
-            <a id="telegram-button" href="https://t.me/TON_ID_TELEGRAM" class="btn btn-telegram">Passer commande sur Telegram</a>
+            <a href="https://t.me/TON_ID" class="btn btn-telegram">Passer commande sur Telegram</a>
         </div>
     </section>
 
     <section class="features">
-        <div class="feature-card"><h3>🚚 1 Semaine</h3><p>Livraison express sécurisée dans toute l'Europe.</p></div>
-        <div class="feature-card"><h3>💰 Prix Usine</h3><p>Les tarifs les plus compétitifs du marché B2B.</p></div>
-        <div class="feature-card"><h3>📍 Suivi Réel</h3><p>Traçabilité totale de vos stocks par GPS.</p></div>
+        <div class="feature-card"><h3>🚚 Logistique Express</h3><p>Expédition prioritaire et sécurisée sous 7 jours ouvrés.</p></div>
+        <div class="feature-card"><h3>💰 Tarifs B2B</h3><p>Accédez aux prix directs usine pour maximiser vos marges.</p></div>
+        <div class="feature-card"><h3>📍 Tracking Live</h3><p>Suivez l'acheminement de vos stocks en temps réel.</p></div>
     </section>
 </body>
 </html>

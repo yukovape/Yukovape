@@ -8,7 +8,7 @@
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* Navigation */
+        /* Navigation (Inchangée) */
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; letter-spacing: 1px; }
         .nav-logo span { color: #007bff; }
@@ -19,7 +19,7 @@
         h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; font-weight: 900; }
         .intro-text { color: #888; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
-        /* SECTION CARTE PRORE */
+        /* SECTION CARTE PROPRE AVEC CONTOURS */
         .map-box {
             position: relative; 
             width: 100%; 
@@ -33,12 +33,12 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         
-        /* Image de fond : Vraie carte Europe */
+        /* Image de fond : Vraie carte Europe (en très sombre pour laisser place aux contours) */
         .map-img {
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            opacity: 0.15; 
+            opacity: 0.1; 
             filter: invert(1) grayscale(1);
         }
 
@@ -61,27 +61,44 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
+        /* --- STYLES DES PAYS (Contours SVG finaux) --- */
+        .country-path { 
+            position: absolute; 
+            fill: none; 
+            stroke-width: 1; 
+            opacity: 0.6; 
+            z-index: 2; 
+        }
+
         /* --- POSITIONS --- */
 
         /* HUB POLOGNE */
         .m-pl { top: 38%; left: 62%; }
         .m-pl .dot { width: 14px; height: 14px; background: #fff; box-shadow: 0 0 20px #fff; }
         .m-pl .label-box { background: #fff; color: #000; font-size: 0.7rem; font-weight: 900; }
+        /* Contour Pologne - Blanc */
+        .path-pl { stroke: #fff; top: 25%; left: 55%; width: 15%; }
 
         /* FRANCE */
         .m-fr { top: 65%; left: 32%; }
         .m-fr .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
         .m-fr .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
+        /* Contour France - Bleu */
+        .path-fr { stroke: #007bff; top: 50%; left: 20%; width: 25%; }
 
         /* BELGIQUE */
         .m-be { top: 48%; left: 36%; }
         .m-be .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
         .m-be .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
+        /* Contour Belgique - Bleu (Petit) */
+        .path-be { stroke: #007bff; top: 40%; left: 33%; width: 6%; }
 
         /* SUISSE */
         .m-ch { top: 68%; left: 45%; }
         .m-ch .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
         .m-ch .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
+        /* Contour Suisse - Bleu */
+        .path-ch { stroke: #007bff; top: 60%; left: 41%; width: 8%; }
 
         .country-name { font-size: 0.65rem; font-weight: 900; color: #fff; text-transform: uppercase; }
         .delivery-time { font-size: 0.6rem; color: #007bff; font-weight: 700; margin-top: 2px; }
@@ -91,7 +108,6 @@
         @media (max-width: 768px) {
             .container { padding-top: 120px; }
             .label-box { padding: 4px 8px; }
-            .m-pl { left: 65%; } /* Petit ajustement mobile */
         }
     </style>
 </head>
@@ -114,6 +130,22 @@
 
         <div class="map-box">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_map_of_Europe_cropped.svg/1000px-Blank_map_of_Europe_cropped.svg.png" class="map-img" alt="Europe Map">
+
+            <svg class="country-path path-pl" viewBox="0 0 100 100">
+                <path d="M40,10 L60,10 L75,25 L75,75 L60,90 L40,90 L25,75 L25,25 Z" />
+            </svg>
+            
+            <svg class="country-path path-fr" viewBox="0 0 200 200">
+                <path d="M90,20 L130,10 L170,40 L180,80 L160,120 L130,140 L110,140 L80,120 L50,110 L40,80 L50,40 Z" />
+            </svg>
+            
+            <svg class="country-path path-be" viewBox="0 0 50 50">
+                <path d="M10,10 L30,5 L45,15 L40,30 L30,35 L15,30 Z" />
+            </svg>
+            
+            <svg class="country-path path-ch" viewBox="0 0 80 80">
+                <path d="M10,25 L40,20 L60,30 L65,45 L50,60 L25,60 L15,45 Z" />
+            </svg>
 
             <div class="marker m-pl">
                 <div class="dot"></div>

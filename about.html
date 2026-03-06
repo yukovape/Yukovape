@@ -13,62 +13,73 @@
         .nav-logo span { color: #007bff; }
         .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .container { padding: 150px 10% 50px 10%; max-width: 900px; margin: 0 auto; text-align: center; }
+        .container { padding: 150px 5% 50px 5%; max-width: 1000px; margin: 0 auto; text-align: center; }
         
         h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
-        .intro-text { color: #888; line-height: 1.6; margin-bottom: 80px; font-size: 1.1rem; }
+        .intro-text { color: #888; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; }
 
-        /* GRAPHISME DE LIVRAISON SIMPLE */
-        .shipping-graph {
+        /* CARTE PROPRE */
+        .map-box {
             position: relative;
-            padding: 40px 0;
-            margin: 50px 0;
-            border-top: 1px solid #1a1a1a;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        .origin-hub { margin-bottom: 50px; }
-        .origin-hub h2 { color: #007bff; font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 10px; }
-        .hub-name { font-size: 1.5rem; font-weight: 900; }
-
-        .delivery-routes {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-
-        .route-card {
-            flex: 1;
-            min-width: 200px;
-            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
             background: #0a0a0a;
-            border-radius: 10px;
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            padding: 40px 10px;
+            overflow: hidden;
         }
 
-        .route-card h3 { font-size: 1rem; margin-bottom: 15px; color: #fff; }
-        
-        .arrow-down { 
-            width: 2px; height: 30px; 
-            background: linear-gradient(to bottom, #007bff, transparent); 
-            margin: 10px auto;
-        }
-
-        .days { 
-            font-size: 2rem; 
-            font-weight: 900; 
-            color: #007bff; 
+        /* On utilise une image de carte de l'Europe sombre et propre */
+        .europe-bg {
+            width: 100%;
+            height: auto;
             display: block;
+            opacity: 0.2;
+            filter: grayscale(1) invert(1);
         }
-        .days-label { font-size: 0.7rem; color: #444; font-weight: 700; text-transform: uppercase; }
 
-        footer { padding: 40px; color: #222; font-size: 0.7rem; letter-spacing: 2px; text-align: center; }
-
-        @media (max-width: 600px) {
-            .delivery-routes { flex-direction: column; }
-            .route-card { width: 100%; box-sizing: border-box; }
+        /* Points de localisation */
+        .marker {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translate(-50%, -50%);
         }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #007bff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #007bff;
+        }
+
+        .label {
+            margin-top: 8px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .time { color: #007bff; font-size: 0.6rem; display: block; margin-top: 2px; }
+
+        /* Positions précises sur l'image de fond */
+        .m-pl { top: 35%; left: 65%; } /* Pologne - Komorniki */
+        .m-fr { top: 65%; left: 30%; } /* France */
+        .m-be { top: 45%; left: 38%; } /* Belgique */
+        .m-ch { top: 70%; left: 48%; } /* Suisse */
+
+        .m-pl .dot { background: #fff; box-shadow: 0 0 15px #fff; width: 14px; height: 14px; }
+        .m-pl .label { border: 1px solid #fff; color: #fff; }
+
+        footer { padding: 40px; color: #222; font-size: 0.7rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -81,44 +92,32 @@
     </nav>
 
     <div class="container">
-        <h1>Qui Sommes-Nous</h1>
-        <p class="intro-text">
-            Grossiste spécialisé basé en Europe. Nous supprimons les intermédiaires pour vous livrer directement depuis notre stock central.
-        </p>
+        <h1>Logistique Europe</h1>
+        <p class="intro-text">Un hub central en Pologne pour servir la France, la Belgique et la Suisse en un temps record.</p>
 
-        <div class="shipping-graph">
-            <div class="origin-hub">
-                <h2>DÉPART ENTREPÔT</h2>
-                <div class="hub-name">KOMORNIKI, POLOGNE</div>
+        <div class="map-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_map_of_Europe_cropped.svg/800px-Blank_map_of_Europe_cropped.svg.png" class="europe-bg" alt="Europe Map">
+
+            <div class="marker m-pl">
+                <div class="dot"></div>
+                <div class="label">ENTREPÔT PL</div>
             </div>
 
-            <div class="delivery-routes">
-                <div class="route-card">
-                    <h3>FRANCE</h3>
-                    <div class="arrow-down"></div>
-                    <span class="days">5-7</span>
-                    <span class="days-label">Jours Ouvrés</span>
-                </div>
+            <div class="marker m-fr">
+                <div class="dot"></div>
+                <div class="label">FRANCE <span class="time">5-7 JOURS</span></div>
+            </div>
 
-                <div class="route-card">
-                    <h3>BELGIQUE</h3>
-                    <div class="arrow-down"></div>
-                    <span class="days">5-7</span>
-                    <span class="days-label">Jours Ouvrés</span>
-                </div>
+            <div class="marker m-be">
+                <div class="dot"></div>
+                <div class="label">BELGIQUE <span class="time">5-7 JOURS</span></div>
+            </div>
 
-                <div class="route-card">
-                    <h3>SUISSE</h3>
-                    <div class="arrow-down"></div>
-                    <span class="days">5-7</span>
-                    <span class="days-label">Jours Ouvrés</span>
-                </div>
+            <div class="marker m-ch">
+                <div class="dot"></div>
+                <div class="label">SUISSE <span class="time">5-7 JOURS</span></div>
             </div>
         </div>
-
-        <p style="color: #444; font-size: 0.9rem; margin-top: 50px;">
-            Yuko Vape travaille avec plus de 100 revendeurs indépendants. Notre priorité est la simplicité : un stock disponible, un prix usine, et une livraison rapide.
-        </p>
     </div>
 
     <footer>&copy; 2026 YUKO VAPE - Distribution Premium</footer>

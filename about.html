@@ -4,123 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistique | Yuko Vape</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
-        .nav-logo { font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: white; }
+        nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
+        .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; letter-spacing: 1px; }
         .nav-logo span { color: #007bff; }
-        .nav-links a { color: #555; margin-left: 25px; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-        .nav-links a:hover { color: white; }
+        .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .container { padding: 180px 10% 80px 10%; max-width: 1100px; margin: 0 auto; }
+        .container { padding: 150px 10% 50px 10%; max-width: 900px; margin: 0 auto; text-align: center; }
         
-        .header-section { text-align: center; margin-bottom: 80px; }
-        h1 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 4rem); text-transform: uppercase; letter-spacing: -1px; margin-bottom: 20px; }
-        .status-badge { display: inline-block; padding: 8px 20px; background: rgba(0, 123, 255, 0.1); border: 1px solid #007bff; border-radius: 50px; color: #007bff; font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
+        .intro-text { color: #888; line-height: 1.6; margin-bottom: 80px; font-size: 1.1rem; }
 
-        /* DASHBOARD LOGISTIQUE */
-        .logistics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
-
-        .transit-card {
-            background: rgba(15, 15, 15, 0.6);
-            border: 1px solid #1a1a1a;
-            border-radius: 15px;
-            padding: 30px;
+        /* GRAPHISME DE LIVRAISON SIMPLE */
+        .shipping-graph {
             position: relative;
-            overflow: hidden;
-            transition: 0.3s ease;
+            padding: 40px 0;
+            margin: 50px 0;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
         }
 
-        .transit-card:hover { border-color: #007bff; background: rgba(20, 20, 20, 0.8); transform: translateY(-5px); }
+        .origin-hub { margin-bottom: 50px; }
+        .origin-hub h2 { color: #007bff; font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 10px; }
+        .hub-name { font-size: 1.5rem; font-weight: 900; }
 
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .destination { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .live-dot { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: pulse 2s infinite; }
+        .delivery-routes {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
 
-        .transit-line { width: 100%; height: 4px; background: #111; border-radius: 10px; margin: 20px 0; position: relative; }
-        .progress { position: absolute; left: 0; top: 0; height: 100%; width: 100%; background: linear-gradient(90deg, #111 0%, #007bff 100%); border-radius: 10px; }
+        .route-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            background: #0a0a0a;
+            border-radius: 10px;
+        }
+
+        .route-card h3 { font-size: 1rem; margin-bottom: 15px; color: #fff; }
         
-        .transit-details { display: flex; justify-content: space-between; font-size: 0.7rem; color: #555; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
-        .origin { color: #888; }
-        .eta { color: #007bff; }
-
-        .transit-time { font-size: 2.5rem; font-weight: 900; margin-top: 15px; display: block; }
-        .unit { font-size: 0.9rem; color: #444; margin-left: 5px; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
+        .arrow-down { 
+            width: 2px; height: 30px; 
+            background: linear-gradient(to bottom, #007bff, transparent); 
+            margin: 10px auto;
         }
 
-        footer { padding: 60px 5%; text-align: center; border-top: 1px solid #111; color: #222; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; margin-top: 80px; }
+        .days { 
+            font-size: 2rem; 
+            font-weight: 900; 
+            color: #007bff; 
+            display: block;
+        }
+        .days-label { font-size: 0.7rem; color: #444; font-weight: 700; text-transform: uppercase; }
 
-        @media (max-width: 768px) {
-            .container { padding-top: 130px; }
+        footer { padding: 40px; color: #222; font-size: 0.7rem; letter-spacing: 2px; text-align: center; }
+
+        @media (max-width: 600px) {
+            .delivery-routes { flex-direction: column; }
+            .route-card { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" class="nav-logo">Yuko <span>Vape</span></a>
+        <a href="index.html" class="nav-logo">YUKO <span>VAPE</span></a>
         <div class="nav-links">
             <a href="index.html">Accueil</a>
-            <a href="#">Catalogue</a>
             <a href="https://t.me/TON_ID" style="color: #007bff;">Telegram</a>
         </div>
     </nav>
 
     <div class="container">
-        <div class="header-section">
-            <div class="status-badge">Logistique Network Active</div>
-            <h1>Notre Réseau</h1>
-            <p style="color: #666; max-width: 600px; margin: 0 auto;">Optimisation des flux depuis notre hub central de Komorniki pour garantir une disponibilité maximale sur vos marchés.</p>
-        </div>
+        <h1>Qui Sommes-Nous</h1>
+        <p class="intro-text">
+            Grossiste spécialisé basé en Europe. Nous supprimons les intermédiaires pour vous livrer directement depuis notre stock central.
+        </p>
 
-        <div class="logistics-grid">
-            <div class="transit-card">
-                <div class="card-header">
-                    <div class="destination">France</div>
-                    <div class="live-dot"></div>
-                </div>
-                <div class="transit-details">
-                    <span class="origin">PL / Komorniki</span>
-                    <span class="eta">Delivery Status: Active</span>
-                </div>
-                <div class="transit-line"><div class="progress"></div></div>
-                <span class="transit-time">5-7<span class="unit">JOURS</span></span>
+        <div class="shipping-graph">
+            <div class="origin-hub">
+                <h2>DÉPART ENTREPÔT</h2>
+                <div class="hub-name">KOMORNIKI, POLOGNE</div>
             </div>
 
-            <div class="transit-card">
-                <div class="card-header">
-                    <div class="destination">Belgique</div>
-                    <div class="live-dot"></div>
+            <div class="delivery-routes">
+                <div class="route-card">
+                    <h3>FRANCE</h3>
+                    <div class="arrow-down"></div>
+                    <span class="days">5-7</span>
+                    <span class="days-label">Jours Ouvrés</span>
                 </div>
-                <div class="transit-details">
-                    <span class="origin">PL / Komorniki</span>
-                    <span class="eta">Delivery Status: Active</span>
-                </div>
-                <div class="transit-line"><div class="progress"></div></div>
-                <span class="transit-time">5-7<span class="unit">JOURS</span></span>
-            </div>
 
-            <div class="transit-card">
-                <div class="card-header">
-                    <div class="destination">Suisse</div>
-                    <div class="live-dot"></div>
+                <div class="route-card">
+                    <h3>BELGIQUE</h3>
+                    <div class="arrow-down"></div>
+                    <span class="days">5-7</span>
+                    <span class="days-label">Jours Ouvrés</span>
                 </div>
-                <div class="transit-details">
-                    <span class="origin">PL / Komorniki</span>
-                    <span class="eta">Delivery Status: Active</span>
+
+                <div class="route-card">
+                    <h3>SUISSE</h3>
+                    <div class="arrow-down"></div>
+                    <span class="days">5-7</span>
+                    <span class="days-label">Jours Ouvrés</span>
                 </div>
-                <div class="transit-line"><div class="progress"></div></div>
-                <span class="transit-time">5-7<span class="unit">JOURS</span></span>
             </div>
         </div>
+
+        <p style="color: #444; font-size: 0.9rem; margin-top: 50px;">
+            Yuko Vape travaille avec plus de 100 revendeurs indépendants. Notre priorité est la simplicité : un stock disponible, un prix usine, et une livraison rapide.
+        </p>
     </div>
 
-    <footer>&copy; 2026 YUKO VAPE - Distribution Premium Europe</footer>
+    <footer>&copy; 2026 YUKO VAPE - Distribution Premium</footer>
 </body>
 </html>

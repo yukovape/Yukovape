@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistique | Yuko Vape</title>
+    <title>Qui Sommes-Nous | Yuko Vape</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
+        /* Navigation */
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; letter-spacing: 1px; }
         .nav-logo span { color: #007bff; }
@@ -15,111 +16,137 @@
 
         .container { padding: 150px 5% 50px 5%; max-width: 1000px; margin: 0 auto; text-align: center; }
         
-        h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; }
-        .intro-text { color: #888; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; font-weight: 900; }
+        .intro-text { color: #888; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
-        /* CARTE PROPRE */
+        /* SECTION CARTE PRORE */
         .map-box {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-radius: 20px;
-            padding: 40px 10px;
-            overflow: hidden;
+            position: relative; 
+            width: 100%; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #080808; 
+            border-radius: 20px; 
+            border: 1px solid #1a1a1a; 
+            overflow: hidden; 
+            aspect-ratio: 16/9;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        
+        /* Image de fond : Vraie carte Europe */
+        .map-img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 0.15; 
+            filter: invert(1) grayscale(1);
         }
 
-        /* On utilise une image de carte de l'Europe sombre et propre */
-        .europe-bg {
-            width: 100%;
-            height: auto;
-            display: block;
-            opacity: 0.2;
-            filter: grayscale(1) invert(1);
-        }
-
-        /* Points de localisation */
+        /* Style commun pour les marqueurs */
         .marker {
             position: absolute;
+            transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            transform: translate(-50%, -50%);
+            z-index: 5;
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            background: #007bff;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #007bff;
-        }
-
-        .label {
-            margin-top: 8px;
-            font-size: 0.7rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            background: rgba(0,0,0,0.8);
-            padding: 4px 8px;
+        .dot { border-radius: 50%; }
+        .label-box {
+            margin-top: 10px;
+            padding: 6px 12px;
             border-radius: 4px;
-            white-space: nowrap;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .time { color: #007bff; font-size: 0.6rem; display: block; margin-top: 2px; }
+        /* --- POSITIONS --- */
 
-        /* Positions précises sur l'image de fond */
-        .m-pl { top: 35%; left: 65%; } /* Pologne - Komorniki */
-        .m-fr { top: 65%; left: 30%; } /* France */
-        .m-be { top: 45%; left: 38%; } /* Belgique */
-        .m-ch { top: 70%; left: 48%; } /* Suisse */
+        /* HUB POLOGNE */
+        .m-pl { top: 38%; left: 62%; }
+        .m-pl .dot { width: 14px; height: 14px; background: #fff; box-shadow: 0 0 20px #fff; }
+        .m-pl .label-box { background: #fff; color: #000; font-size: 0.7rem; font-weight: 900; }
 
-        .m-pl .dot { background: #fff; box-shadow: 0 0 15px #fff; width: 14px; height: 14px; }
-        .m-pl .label { border: 1px solid #fff; color: #fff; }
+        /* FRANCE */
+        .m-fr { top: 65%; left: 32%; }
+        .m-fr .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
+        .m-fr .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
 
-        footer { padding: 40px; color: #222; font-size: 0.7rem; text-align: center; }
+        /* BELGIQUE */
+        .m-be { top: 48%; left: 36%; }
+        .m-be .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
+        .m-be .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
+
+        /* SUISSE */
+        .m-ch { top: 68%; left: 45%; }
+        .m-ch .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
+        .m-ch .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
+
+        .country-name { font-size: 0.65rem; font-weight: 900; color: #fff; text-transform: uppercase; }
+        .delivery-time { font-size: 0.6rem; color: #007bff; font-weight: 700; margin-top: 2px; }
+
+        footer { padding: 60px 5%; text-align: center; border-top: 1px solid #111; color: #222; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        @media (max-width: 768px) {
+            .container { padding-top: 120px; }
+            .label-box { padding: 4px 8px; }
+            .m-pl { left: 65%; } /* Petit ajustement mobile */
+        }
     </style>
 </head>
 <body>
+
     <nav>
-        <a href="index.html" class="nav-logo">YUKO <span>VAPE</span></a>
+        <a href="index.html" class="nav-logo">Yuko <span>Vape</span></a>
         <div class="nav-links">
             <a href="index.html">Accueil</a>
+            <a href="#">Catalogue</a>
             <a href="https://t.me/TON_ID" style="color: #007bff;">Telegram</a>
         </div>
     </nav>
 
     <div class="container">
-        <h1>Logistique Europe</h1>
-        <p class="intro-text">Un hub central en Pologne pour servir la France, la Belgique et la Suisse en un temps record.</p>
+        <h1>L'Excellence Logistique</h1>
+        <p class="intro-text">
+            Depuis notre centre névralgique en Pologne, nous pilotons une distribution agile vers les marchés les plus exigeants d'Europe de l'Ouest.
+        </p>
 
         <div class="map-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_map_of_Europe_cropped.svg/800px-Blank_map_of_Europe_cropped.svg.png" class="europe-bg" alt="Europe Map">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_map_of_Europe_cropped.svg/1000px-Blank_map_of_Europe_cropped.svg.png" class="map-img" alt="Europe Map">
 
             <div class="marker m-pl">
                 <div class="dot"></div>
-                <div class="label">ENTREPÔT PL</div>
+                <div class="label-box">ENTREPÔT PL</div>
             </div>
 
             <div class="marker m-fr">
                 <div class="dot"></div>
-                <div class="label">FRANCE <span class="time">5-7 JOURS</span></div>
+                <div class="label-box">
+                    <div class="country-name">France</div>
+                    <div class="delivery-time">5-7 JOURS</div>
+                </div>
             </div>
 
             <div class="marker m-be">
                 <div class="dot"></div>
-                <div class="label">BELGIQUE <span class="time">5-7 JOURS</span></div>
+                <div class="label-box">
+                    <div class="country-name">Belgique</div>
+                    <div class="delivery-time">5-7 JOURS</div>
+                </div>
             </div>
 
             <div class="marker m-ch">
                 <div class="dot"></div>
-                <div class="label">SUISSE <span class="time">5-7 JOURS</span></div>
+                <div class="label-box">
+                    <div class="country-name">Suisse</div>
+                    <div class="delivery-time">5-7 JOURS</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer>&copy; 2026 YUKO VAPE - Distribution Premium</footer>
+    <footer>&copy; 2026 YUKO VAPE - Distribution Premium Europe</footer>
+
 </body>
 </html>

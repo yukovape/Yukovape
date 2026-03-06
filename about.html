@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qui Sommes-Nous | Yuko Vape</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
-    
     <style>
-        body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: white; }
         .nav-logo span { color: #007bff; }
@@ -16,86 +14,56 @@
         .nav-links a:hover { color: white; }
 
         .container { padding: 180px 10% 80px 10%; max-width: 1000px; margin: 0 auto; text-align: center; }
-        
         h1 { font-weight: 900; font-size: clamp(2rem, 6vw, 4rem); text-transform: uppercase; margin-bottom: 60px; letter-spacing: -1px; }
-        
-        .main-text { 
-            font-size: clamp(1.1rem, 2vw, 1.4rem); 
-            line-height: 1.8; 
-            color: #ccc; 
-            font-weight: 400;
-            margin-bottom: 80px;
-            text-align: justify;
-        }
-        
+        .main-text { font-size: clamp(1.1rem, 2vw, 1.4rem); line-height: 1.8; color: #ccc; margin-bottom: 80px; text-align: justify; }
         .highlight { color: #fff; font-weight: 700; border-bottom: 2px solid #007bff; }
 
-        /* SECTION CARTE AVEC FRONTIÈRES RÉELLES */
+        /* CARTE LOGISTIQUE PRO */
         .map-container {
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
             border-radius: 20px;
-            padding: 60px 30px;
+            padding: 60px 20px;
             margin-top: 50px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             position: relative;
+            overflow: hidden;
         }
-
-        .map-header { margin-bottom: 50px; }
+        .map-header { margin-bottom: 40px; }
         .map-header h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: #007bff; margin: 0; }
-        .map-header p { color: #555; font-size: 0.85rem; margin-top: 15px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .map-header p { color: #555; font-size: 0.85rem; margin-top: 10px; }
 
         .map-visual {
             width: 100%;
             max-width: 800px;
-            height: auto;
+            height: 450px;
             margin: 0 auto;
             position: relative;
         }
 
-        /* SVG des frontières réelles de l'Europe */
-        .map-svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 10px rgba(0,123,255,0.05)); }
-        
-        /* Style des pays par défaut */
-        .europe-map path { fill: #080808; stroke: #1a1a1a; stroke-width: 0.5; }
-        
-        /* Style des pays cibles avec contour bleu */
-        .europe-map path.highlight-country { fill: #0a0a0a; stroke: #007bff; stroke-width: 1.5; }
+        /* SVG des vraies silhouettes pays */
+        .map-svg { width: 100%; height: 100%; }
+        .country { fill: #0d0d0d; stroke: #1a1a1a; stroke-width: 1; transition: 0.5s; }
+        .country.active { stroke: #007bff; stroke-width: 1.5; fill: #0f172a; }
+
+        /* Animation des flux */
+        .flow-line { fill: none; stroke: #007bff; stroke-width: 1.5; stroke-dasharray: 6; opacity: 0.4; }
 
         /* Marqueur Komorniki */
-        .location-dot {
-            position: absolute;
-            top: 41%; /* Ajusté pour Komorniki sur la carte réelle */
-            left: 55%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
+        .location-dot { position: absolute; top: 35%; left: 68%; transform: translate(-50%, -50%); z-index: 10; }
+        .dot-main { width: 10px; height: 10px; background: #007bff; border-radius: 50%; box-shadow: 0 0 15px #007bff; }
+        .dot-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; background: rgba(0, 123, 255, 0.2); border-radius: 50%; animation: pulse 2s infinite; }
+        .city-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #007bff; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; white-space: nowrap; }
 
-        .dot-main { width: 12px; height: 12px; background: #007bff; border-radius: 50%; box-shadow: 0 0 20px #007bff; position: relative; }
-        .dot-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(0, 123, 255, 0.2); border-radius: 50%; animation: pulse 2s infinite; }
-        .city-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #007bff; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+        /* Badges Transit */
+        .transit-badge { position: absolute; font-size: 0.7rem; font-weight: 800; text-align: center; pointer-events: none; }
+        .transit-badge span { display: block; color: #007bff; font-size: 0.9rem; margin-top: 2px; }
 
-        /* Infos de transit flottantes - Harmonisées à 5-7 jours */
-        .transit-info { position: absolute; font-size: 0.65rem; font-weight: 900; color: #444; text-transform: uppercase; letter-spacing: 1px; text-align: center; pointer-events: none; }
-        .transit-info span { color: #007bff; font-size: 0.85rem; display: block; margin-top: 2px; }
+        .b-fr { top: 70%; left: 25%; }
+        .b-be { top: 45%; left: 35%; }
+        .b-ch { top: 75%; left: 48%; }
 
-        /* Positions corrigées pour alignement parfait sur la nouvelle carte */
-        .t-fr { top: 75%; left: 18%; }
-        .t-be { top: 50%; left: 25%; }
-        .t-ch { top: 70%; left: 40%; }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
-        }
-
-        footer { padding: 60px 5%; text-align: center; border-top: 1px solid #111; color: #222; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; margin-top: 80px; }
-
-        @media (max-width: 768px) {
-            .container { padding-top: 130px; }
-            .map-container { padding: 30px 15px; }
-            .transit-info { font-size: 0.55rem; }
-        }
+        @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
+        footer { padding: 40px; text-align: center; color: #222; font-size: 0.7rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -110,49 +78,35 @@
 
     <div class="container">
         <h1>Qui Sommes-Nous</h1>
-        
         <p class="main-text">
-            Spécialiste européen de la distribution de puffs en gros, <span class="highlight">Yuko Vape</span> accompagne aujourd'hui plus d'une centaine de boutiques et revendeurs indépendants en France, Belgique et Suisse. Grâce à notre centre logistique stratégique situé en <span class="highlight">Pologne</span> et nos partenaires internationaux, nous offrons le luxe d'une <span class="highlight">livraison garantie en 1 semaine</span> en Europe. Notre modèle nous permet de rivaliser directement avec les tarifs des grossistes asiatiques, tout en assurant une réactivité locale et un suivi sans faille.
+            Spécialiste européen de la distribution de puffs en gros, <span class="highlight">Yuko Vape</span> accompagne plus d'une centaine de revendeurs en France, Belgique et Suisse. 
+            Grâce à notre centre logistique stratégique situé en <span class="highlight">Pologne</span>, nous assurons une <span class="highlight">livraison en 5-7 jours</span> partout en Europe avec des prix défiant toute concurrence.
         </p>
 
         <div class="map-container">
             <div class="map-header">
-                <h2>Hub Logistique : Komorniki, PL</h2>
-                <p>Rayonnement européen constant depuis notre centre de distribution principal.</p>
+                <h2>HUB LOGISTIQUE : KOMORNIKI, PL</h2>
+                <p>Flux d'expédition optimisés vers nos marchés principaux.</p>
             </div>
             
             <div class="map-visual">
-                <svg class="map-svg europe-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M150,150 Q250,50 400,80 T650,150 T750,300 T600,450 T300,420 T100,350 Z"/> <path class="highlight-country" d="M420,130 L460,120 L490,140 L480,180 L440,190 L420,180 Z"/> 
+                <svg class="map-svg" viewBox="0 0 500 350">
+                    <path class="country active" d="M110,180 L140,170 L175,185 L185,230 L160,270 L120,275 L95,240 Z" />
+                    <path class="country active" d="M165,155 L185,150 L195,165 L185,175 L165,170 Z" />
+                    <path class="country active" d="M205,225 L235,220 L245,235 L225,250 L205,245 Z" />
+                    <path class="country active" d="M310,120 L360,110 L390,140 L380,185 L330,200 L300,180 Z" />
                     
-                    <path class="highlight-country" d="M180,250 L220,220 L280,250 L270,350 L220,380 L180,350 Z"/>
-                    
-                    <path class="highlight-country" d="M250,200 L280,195 L290,210 L280,220 L250,215 Z"/>
-                    
-                    <path class="highlight-country" d="M340,320 L370,315 L380,330 L360,350 L340,345 Z"/>
+                    <path class="flow-line" d="M335,155 Q250,160 155,215" /> <path class="flow-line" d="M335,155 Q280,150 190,165" /> <path class="flow-line" d="M335,155 Q280,200 235,230" /> </svg>
 
-                    <g fill="none" stroke="#007bff" stroke-width="1.5" stroke-dasharray="8,8" opacity="0.4">
-                        <path d="M440,165 Q300,220 230,320">
-                            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
-                        </path>
-                        <path d="M440,165 Q350,180 270,208">
-                            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
-                        </path>
-                        <path d="M440,165 Q390,280 360,332">
-                            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
-                        </path>
-                    </g>
-
-                    <circle cx="230" cy="320" r="4" fill="#007bff" opacity="0.6" /> <circle cx="270" cy="208" r="4" fill="#007bff" opacity="0.6" /> <circle cx="360" cy="332" r="4" fill="#007bff" opacity="0.6" /> </svg>
-                
-                <div class="location-dot" style="top: 36%; left: 55%;"> <div class="city-label">Komorniki Hub</div>
+                <div class="location-dot">
+                    <div class="city-label">KOMORNIKI HUB</div>
                     <div class="dot-main"></div>
                     <div class="dot-pulse"></div>
                 </div>
 
-                <div class="transit-info t-fr">FRANCE <span>5-7 JOURS</span></div>
-                <div class="transit-info t-be">BELGIQUE <span>5-7 JOURS</span></div>
-                <div class="transit-info t-ch">SUISSE <span>5-7 JOURS</span></div>
+                <div class="transit-badge b-fr">FRANCE<span>5-7 JOURS</span></div>
+                <div class="transit-badge b-be">BELGIQUE<span>5-7 JOURS</span></div>
+                <div class="transit-badge b-ch">SUISSE<span>5-7 JOURS</span></div>
             </div>
         </div>
     </div>

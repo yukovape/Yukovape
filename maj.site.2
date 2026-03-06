@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuko Vape | Premium Wholesale</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #050505; color: white; overflow-x: hidden; }
+        
+        /* Barre de navigation */
+        nav { display: flex; justify-content: space-between; padding: 20px 5%; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
+        .logo-img { height: 50px; width: auto; }
+        .nav-links a { color: #888; margin-left: 25px; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
+        
+        /* Section Hero */
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); padding: 0 10%; }
+        .hero p.subtitle { color: #007bff; letter-spacing: 4px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px; }
+        h1 { font-size: 4rem; margin: 10px 0; font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
+        .hero p.tagline { color: #888; font-size: 1.2rem; margin-bottom: 40px; max-width: 600px; }
+        
+        /* Boutons */
+        .btn-group { display: flex; gap: 20px; }
+        .btn { padding: 15px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: 0.4s; font-size: 1rem; }
+        .btn-primary { background: #007bff; color: white; box-shadow: 0 10px 20px rgba(0,123,255,0.2); }
+        .btn-primary:hover { background: #0056b3; transform: translateY(-3px); }
+        .btn-telegram { background: #229ED9; color: white; display: flex; align-items: center; gap: 10px; }
+        .btn-telegram:hover { background: #1c81b1; transform: translateY(-3px); }
+
+        /* Features */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 100px 10%; background: #000; }
+        .feature-card { background: linear-gradient(145deg, #0f0f0f, #050505); padding: 40px; border-radius: 20px; border: 1px solid #1a1a1a; transition: 0.3s; }
+        .feature-card:hover { border-color: #007bff; transform: translateY(-10px); }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+        .feature-card p { color: #666; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <nav>
+        <img src="logo.png" alt="Yuko Vape" class="logo-img">
+        <div class="nav-links">
+            <a href="#">Catalogue</a>
+            <a href="#">Grossiste</a>
+            <a href="https://t.me/TON_ID_TELEGRAM" class="btn btn-telegram" style="display: inline-block; padding: 10px 20px; margin-left: 20px;">Telegram</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <p class="subtitle">Premium Vape Supply</p>
+        <h1>Qualité. Fiabilité.<br>Vitesse.</h1>
+        <p class="tagline">Livraison en 1 semaine dans toute l'Europe.</p>
+        
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary">Voir le Catalogue</a>
+            <a href="https://t.me/TON_ID_TELEGRAM" class="btn btn-telegram">Rejoindre Telegram</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-card"><h3>🚚 1 Semaine</h3><p>Livraison express sécurisée dans toute l'Europe.</p></div>
+        <div class="feature-card"><h3>💰 Prix Usine</h3><p>Les tarifs les plus compétitifs du marché B2B.</p></div>
+        <div class="feature-card"><h3>📍 Suivi Réel</h3><p>Traçabilité totale de vos stocks par GPS.</p></div>
+    </section>
+</body>
+</html>

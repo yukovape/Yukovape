@@ -3,182 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qui Sommes-Nous | Yuko Vape</title>
+    <title>Logistique | Yuko Vape</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* Navigation (Inchangée) */
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; letter-spacing: 1px; }
         .nav-logo span { color: #007bff; }
         .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
         .container { padding: 150px 5% 50px 5%; max-width: 1000px; margin: 0 auto; text-align: center; }
-        
         h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; font-weight: 900; }
-        .intro-text { color: #888; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
-        /* SECTION CARTE PROPRE AVEC CONTOURS */
         .map-box {
-            position: relative; 
-            width: 100%; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            background: #080808; 
-            border-radius: 20px; 
-            border: 1px solid #1a1a1a; 
-            overflow: hidden; 
-            aspect-ratio: 16/9;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        
-        /* Image de fond : Vraie carte Europe (en très sombre pour laisser place aux contours) */
-        .map-img {
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            opacity: 0.1; 
-            filter: invert(1) grayscale(1);
+            position: relative; width: 100%; max-width: 900px; margin: 0 auto; 
+            background: #080808; border-radius: 20px; border: 1px solid #1a1a1a; 
+            aspect-ratio: 16/9; overflow: hidden;
         }
 
-        /* Style commun pour les marqueurs */
-        .marker {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 5;
-        }
+        .map-svg { width: 100%; height: 100%; }
 
-        .dot { border-radius: 50%; }
-        .label-box {
-            margin-top: 10px;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
+        /* Styles des Pays - TRACÉS RÉELS */
+        .country { fill: #111; stroke: #222; stroke-width: 0.5; }
+        .active-country { fill: rgba(0, 123, 255, 0.05); stroke: #007bff; stroke-width: 1.5; }
+        .poland-country { fill: rgba(255, 255, 255, 0.05); stroke: #ffffff; stroke-width: 1.5; }
 
-        /* --- STYLES DES PAYS (Contours SVG finaux) --- */
-        .country-path { 
-            position: absolute; 
-            fill: none; 
-            stroke-width: 1; 
-            opacity: 0.6; 
-            z-index: 2; 
-        }
+        /* Marqueurs */
+        .marker { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 10; }
+        .label { margin-top: 10px; padding: 6px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; white-space: nowrap; }
 
-        /* --- POSITIONS --- */
+        /* Hub Pologne */
+        .m-pl { top: 35%; left: 72%; }
+        .m-pl .dot { width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 0 15px #fff; }
+        .m-pl .label { background: #fff; color: #000; }
 
-        /* HUB POLOGNE */
-        .m-pl { top: 38%; left: 62%; }
-        .m-pl .dot { width: 14px; height: 14px; background: #fff; box-shadow: 0 0 20px #fff; }
-        .m-pl .label-box { background: #fff; color: #000; font-size: 0.7rem; font-weight: 900; }
-        /* Contour Pologne - Blanc */
-        .path-pl { stroke: #fff; top: 25%; left: 55%; width: 15%; }
+        /* Destinations */
+        .m-fr { top: 68%; left: 25%; }
+        .m-be { top: 44%; left: 28%; }
+        .m-ch { top: 68%; left: 40%; }
+        .dot-blue { width: 10px; height: 10px; background: #007bff; border-radius: 50%; box-shadow: 0 0 15px #007bff; }
+        .label-blue { background: rgba(0,0,0,0.9); border: 1px solid #007bff; color: white; }
+        .time { display: block; color: #007bff; font-size: 0.6rem; margin-top: 2px; }
 
-        /* FRANCE */
-        .m-fr { top: 65%; left: 32%; }
-        .m-fr .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
-        .m-fr .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
-        /* Contour France - Bleu */
-        .path-fr { stroke: #007bff; top: 50%; left: 20%; width: 25%; }
-
-        /* BELGIQUE */
-        .m-be { top: 48%; left: 36%; }
-        .m-be .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
-        .m-be .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
-        /* Contour Belgique - Bleu (Petit) */
-        .path-be { stroke: #007bff; top: 40%; left: 33%; width: 6%; }
-
-        /* SUISSE */
-        .m-ch { top: 68%; left: 45%; }
-        .m-ch .dot { width: 10px; height: 10px; background: #007bff; box-shadow: 0 0 15px #007bff; }
-        .m-ch .label-box { background: rgba(0,0,0,0.9); border: 1px solid #007bff; }
-        /* Contour Suisse - Bleu */
-        .path-ch { stroke: #007bff; top: 60%; left: 41%; width: 8%; }
-
-        .country-name { font-size: 0.65rem; font-weight: 900; color: #fff; text-transform: uppercase; }
-        .delivery-time { font-size: 0.6rem; color: #007bff; font-weight: 700; margin-top: 2px; }
-
-        footer { padding: 60px 5%; text-align: center; border-top: 1px solid #111; color: #222; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
-
-        @media (max-width: 768px) {
-            .container { padding-top: 120px; }
-            .label-box { padding: 4px 8px; }
-        }
+        footer { padding: 60px; text-align: center; color: #222; font-size: 0.7rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-
     <nav>
         <a href="index.html" class="nav-logo">Yuko <span>Vape</span></a>
         <div class="nav-links">
             <a href="index.html">Accueil</a>
-            <a href="#">Catalogue</a>
             <a href="https://t.me/TON_ID" style="color: #007bff;">Telegram</a>
         </div>
     </nav>
 
     <div class="container">
         <h1>L'Excellence Logistique</h1>
-        <p class="intro-text">
-            Depuis notre centre névralgique en Pologne, nous pilotons une distribution agile vers les marchés les plus exigeants d'Europe de l'Ouest.
-        </p>
-
+        
         <div class="map-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blank_map_of_Europe_cropped.svg/1000px-Blank_map_of_Europe_cropped.svg.png" class="map-img" alt="Europe Map">
-
-            <svg class="country-path path-pl" viewBox="0 0 100 100">
-                <path d="M40,10 L60,10 L75,25 L75,75 L60,90 L40,90 L25,75 L25,25 Z" />
-            </svg>
-            
-            <svg class="country-path path-fr" viewBox="0 0 200 200">
-                <path d="M90,20 L130,10 L170,40 L180,80 L160,120 L130,140 L110,140 L80,120 L50,110 L40,80 L50,40 Z" />
-            </svg>
-            
-            <svg class="country-path path-be" viewBox="0 0 50 50">
-                <path d="M10,10 L30,5 L45,15 L40,30 L30,35 L15,30 Z" />
-            </svg>
-            
-            <svg class="country-path path-ch" viewBox="0 0 80 80">
-                <path d="M10,25 L40,20 L60,30 L65,45 L50,60 L25,60 L15,45 Z" />
+            <svg class="map-svg" viewBox="0 0 800 500">
+                <path class="country active-country" d="M211.2,336.5l-3.3-10.4l1.3-17.5l-13.8-19.4l0.1-13.8l-15.1-16.1l3.3-26.6l16.1-15.1l31.1,5.3l18.4,26.4l20.4,4.2l-3.4,46.2l-14.8,36.9L211.2,336.5z" />
+                
+                <path class="country poland-country" d="M515.6,134.1l42.3-5.3l37.8,20.5l1.6,48.5l-44,29.9l-48.5-8.8l-18.7-39.6L515.6,134.1z" />
+                
+                <path class="country active-country" d="M217.2,192.5l16.2-4.1l11,10.6l-5.3,16.2l-16.2,2.3L217.2,192.5z" />
+                
+                <path class="country active-country" d="M298.5,274.5l30.8-5l10.4,15.6l-20.4,15.6l-20.4-5.3L298.5,274.5z" />
             </svg>
 
             <div class="marker m-pl">
                 <div class="dot"></div>
-                <div class="label-box">ENTREPÔT PL</div>
+                <div class="label">Entrepôt PL</div>
             </div>
 
             <div class="marker m-fr">
-                <div class="dot"></div>
-                <div class="label-box">
-                    <div class="country-name">France</div>
-                    <div class="delivery-time">5-7 JOURS</div>
-                </div>
+                <div class="dot-blue"></div>
+                <div class="label label-blue">France <span class="time">5-7 Jours</span></div>
             </div>
 
             <div class="marker m-be">
-                <div class="dot"></div>
-                <div class="label-box">
-                    <div class="country-name">Belgique</div>
-                    <div class="delivery-time">5-7 JOURS</div>
-                </div>
+                <div class="dot-blue"></div>
+                <div class="label label-blue">Belgique <span class="time">5-7 Jours</span></div>
             </div>
 
             <div class="marker m-ch">
-                <div class="dot"></div>
-                <div class="label-box">
-                    <div class="country-name">Suisse</div>
-                    <div class="delivery-time">5-7 JOURS</div>
-                </div>
+                <div class="dot-blue"></div>
+                <div class="label label-blue">Suisse <span class="time">5-7 Jours</span></div>
             </div>
         </div>
     </div>
 
-    <footer>&copy; 2026 YUKO VAPE - Distribution Premium Europe</footer>
-
+    <footer>&copy; 2026 YUKO VAPE - Distribution Premium</footer>
 </body>
 </html>

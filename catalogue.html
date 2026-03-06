@@ -10,45 +10,48 @@
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; }
         .nav-logo span { color: #007bff; }
-        
+        .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+
         .container { padding: 140px 5% 80px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
         
         .product-view { position: sticky; top: 140px; height: fit-content; }
         .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; text-align: center; }
-        .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+        .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; border: 1px solid #222; }
         
         .price-tiers { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
         .tier { flex: 1; background: #111; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .tier.active { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); }
+        .tier.active { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
         .tier-qty { font-size: 0.6rem; color: #555; text-transform: uppercase; font-weight: 900; }
         .tier-price { font-size: 1.1rem; font-weight: 900; display: block; margin-top: 5px; }
         .tier.active .tier-qty { color: #00ff88; }
 
         .order-zone { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; }
-        h2 { font-weight: 900; text-transform: uppercase; margin-top: 0; }
+        h2 { font-weight: 900; text-transform: uppercase; margin-top: 0; margin-bottom: 10px; }
         
-        .add-box-btn { width: 100%; padding: 15px; background: transparent; border: 2px dashed #007bff; color: #007bff; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
+        .add-box-btn { width: 100%; padding: 15px; background: transparent; border: 2px dashed #007bff; color: #007bff; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-bottom: 20px; text-transform: uppercase; font-size: 0.8rem; }
         .add-box-btn:hover { background: rgba(0,123,255,0.1); }
 
-        .box-item { background: #111; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; border: 1px solid #222; animation: slideIn 0.3s ease; }
+        .box-item { background: #111; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; border: 1px solid #222; animation: slideIn 0.3s ease; }
         .box-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 8px; }
         .box-controls { display: flex; gap: 10px; }
         
-        select { background: #000; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 5px; font-family: 'Montserrat'; font-size: 0.8rem; }
+        select { background: #000; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 5px; font-family: 'Montserrat'; font-size: 0.8rem; cursor: pointer; }
         .select-flavor { flex: 2; }
         .select-nic { flex: 1; }
         
-        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; }
+        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; transition: 0.2s; }
+        .remove-btn:hover { transform: scale(1.2); }
 
-        .summary { background: #000; border: 1px solid #007bff; padding: 20px; border-radius: 12px; margin-top: 30px; }
-        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
-        .total-row { display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px; margin-top: 10px; font-size: 1.5rem; font-weight: 900; }
+        .summary { background: #000; border: 1px solid #007bff; padding: 25px; border-radius: 15px; margin-top: 30px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; color: #aaa; }
+        .total-row { display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px; margin-top: 10px; font-size: 1.8rem; font-weight: 900; }
 
-        .economy-msg { font-size: 0.8rem; color: #00ff88; font-weight: 900; text-align: center; margin-top: 10px; background: rgba(0, 255, 136, 0.1); padding: 8px; border-radius: 5px; display: none; }
-        .upsell-msg { font-size: 0.75rem; color: #888; text-align: center; margin-top: 10px; }
+        .economy-msg { font-size: 0.85rem; color: #00ff88; font-weight: 900; text-align: center; margin-top: 15px; background: rgba(0, 255, 136, 0.1); padding: 10px; border-radius: 5px; display: none; border: 1px solid rgba(0, 255, 136, 0.2); }
+        .upsell-msg { font-size: 0.75rem; color: #888; text-align: center; margin-top: 12px; font-style: italic; }
 
-        .btn-tg { display: block; width: 100%; padding: 20px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; margin-top: 20px; box-sizing: border-box; }
-        .btn-tg.disabled { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
+        .btn-tg { display: block; width: 100%; padding: 22px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 25px; box-sizing: border-box; transition: 0.3s; font-size: 0.9rem; }
+        .btn-tg:hover { background: #007bff; color: white; }
+        .btn-tg.disabled { opacity: 0.15; pointer-events: none; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .product-view { position: relative; top: 0; } }
@@ -58,6 +61,10 @@
 
 <nav>
     <a href="index.html" class="nav-logo">Yuko <span>Vape</span></a>
+    <div class="nav-links">
+        <a href="index.html">Accueil</a>
+        <a href="about.html">Logistique</a>
+    </div>
 </nav>
 
 <div class="container">
@@ -65,7 +72,7 @@
         <div class="img-card">
             <img src="Gemini_Generated_Image_ar5ajear5ajear5a.jpg" class="product-img">
             <h2 style="margin:0;">RAZZ BAR 30K</h2>
-            <p style="color:#555; font-size: 0.75rem; letter-spacing: 1px;">UNITÉ : PACK DE 10 PCS</p>
+            <p style="color:#555; font-size: 0.7rem; letter-spacing: 2px; font-weight: 700;">VENDU PAR PACK DE 10 PCS</p>
         </div>
     </div>
 
@@ -87,14 +94,14 @@
             </div>
         </div>
 
-        <button class="add-box-btn" onclick="addBox()">+ AJOUTER UNE BOÎTE (10 PCS)</button>
+        <button class="add-box-btn" onclick="addBox()">+ Ajouter un pack de 10</button>
         
         <div id="cart-items"></div>
 
         <div class="summary">
             <div class="price-row">
                 <span>Quantité totale :</span>
-                <span id="total-qty">0 pcs</span>
+                <span id="total-qty" style="color:white; font-weight:700;">0 pcs</span>
             </div>
             <div class="price-row">
                 <span>Prix unitaire :</span>
@@ -108,7 +115,7 @@
             <div id="economy-box" class="economy-msg"></div>
             <div id="upsell" class="upsell-msg"></div>
             
-            <p id="min-warn" style="color:#ff4444; font-size:0.65rem; font-weight:900; margin-top:15px; text-align:center;">MINIMUM REQUIS : 3 BOÎTES</p>
+            <p id="min-warn" style="color:#ff4444; font-size:0.65rem; font-weight:900; margin-top:20px; text-align:center; text-transform: uppercase;">Commande minimale : 3 packs (30 pcs)</p>
         </div>
 
         <a href="#" id="tg-submit" class="btn-tg disabled">Finaliser sur Telegram</a>
@@ -149,7 +156,7 @@
             div.className = 'box-item';
             div.innerHTML = `
                 <div class="box-header">
-                    <span style="font-weight:900; font-size:0.7rem; color:#444;">PACK #${index+1} (10 PCS)</span>
+                    <span style="font-weight:900; font-size:0.65rem; color:#666; letter-spacing:1px;">PACK #${index+1}</span>
                     <span class="remove-btn" onclick="removeBox(${box.id})">×</span>
                 </div>
                 <div class="box-controls">
@@ -191,21 +198,19 @@
         document.getElementById('unit-price').innerText = price.toFixed(2) + " €";
         document.getElementById('grand-total').innerText = total.toFixed(2) + " €";
 
-        // Affichage économie
         const ecoBox = document.getElementById('economy-box');
         if (economy > 0) {
             ecoBox.style.display = 'block';
-            ecoBox.innerText = `FÉLICITATIONS ! VOUS ÉCONOMISEZ ${economy.toFixed(2)} €`;
+            ecoBox.innerText = `ÉCONOMIE RÉALISÉE : ${economy.toFixed(2)} €`;
         } else {
             ecoBox.style.display = 'none';
         }
 
-        // Upsell
         const upsell = document.getElementById('upsell');
         if (qty < 50 && qty >= 10) {
             upsell.innerText = `Ajoutez ${50 - qty} pièces pour économiser ${(qty * 0.60).toFixed(2)}€ de plus !`;
         } else if (qty < 70 && qty >= 50) {
-            upsell.innerText = `Plus que ${70 - qty} pièces pour débloquer le prix à 5.20€ !`;
+            upsell.innerText = `Plus que ${70 - qty} pièces pour débloquer le tarif à 5.20€ !`;
         } else {
             upsell.innerText = "";
         }
@@ -222,8 +227,8 @@
         }
 
         let detailMsg = boxes.map((b, i) => `Pack ${i+1}: ${b.flavor} (${b.nicotine})`).join('\n');
-        let message = `Bonjour Yuko Vape, commande RAZZ BAR 30K :\n\n${detailMsg}\n\nQuantité: ${qty} pcs\nPrix: ${price.toFixed(2)}€/u\nTOTAL: ${total.toFixed(2)}€\n(Économie: ${economy.toFixed(2)}€)`;
-        btn.href = "https://t.me/TON_ID?text=" + encodeURIComponent(message);
+        let message = `Bonjour Yuko Vape, commande RAZZ BAR 30K :\n\n${detailMsg}\n\nQuantité: ${qty} pcs\nPrix: ${price.toFixed(2)}€/u\nTOTAL: ${total.toFixed(2)}€\nÉconomie: ${economy.toFixed(2)}€`;
+        btn.href = "https://t.me/fildurasoir?text=" + encodeURIComponent(message);
     }
 
     for(let i=0; i<3; i++) addBox();

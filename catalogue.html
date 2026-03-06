@@ -11,19 +11,18 @@
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; }
         .nav-logo span { color: #007bff; }
         
-        .container { padding: 140px 5% 80px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+        .container { padding: 140px 5% 80px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
         
         .product-view { position: sticky; top: 140px; height: fit-content; }
         .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; text-align: center; }
         .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
         
-        /* TABLEAU DES PRIX DÉGRESSIFS */
         .price-tiers { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
         .tier { flex: 1; background: #111; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .tier.active { border-color: #007bff; background: rgba(0, 123, 255, 0.1); box-shadow: 0 0 15px rgba(0, 123, 255, 0.2); }
+        .tier.active { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); }
         .tier-qty { font-size: 0.6rem; color: #555; text-transform: uppercase; font-weight: 900; }
         .tier-price { font-size: 1.1rem; font-weight: 900; display: block; margin-top: 5px; }
-        .tier.active .tier-qty { color: #007bff; }
+        .tier.active .tier-qty { color: #00ff88; }
 
         .order-zone { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; }
         h2 { font-weight: 900; text-transform: uppercase; margin-top: 0; }
@@ -31,15 +30,22 @@
         .add-box-btn { width: 100%; padding: 15px; background: transparent; border: 2px dashed #007bff; color: #007bff; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
         .add-box-btn:hover { background: rgba(0,123,255,0.1); }
 
-        .box-item { background: #111; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border: 1px solid #222; animation: slideIn 0.3s ease; }
-        select { background: #000; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 5px; width: 60%; font-family: 'Montserrat'; }
-        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; margin-left: 10px; }
+        .box-item { background: #111; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; border: 1px solid #222; animation: slideIn 0.3s ease; }
+        .box-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        .box-controls { display: flex; gap: 10px; }
+        
+        select { background: #000; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 5px; font-family: 'Montserrat'; font-size: 0.8rem; }
+        .select-flavor { flex: 2; }
+        .select-nic { flex: 1; }
+        
+        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; }
 
         .summary { background: #000; border: 1px solid #007bff; padding: 20px; border-radius: 12px; margin-top: 30px; }
         .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
         .total-row { display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px; margin-top: 10px; font-size: 1.5rem; font-weight: 900; }
 
-        .upsell-msg { font-size: 0.75rem; color: #00ff88; font-weight: 700; text-align: center; margin-top: 10px; min-height: 1rem; }
+        .economy-msg { font-size: 0.8rem; color: #00ff88; font-weight: 900; text-align: center; margin-top: 10px; background: rgba(0, 255, 136, 0.1); padding: 8px; border-radius: 5px; display: none; }
+        .upsell-msg { font-size: 0.75rem; color: #888; text-align: center; margin-top: 10px; }
 
         .btn-tg { display: block; width: 100%; padding: 20px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; margin-top: 20px; box-sizing: border-box; }
         .btn-tg.disabled { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
@@ -91,15 +97,18 @@
                 <span id="total-qty">0 pcs</span>
             </div>
             <div class="price-row">
-                <span>Prix unitaire actuel :</span>
+                <span>Prix unitaire :</span>
                 <span id="unit-price" style="color:#007bff; font-weight:900;">6.70 €</span>
             </div>
             <div class="total-row">
                 <span>TOTAL</span>
                 <span id="grand-total">0.00 €</span>
             </div>
+            
+            <div id="economy-box" class="economy-msg"></div>
             <div id="upsell" class="upsell-msg"></div>
-            <p id="min-warn" style="color:#ff4444; font-size:0.65rem; font-weight:900; margin-top:10px; text-align:center;">MINIMUM REQUIS : 3 BOÎTES</p>
+            
+            <p id="min-warn" style="color:#ff4444; font-size:0.65rem; font-weight:900; margin-top:15px; text-align:center;">MINIMUM REQUIS : 3 BOÎTES</p>
         </div>
 
         <a href="#" id="tg-submit" class="btn-tg disabled">Finaliser sur Telegram</a>
@@ -117,7 +126,7 @@
     let boxes = [];
 
     function addBox() {
-        boxes.push({ id: Date.now(), flavor: flavors[0] });
+        boxes.push({ id: Date.now(), flavor: flavors[0], nicotine: "2%" });
         renderCart();
     }
 
@@ -126,10 +135,10 @@
         renderCart();
     }
 
-    function updateFlavor(id, flavor) {
+    function updateBox(id, field, value) {
         const box = boxes.find(b => b.id === id);
-        if (box) box.flavor = flavor;
-        calculate(); // Mettre à jour le message Telegram sans recharger la liste
+        if (box) box[field] = value;
+        calculate();
     }
 
     function renderCart() {
@@ -139,11 +148,19 @@
             const div = document.createElement('div');
             div.className = 'box-item';
             div.innerHTML = `
-                <span style="font-weight:900; font-size:0.7rem; color:#444;">BOÎTE ${index+1}</span>
-                <select onchange="updateFlavor(${box.id}, this.value)">
-                    ${flavors.map(f => `<option value="${f}" ${box.flavor === f ? 'selected' : ''}>${f}</option>`).join('')}
-                </select>
-                <span class="remove-btn" onclick="removeBox(${box.id})">×</span>
+                <div class="box-header">
+                    <span style="font-weight:900; font-size:0.7rem; color:#444;">PACK #${index+1} (10 PCS)</span>
+                    <span class="remove-btn" onclick="removeBox(${box.id})">×</span>
+                </div>
+                <div class="box-controls">
+                    <select class="select-flavor" onchange="updateBox(${box.id}, 'flavor', this.value)">
+                        ${flavors.map(f => `<option value="${f}" ${box.flavor === f ? 'selected' : ''}>${f}</option>`).join('')}
+                    </select>
+                    <select class="select-nic" onchange="updateBox(${box.id}, 'nicotine', this.value)">
+                        <option value="2%" ${box.nicotine === "2%" ? 'selected' : ''}>2% Nic</option>
+                        <option value="5%" ${box.nicotine === "5%" ? 'selected' : ''}>5% Nic</option>
+                    </select>
+                </div>
             `;
             container.appendChild(div);
         });
@@ -152,31 +169,46 @@
 
     function calculate() {
         const qty = boxes.length * 10;
-        let price = 6.70;
-        let nextTier = "";
-
-        // Logique des paliers
+        const basePrice = 6.70;
+        let price = basePrice;
+        
         document.querySelectorAll('.tier').forEach(t => t.classList.remove('active'));
         
         if (qty >= 70) {
             price = 5.20;
             document.getElementById('tier-3').classList.add('active');
-            nextTier = "Félicitations ! Vous bénéficiez du tarif VIP.";
         } else if (qty >= 50) {
             price = 6.10;
             document.getElementById('tier-2').classList.add('active');
-            nextTier = `Plus que ${70 - qty} pièces pour passer à 5.20 € !`;
-        } else {
-            price = 6.70;
-            if (qty >= 30) document.getElementById('tier-1').classList.add('active');
-            nextTier = qty >= 10 ? `Plus que ${50 - qty} pièces pour passer à 6.10 € !` : "";
+        } else if (qty >= 30) {
+            document.getElementById('tier-1').classList.add('active');
         }
 
         const total = qty * price;
+        const economy = (qty * basePrice) - total;
+
         document.getElementById('total-qty').innerText = qty + " pcs";
         document.getElementById('unit-price').innerText = price.toFixed(2) + " €";
         document.getElementById('grand-total').innerText = total.toFixed(2) + " €";
-        document.getElementById('upsell').innerText = nextTier;
+
+        // Affichage économie
+        const ecoBox = document.getElementById('economy-box');
+        if (economy > 0) {
+            ecoBox.style.display = 'block';
+            ecoBox.innerText = `FÉLICITATIONS ! VOUS ÉCONOMISEZ ${economy.toFixed(2)} €`;
+        } else {
+            ecoBox.style.display = 'none';
+        }
+
+        // Upsell
+        const upsell = document.getElementById('upsell');
+        if (qty < 50 && qty >= 10) {
+            upsell.innerText = `Ajoutez ${50 - qty} pièces pour économiser ${(qty * 0.60).toFixed(2)}€ de plus !`;
+        } else if (qty < 70 && qty >= 50) {
+            upsell.innerText = `Plus que ${70 - qty} pièces pour débloquer le prix à 5.20€ !`;
+        } else {
+            upsell.innerText = "";
+        }
 
         const btn = document.getElementById('tg-submit');
         const warn = document.getElementById('min-warn');
@@ -189,12 +221,11 @@
             warn.style.display = 'block';
         }
 
-        let detailParfums = boxes.map((b, i) => `Pack ${i+1}: ${b.flavor}`).join('\n');
-        let message = `Bonjour Yuko Vape, commande Razz Bar 30K :\n\n${detailParfums}\n\nQuantité: ${qty} pcs\nPrix: ${price.toFixed(2)}€/u\nTOTAL: ${total.toFixed(2)}€`;
+        let detailMsg = boxes.map((b, i) => `Pack ${i+1}: ${b.flavor} (${b.nicotine})`).join('\n');
+        let message = `Bonjour Yuko Vape, commande RAZZ BAR 30K :\n\n${detailMsg}\n\nQuantité: ${qty} pcs\nPrix: ${price.toFixed(2)}€/u\nTOTAL: ${total.toFixed(2)}€\n(Économie: ${economy.toFixed(2)}€)`;
         btn.href = "https://t.me/TON_ID?text=" + encodeURIComponent(message);
     }
 
-    // Initialisation
     for(let i=0; i<3; i++) addBox();
 </script>
 

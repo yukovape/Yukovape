@@ -9,65 +9,45 @@
         
         body { margin: 0; font-family: 'Inter', sans-serif; background: #050505; color: white; overflow-x: hidden; }
         
-        /* Navigation adaptative */
+        /* Navigation */
         nav { display: flex; justify-content: space-between; padding: 20px 5%; align-items: center; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
         .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
         .nav-logo span { color: #007bff; }
         .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; }
 
         /* Hero Section */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); padding: 80px 5% 40px 5%; box-sizing: border-box; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); padding: 100px 5% 60px 5%; box-sizing: border-box; }
         
-        /* LOGO Dynamique */
         .hero-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; width: 100%; }
-        .hero-logo-yuko { 
-            font-size: clamp(4rem, 15vw, 10rem); /* S'adapte entre 4rem et 10rem selon l'écran */
-            line-height: 0.8; 
-            letter-spacing: -2px; 
-            background: linear-gradient(to bottom, #fff 40%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero-logo-vape { 
-            font-size: clamp(2rem, 8vw, 5rem); 
-            color: #007bff; 
-            line-height: 0.8; 
-            letter-spacing: clamp(5px, 2vw, 15px);
-            margin-top: 10px;
-        }
+        .hero-logo-yuko { font-size: clamp(4rem, 15vw, 10rem); line-height: 0.8; letter-spacing: -2px; background: linear-gradient(to bottom, #fff 40%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-logo-vape { font-size: clamp(2rem, 8vw, 5rem); color: #007bff; line-height: 0.8; letter-spacing: clamp(5px, 2vw, 15px); margin-top: 10px; }
 
         h1 { font-size: clamp(1.2rem, 4vw, 2.5rem); margin: 20px 0 10px 0; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
         .tagline { color: #666; font-size: clamp(0.9rem, 3vw, 1.1rem); margin-bottom: 40px; padding: 0 10%; }
         
-        /* Boutons adaptatifs */
-        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 500px; }
-        .btn { 
-            padding: 18px 30px; 
-            border-radius: 5px; 
-            font-weight: 800; 
-            text-decoration: none; 
-            font-size: 0.9rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            flex: 1; /* Les boutons prennent la même largeur */
-            min-width: 250px; /* Force l'empilement sur petit mobile */
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
+        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 600px; }
+        .btn { padding: 20px 35px; border-radius: 5px; font-weight: 800; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; flex: 1; min-width: 260px; box-sizing: border-box; transition: 0.3s; text-align: center; }
         .btn-primary { background: #fff; color: #000; }
         .btn-telegram { border: 2px solid #229ED9; color: #229ED9; }
 
-        /* Grille de Features */
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 60px 5%; background: #000; border-top: 1px solid #1a1a1a; }
-        .feature-card { padding: 30px; text-align: center; border: 1px solid #111; }
-        .feature-card h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        .feature-card p { color: #555; font-size: 0.8rem; line-height: 1.5; }
+        /* SECTION QUI SOMMES NOUS */
+        .about-section { padding: 100px 10%; background: #080808; border-top: 1px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; }
+        .about-content { max-width: 900px; text-align: center; }
+        .about-section h2 { font-size: clamp(1.5rem, 5vw, 2.5rem); margin-bottom: 30px; font-family: 'Montserrat', sans-serif; }
+        .about-section p { color: #aaa; font-size: 1.1rem; line-height: 1.8; margin-bottom: 40px; }
+        .highlight { color: #fff; font-weight: bold; }
 
-        /* Correction spécifique pour mobile */
+        /* SECTION ENGAGEMENTS */
+        .commitments { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; width: 100%; margin-top: 50px; }
+        .commitment-item { background: #111; padding: 30px; border-radius: 10px; border: 1px solid #222; text-align: left; }
+        .commitment-item h4 { color: #007bff; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .commitment-item p { font-size: 0.9rem; margin-bottom: 0; color: #888; }
+
+        /* Footer */
+        footer { padding: 50px 5%; text-align: center; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.8rem; }
+
         @media (max-width: 600px) {
-            nav { padding: 15px 5%; }
-            .nav-links a { margin-left: 10px; font-size: 0.7rem; }
-            .hero-logo-yuko { letter-spacing: -1px; }
+            .about-section { padding: 60px 5%; }
             .btn { width: 100%; flex: none; }
         }
     </style>
@@ -76,7 +56,7 @@
     <nav>
         <div class="nav-logo">Yuko <span>Vape</span></div>
         <div class="nav-links">
-            <a href="#">Catalogue</a>
+            <a href="#about">Qui sommes-nous ?</a>
             <a href="https://t.me/TON_ID" style="color: #229ED9;">Telegram</a>
         </div>
     </nav>
@@ -86,20 +66,43 @@
             <div class="hero-logo-yuko">YUKO</div>
             <div class="hero-logo-vape">VAPE</div>
         </div>
-
         <h1>Qualité. Fiabilité. Vitesse.</h1>
-        <p class="tagline">Livraison en 1 semaine dans toute l'Europe.</p>
-        
+        <p class="tagline">Votre partenaire privilégié pour le stock Puff en Europe.</p>
         <div class="btn-group">
             <a href="#" class="btn btn-primary">Voir le Catalogue</a>
-            <a href="https://t.me/TON_ID" class="btn btn-telegram">Commander sur Telegram</a>
+            <a href="https://t.me/TON_ID" class="btn btn-telegram">Passer commande sur Telegram</a>
         </div>
     </section>
 
-    <section class="features">
-        <div class="feature-card"><h3>🚚 Logistique</h3><p>Expédition sécurisée sous 7 jours.</p></div>
-        <div class="feature-card"><h3>💰 Tarifs B2B</h3><p>Prix directs usine.</p></div>
-        <div class="feature-card"><h3>📍 Tracking</h3><p>Suivi en temps réel.</p></div>
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <h2>L'Excellence Logistique pour Revendeurs</h2>
+            <p>
+                Spécialiste européen de la distribution de puffs en gros, <span class="highlight">Yuko Vape</span> accompagne aujourd'hui plus d'une centaine de boutiques et revendeurs indépendants en France, Belgique et Suisse.
+            </p>
+            <p>
+                Grâce à notre centre logistique stratégique situé en <span class="highlight">Pologne</span> et nos partenaires internationaux, nous offrons le luxe d'une <span class="highlight">livraison garantie en 1 semaine</span> en Europe. Notre modèle nous permet de rivaliser directement avec les tarifs des grossistes asiatiques, tout en assurant une réactivité locale et un suivi sans faille.
+            </p>
+        </div>
+
+        <div class="commitments">
+            <div class="commitment-item">
+                <h4>✓ Stock Réel</h4>
+                <p>Pas de surprises. Ce que vous voyez est disponible immédiatement dans notre entrepôt.</p>
+            </div>
+            <div class="commitment-item">
+                <h4>✓ Prix Direct Usine</h4>
+                <p>Des marges optimisées pour votre business grâce à nos volumes d'achat massifs.</p>
+            </div>
+            <div class="commitment-item">
+                <h4>✓ Support 24/7</h4>
+                <p>Un contact direct via Telegram pour répondre à vos besoins et urgences de stock.</p>
+            </div>
+        </div>
     </section>
+
+    <footer>
+        &copy; 2026 YUKO VAPE - Distribution Premium Europe. Tous droits réservés.
+    </footer>
 </body>
 </html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue Inventaire | Yuko Vape</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
+        
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; padding: 20px 5%; align-items: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
+        .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: white; }
+        .nav-logo span { color: #007bff; }
+        .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
+
+        .container { padding: 140px 5% 80px 5%; max-width: 1200px; margin: 0 auto; }
+        
+        .cat-header { text-align: center; margin-bottom: 60px; }
+        .cat-header h1 { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: clamp(2rem, 5vw, 3.5rem); text-transform: uppercase; margin: 0; letter-spacing: -1px; }
+        .live-badge { display: inline-block; margin-top: 15px; padding: 8px 15px; background: rgba(0, 255, 136, 0.1); border: 1px solid #00ff88; color: #00ff88; border-radius: 50px; font-size: 0.7rem; font-weight: 900; letter-spacing: 1px; }
+
+        /* Grille Produits */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+
+        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; position: relative; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; }
+        .product-card:hover { border-color: #007bff; transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 123, 255, 0.1); }
+
+        /* Détourage Virtuel & Glow */
+        .img-container { width: 100%; height: 350px; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; }
+        .product-img { max-height: 100%; max-width: 100%; object-fit: contain; z-index: 2; filter: drop-shadow(0 0 20px rgba(255,255,255,0.1)); mix-blend-mode: lighten; }
+        .glow { position: absolute; width: 150px; height: 250px; background: radial-gradient(circle, rgba(0,123,255,0.2) 0%, transparent 70%); z-index: 1; filter: blur(30px); }
+
+        .brand-name { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: #007bff; font-weight: 900; margin-bottom: 5px; display: block; }
+        .model-name { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 900; margin: 0 0 10px 0; }
+        .capacity { font-size: 1.2rem; color: #eee; font-weight: 300; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px; }
+        .capacity span { color: #007bff; font-weight: 900; }
+
+        /* Flavour Section */
+        .flavour-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #555; font-weight: 900; margin-bottom: 15px; display: block; }
+        .flavour-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; height: 120px; overflow-y: auto; padding-right: 5px; }
+        .flavour-list::-webkit-scrollbar { width: 4px; }
+        .flavour-list::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        
+        .flavour-tag { background: #111; border: 1px solid #222; padding: 6px 12px; border-radius: 5px; font-size: 0.75rem; color: #888; transition: 0.3s; }
+        .flavour-tag:hover { color: white; border-color: #007bff; background: rgba(0, 123, 255, 0.1); cursor: default; }
+
+        .btn-order { display: block; text-align: center; padding: 18px; background: #fff; color: #000; text-decoration: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s; }
+        .btn-order:hover { background: #007bff; color: white; }
+
+        .order-cta { margin-top: 100px; padding: 60px; background: linear-gradient(to right, #0a0a0a, #00152e); border-radius: 30px; text-align: center; border: 1px solid #1a1a1a; }
+        .order-cta h2 { font-family: 'Montserrat', sans-serif; font-weight: 900; margin-bottom: 20px; }
+        .btn-telegram-big { display: inline-block; padding: 20px 40px; background: #229ED9; color: white; text-decoration: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; margin-top: 20px; }
+
+        @media (max-width: 600px) { .product-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="nav-logo">Yuko <span>Vape</span></a>
+    <div class="nav-links">
+        <a href="index.html">Accueil</a>
+        <a href="about.html">Qui sommes-nous ?</a>
+        <a href="https://t.me/TON_ID" style="color: #229ED9;">Telegram</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="cat-header">
+        <span class="live-badge">● INVENTAIRE DISPONIBLE - HUB KOMORNIKI</span>
+        <h1>Catalogue Grossiste</h1>
+    </div>
+
+    <div class="product-grid">
+        
+        <div class="product-card">
+            <div class="img-container">
+                <div class="glow"></div>
+                <img src="razzbar.webp" class="product-img" alt="Razz Bar 30K">
+            </div>
+            <span class="brand-name">Razz Bar</span>
+            <h2 class="model-name">ULTRA SERIES</h2>
+            <div class="capacity">Capacité : <span>30,000 PUFFS</span></div>
+            
+            <span class="flavour-title">Saveurs Disponibles :</span>
+            <div class="flavour-list">
+                <div class="flavour-tag">Triple Melon</div>
+                <div class="flavour-tag">Strawberry Ice</div>
+                <div class="flavour-tag">Sour Apple</div>
+                <div class="flavour-tag">Mango Peach Watermelon</div>
+                <div class="flavour-tag">Strawberry Banana</div>
+                <div class="flavour-tag">Blueberry Ice</div>
+                <div class="flavour-tag">Juicy Peach Ice</div>
+                <div class="flavour-tag">Strawberry Kiwi</div>
+                <div class="flavour-tag">Watermelon Ice</div>
+                <div class="flavour-tag">Summer Dream</div>
+                <div class="flavour-tag">Strawberry Watermelon</div>
+                <div class="flavour-tag">Mixed Berries</div>
+                <div class="flavour-tag">Blue Razz Ice</div>
+                <div class="flavour-tag">Lemon Lime</div>
+                <div class="flavour-tag">Cola Ice</div>
+                <div class="flavour-tag">Blackberry Ice</div>
+            </div>
+            <a href="https://t.me/TON_ID" class="btn-order">Commander sur Telegram</a>
+        </div>
+
+        <div class="product-card">
+            <div class="img-container">
+                <div class="glow"></div>
+                <img src="puff1.webp" class="product-img" alt="JNR Falcon-X">
+            </div>
+            <span class="brand-name">JNR</span>
+            <h2 class="model-name">FALCON-X</h2>
+            <div class="capacity">Capacité : <span>18,000 PUFFS</span></div>
+            
+            <span class="flavour-title">Saveurs Disponibles :</span>
+            <div class="flavour-list">
+                <div class="flavour-tag">Black Ice</div>
+                <div class="flavour-tag">Blue Razz Cherry</div>
+                <div class="flavour-tag">Blue Razz Ice</div>
+                <div class="flavour-tag">Cherry Watermelon Freeze</div>
+                <div class="flavour-tag">Fizzy Cherry Cola</div>
+                <div class="flavour-tag">Dragon Fruit</div>
+                <div class="flavour-tag">Hawaii</div>
+                <div class="flavour-tag">Tropicana Zest</div>
+                <div class="flavour-tag">Love 66</div>
+                <div class="flavour-tag">Zesty Marmalade Crunch</div>
+                <div class="flavour-tag">Kiwi Passion Fruit Guava</div>
+                <div class="flavour-tag">Mango Passion</div>
+                <div class="flavour-tag">Passion Fruit Kiwi</div>
+                <div class="flavour-tag">Cherry Berry</div>
+                <div class="flavour-tag">Mixed Berries</div>
+                <div class="flavour-tag">Peach Berry</div>
+                <div class="flavour-tag">Strawberry Ice</div>
+                <div class="flavour-tag">Strawberry Kiwi</div>
+                <div class="flavour-tag">Watermelon Ice</div>
+                <div class="flavour-tag">Watermelon Mango Peach</div>
+                <div class="flavour-tag">White Peach Razz</div>
+            </div>
+            <a href="https://t.me/TON_ID" class="btn-order">Commander sur Telegram</a>
+        </div>
+
+    </div>
+
+    <div class="order-cta">
+        <h2>PROTOCOLE DE COMMANDE B2B</h2>
+        <p style="color: #888;">Inventaire mis à jour quotidiennement. Livraison garantie sous 1 semaine depuis la Pologne.</p>
+        <a href="https://t.me/TON_ID" class="btn-telegram-big">Ouvrir le canal Telegram</a>
+    </div>
+</div>
+
+<footer>
+    <p style="text-align: center; color: #444; padding-bottom: 40px; font-size: 0.8rem;">&copy; 2026 YUKO VAPE - Distribution Premium Europe.</p>
+</footer>
+
+</body>
+</html>

@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: white; }
@@ -30,78 +30,52 @@
         
         .highlight { color: #fff; font-weight: 700; border-bottom: 2px solid #007bff; }
 
-        /* SECTION CARTE AMÉLIORÉE */
+        /* SECTION CARTE AVANCÉE */
         .map-container {
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
             border-radius: 20px;
-            padding: 50px 30px;
+            padding: 60px 30px;
             margin-top: 50px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
         }
 
-        .map-header { margin-bottom: 40px; }
+        .map-header { margin-bottom: 50px; }
         .map-header h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: #007bff; margin: 0; }
-        .map-header p { color: #555; font-size: 0.85rem; margin-top: 15px; font-weight: 400; }
+        .map-header p { color: #555; font-size: 0.85rem; margin-top: 15px; max-width: 500px; margin-left: auto; margin-right: auto; }
 
         .map-visual {
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             height: auto;
             margin: 0 auto;
             position: relative;
-            fill: #111; /* Couleur des pays */
-            stroke: #222; /* Bordures des pays */
-            stroke-width: 0.5;
         }
 
-        .map-svg { width: 100%; height: auto; display: block; }
+        .map-svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 10px rgba(0,123,255,0.05)); }
 
-        /* Le point sur Komorniki */
+        /* Marqueur Komorniki */
         .location-dot {
             position: absolute;
-            top: 42%; /* Ajustement précis pour Komorniki, Pologne */
-            left: 54%;
+            top: 41%; /* Ajusté pour Komorniki sur ce tracé */
+            left: 55%;
             transform: translate(-50%, -50%);
+            z-index: 10;
         }
 
-        .dot-main {
-            width: 12px;
-            height: 12px;
-            background: #007bff;
-            border-radius: 50%;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 0 15px #007bff;
-        }
+        .dot-main { width: 12px; height: 12px; background: #007bff; border-radius: 50%; box-shadow: 0 0 20px #007bff; position: relative; }
+        .dot-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(0, 123, 255, 0.2); border-radius: 50%; animation: pulse 2s infinite; }
+        .city-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #007bff; color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
 
-        .dot-pulse {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 123, 255, 0.3);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
+        /* Infos de transit flottantes */
+        .transit-info { position: absolute; font-size: 0.65rem; font-weight: 900; color: #444; text-transform: uppercase; letter-spacing: 1px; text-align: center; pointer-events: none; }
+        .transit-info span { color: #007bff; font-size: 0.85rem; display: block; margin-top: 2px; }
 
-        .city-label {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #007bff;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
+        /* Positions spécifiques des labels pays */
+        .t-fr { top: 75%; left: 15%; }
+        .t-be { top: 55%; left: 22%; }
+        .t-ch { top: 80%; left: 40%; }
 
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
@@ -112,7 +86,7 @@
 
         @media (max-width: 768px) {
             .container { padding-top: 130px; }
-            .map-container { padding: 30px 15px; }
+            .transit-info { font-size: 0.55rem; }
         }
     </style>
 </head>
@@ -136,20 +110,39 @@
         <div class="map-container">
             <div class="map-header">
                 <h2>Hub Logistique : Komorniki, PL</h2>
-                <p>Emplacement stratégique pour une distribution express vers l'Europe de l'Ouest.</p>
+                <p>Rayonnement européen constant depuis notre centre de distribution principal.</p>
             </div>
             
             <div class="map-visual">
-                <svg class="map-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M250,150 L300,120 L350,140 L400,110 L450,130 L500,100 L550,120 L600,150 L620,200 L650,250 L630,300 L600,350 L550,380 L500,400 L450,420 L400,450 L350,430 L300,450 L250,420 L200,400 L180,350 L150,300 L170,250 L200,200 Z" />
-                    <path d="M380,110 L380,450 M180,350 L620,200 M300,120 L500,400" fill="none" stroke="#111" stroke-width="1" />
+                <svg class="map-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M150,150 Q250,50 400,80 T650,150 T750,300 T600,450 T300,420 T100,350 Z" fill="#080808" stroke="#1a1a1a" stroke-width="2"/>
+                    
+                    <g fill="none" stroke="#007bff" stroke-width="1.5" stroke-dasharray="8,8" opacity="0.4">
+                        <path d="M440,205 Q280,250 180,350">
+                            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
+                        </path>
+                        <path d="M440,205 Q320,190 240,240">
+                            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
+                        </path>
+                        <path d="M440,205 Q400,320 360,380">
+                            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
+                        </path>
+                    </g>
+
+                    <circle cx="180" cy="350" r="4" fill="#007bff" opacity="0.6" />
+                    <circle cx="240" cy="240" r="4" fill="#007bff" opacity="0.6" />
+                    <circle cx="360" cy="380" r="4" fill="#007bff" opacity="0.6" />
                 </svg>
                 
                 <div class="location-dot">
-                    <div class="city-label">Komorniki</div>
+                    <div class="city-label">Komorniki Hub</div>
                     <div class="dot-main"></div>
                     <div class="dot-pulse"></div>
                 </div>
+
+                <div class="transit-info t-fr">FRANCE <span>5-7 JOURS</span></div>
+                <div class="transit-info t-be">BELGIQUE <span>4-6 JOURS</span></div>
+                <div class="transit-info t-ch">SUISSE <span>5-7 JOURS</span></div>
             </div>
         </div>
     </div>

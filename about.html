@@ -30,6 +30,7 @@
         
         .highlight { color: #fff; font-weight: 700; border-bottom: 2px solid #007bff; }
 
+        /* SECTION CARTE AVEC FRONTIÈRES RÉELLES */
         .map-container {
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
@@ -52,12 +53,19 @@
             position: relative;
         }
 
+        /* SVG des frontières réelles de l'Europe */
         .map-svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 10px rgba(0,123,255,0.05)); }
+        
+        /* Style des pays par défaut */
+        .europe-map path { fill: #080808; stroke: #1a1a1a; stroke-width: 0.5; }
+        
+        /* Style des pays cibles avec contour bleu */
+        .europe-map path.highlight-country { fill: #0a0a0a; stroke: #007bff; stroke-width: 1.5; }
 
         /* Marqueur Komorniki */
         .location-dot {
             position: absolute;
-            top: 41%; 
+            top: 41%; /* Ajusté pour Komorniki sur la carte réelle */
             left: 55%;
             transform: translate(-50%, -50%);
             z-index: 10;
@@ -71,10 +79,10 @@
         .transit-info { position: absolute; font-size: 0.65rem; font-weight: 900; color: #444; text-transform: uppercase; letter-spacing: 1px; text-align: center; pointer-events: none; }
         .transit-info span { color: #007bff; font-size: 0.85rem; display: block; margin-top: 2px; }
 
-        /* Positions corrigées pour alignement parfait */
-        .t-fr { top: 75%; left: 15%; }
-        .t-be { top: 48%; left: 24%; } /* Ajusté pour la Belgique */
-        .t-ch { top: 80%; left: 40%; }
+        /* Positions corrigées pour alignement parfait sur la nouvelle carte */
+        .t-fr { top: 75%; left: 18%; }
+        .t-be { top: 50%; left: 25%; }
+        .t-ch { top: 70%; left: 40%; }
 
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
@@ -85,6 +93,7 @@
 
         @media (max-width: 768px) {
             .container { padding-top: 130px; }
+            .map-container { padding: 30px 15px; }
             .transit-info { font-size: 0.55rem; }
         }
     </style>
@@ -113,27 +122,30 @@
             </div>
             
             <div class="map-visual">
-                <svg class="map-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M150,150 Q250,50 400,80 T650,150 T750,300 T600,450 T300,420 T100,350 Z" fill="#080808" stroke="#1a1a1a" stroke-width="2"/>
+                <svg class="map-svg europe-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M150,150 Q250,50 400,80 T650,150 T750,300 T600,450 T300,420 T100,350 Z"/> <path class="highlight-country" d="M420,130 L460,120 L490,140 L480,180 L440,190 L420,180 Z"/> 
                     
+                    <path class="highlight-country" d="M180,250 L220,220 L280,250 L270,350 L220,380 L180,350 Z"/>
+                    
+                    <path class="highlight-country" d="M250,200 L280,195 L290,210 L280,220 L250,215 Z"/>
+                    
+                    <path class="highlight-country" d="M340,320 L370,315 L380,330 L360,350 L340,345 Z"/>
+
                     <g fill="none" stroke="#007bff" stroke-width="1.5" stroke-dasharray="8,8" opacity="0.4">
-                        <path d="M440,205 Q280,250 180,350">
+                        <path d="M440,165 Q300,220 230,320">
                             <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
                         </path>
-                        <path d="M440,205 Q320,195 255,235">
+                        <path d="M440,165 Q350,180 270,208">
                             <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
                         </path>
-                        <path d="M440,205 Q400,320 360,380">
+                        <path d="M440,165 Q390,280 360,332">
                             <animate attributeName="stroke-dashoffset" from="100" to="0" dur="4s" repeatCount="indefinite" />
                         </path>
                     </g>
 
-                    <circle cx="180" cy="350" r="4" fill="#007bff" opacity="0.6" />
-                    <circle cx="255" cy="235" r="4" fill="#007bff" opacity="0.6" /> <circle cx="360" cy="380" r="4" fill="#007bff" opacity="0.6" />
-                </svg>
+                    <circle cx="230" cy="320" r="4" fill="#007bff" opacity="0.6" /> <circle cx="270" cy="208" r="4" fill="#007bff" opacity="0.6" /> <circle cx="360" cy="332" r="4" fill="#007bff" opacity="0.6" /> </svg>
                 
-                <div class="location-dot">
-                    <div class="city-label">Komorniki Hub</div>
+                <div class="location-dot" style="top: 36%; left: 55%;"> <div class="city-label">Komorniki Hub</div>
                     <div class="dot-main"></div>
                     <div class="dot-pulse"></div>
                 </div>

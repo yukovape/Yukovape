@@ -15,9 +15,13 @@
         .container { padding: 140px 5% 80px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
         
         .product-view { position: sticky; top: 140px; height: fit-content; }
-        .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; text-align: center; }
+        .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; text-align: left; }
         .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; border: 1px solid #222; }
         
+        /* STYLE DESCRIPTION PRODUIT */
+        .product-description { font-size: 0.85rem; color: #888; line-height: 1.6; margin-top: 20px; text-align: justify; }
+        .product-description b { color: #fff; font-weight: 700; }
+
         .price-tiers { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
         .tier { flex: 1; background: #111; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; transition: 0.3s; }
         .tier.active { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
@@ -39,14 +43,13 @@
         .select-flavor { flex: 2; }
         .select-nic { flex: 1; }
         
-        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; transition: 0.2s; }
-        .remove-btn:hover { transform: scale(1.2); }
+        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; }
 
         .summary { background: #000; border: 1px solid #007bff; padding: 25px; border-radius: 15px; margin-top: 30px; }
         .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; color: #aaa; }
         .total-row { display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px; margin-top: 10px; font-size: 1.8rem; font-weight: 900; }
 
-        .economy-msg { font-size: 0.85rem; color: #00ff88; font-weight: 900; text-align: center; margin-top: 15px; background: rgba(0, 255, 136, 0.1); padding: 10px; border-radius: 5px; display: none; border: 1px solid rgba(0, 255, 136, 0.2); }
+        .economy-msg { font-size: 0.85rem; color: #00ff88; font-weight: 900; text-align: center; margin-top: 15px; background: rgba(0, 255, 136, 0.1); padding: 10px; border-radius: 5px; display: none; }
         .upsell-msg { font-size: 0.75rem; color: #888; text-align: center; margin-top: 12px; font-style: italic; }
 
         .btn-tg { display: block; width: 100%; padding: 22px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 25px; box-sizing: border-box; transition: 0.3s; font-size: 0.9rem; }
@@ -72,7 +75,12 @@
         <div class="img-card">
             <img src="Gemini_Generated_Image_ar5ajear5ajear5a.jpg" class="product-img">
             <h2 style="margin:0;">RAZZ BAR 30K</h2>
-            <p style="color:#555; font-size: 0.7rem; letter-spacing: 2px; font-weight: 700;">VENDU PAR PACK DE 10 PCS</p>
+            <p style="color:#007bff; font-size: 0.7rem; letter-spacing: 2px; font-weight: 900; margin-top: 5px;">VENDU PAR PACK DE 10 PCS</p>
+            
+            <div class="product-description">
+                Le <b>razzbar 30k</b> représente l'évolution ultime des cigarettes électroniques jetables rechargeables. Conçu pour offrir une expérience de vapotage exceptionnelle, ce dispositif combine la praticité du jetable avec la durabilité du rechargeable, proposant jusqu'à <b>30 000 bouffées</b> d'un plaisir gustatif ininterrompu. <br><br>
+                Destiné aux vapoteurs exigeants qui recherchent à la fois performance et économie, le <b>puff razz bar</b> s'impose comme une référence sur le marché français grâce à sa technologie mesh coil avancée, son large choix de saveurs et ses options de nicotine adaptées à tous les profils.
+            </div>
         </div>
     </div>
 

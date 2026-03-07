@@ -3,66 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JNR Falcon-X 18K | Yuko Vape</title>
+    <title>Catalogue Grossiste | Yuko Vape</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
+        
+        /* Navigation */
         nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; }
         .nav-logo span { color: #007bff; }
         .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .container { padding: 140px 5% 80px 5%; max-width: 1150px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
+        .main-content { padding-top: 120px; padding-bottom: 80px; max-width: 1200px; margin: 0 auto; padding-left: 5%; padding-right: 5%; }
         
-        .product-view { position: sticky; top: 140px; height: fit-content; }
-        .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 25px; text-align: left; }
-        .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; border: 1px solid #222; }
+        .catalogue-title { text-align: center; margin-bottom: 50px; }
+        .catalogue-title h1 { font-weight: 900; font-size: 2.5rem; text-transform: uppercase; margin: 0; }
+        .catalogue-title p { color: #007bff; font-weight: 700; letter-spacing: 2px; font-size: 0.8rem; }
+
+        /* Grille des Produits */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+
+        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
+        .product-card:hover { border-color: #007bff; transform: translateY(-5px); }
+
+        .product-img-box { padding: 20px; background: #000; text-align: center; border-bottom: 1px solid #111; }
+        .product-img { width: 100%; max-width: 250px; border-radius: 10px; filter: drop-shadow(0 0 10px rgba(0,123,255,0.2)); }
+
+        .product-info { padding: 25px; flex-grow: 1; }
+        .product-badge { color: #007bff; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .product-name { font-size: 1.5rem; font-weight: 900; margin: 5px 0 15px 0; }
         
-        .product-description { font-size: 0.85rem; color: #888; line-height: 1.6; margin-top: 20px; text-align: justify; }
-        .product-description b { color: #fff; font-weight: 700; }
+        .product-desc { font-size: 0.8rem; color: #888; line-height: 1.5; margin-bottom: 20px; height: 80px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
 
-        .specs-container { margin-top: 25px; border-top: 1px solid #222; padding-top: 20px; }
-        .specs-title { color: #7d5fff; font-weight: 900; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .spec-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.8rem; border-bottom: 1px dashed #1a1a1a; }
-        .spec-label { color: #666; }
-        .spec-value { color: #7d5fff; font-weight: 700; text-align: right; }
+        /* Specs rapides */
+        .mini-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .mini-spec-item { background: #111; padding: 10px; border-radius: 8px; border: 1px solid #1a1a1a; }
+        .mini-spec-label { display: block; font-size: 0.55rem; color: #555; text-transform: uppercase; font-weight: 900; }
+        .mini-spec-value { font-size: 0.85rem; font-weight: 700; color: #007bff; }
 
-        .price-tiers { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
-        .tier { flex: 1; background: #111; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .tier.active { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
-        .tier-qty { font-size: 0.6rem; color: #555; text-transform: uppercase; font-weight: 900; }
-        .tier-price { font-size: 1.1rem; font-weight: 900; display: block; margin-top: 5px; }
-        .tier.active .tier-qty { color: #00ff88; }
+        /* Bouton Action */
+        .btn-order { display: block; width: 100%; padding: 18px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.85rem; }
+        .btn-order:hover { background: #007bff; color: white; }
 
-        .order-zone { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; }
-        h2 { font-weight: 900; text-transform: uppercase; margin-top: 0; margin-bottom: 10px; }
-        
-        .add-box-btn { width: 100%; padding: 15px; background: transparent; border: 2px dashed #007bff; color: #007bff; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-bottom: 20px; text-transform: uppercase; font-size: 0.8rem; }
-        .add-box-btn:hover { background: rgba(0,123,255,0.1); }
-
-        .box-item { background: #111; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; border: 1px solid #222; animation: slideIn 0.3s ease; }
-        .box-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 8px; }
-        .box-controls { display: flex; gap: 10px; }
-        
-        select { background: #000; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 5px; font-family: 'Montserrat'; font-size: 0.8rem; cursor: pointer; }
-        .select-flavor { flex: 2; }
-        .select-nic { flex: 1; }
-        
-        .remove-btn { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.2rem; }
-
-        .summary { background: #000; border: 1px solid #007bff; padding: 25px; border-radius: 15px; margin-top: 30px; }
-        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; color: #aaa; }
-        .total-row { display: flex; justify-content: space-between; border-top: 1px solid #222; padding-top: 15px; margin-top: 10px; font-size: 1.8rem; font-weight: 900; }
-
-        .economy-msg { font-size: 0.85rem; color: #00ff88; font-weight: 900; text-align: center; margin-top: 15px; background: rgba(0, 255, 136, 0.1); padding: 10px; border-radius: 5px; display: none; }
-        .upsell-msg { font-size: 0.75rem; color: #888; text-align: center; margin-top: 12px; font-style: italic; }
-
-        .btn-tg { display: block; width: 100%; padding: 22px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 25px; box-sizing: border-box; transition: 0.3s; font-size: 0.9rem; }
-        .btn-tg:hover { background: #007bff; color: white; }
-        .btn-tg.disabled { opacity: 0.15; pointer-events: none; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .product-view { position: relative; top: 0; } }
+        @media (max-width: 600px) { .products-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -74,210 +57,90 @@
     </div>
 </nav>
 
-<div class="container">
-    <div class="product-view">
-        <div class="img-card">
-            <img src="jnr puff.jpg" class="product-img">
-            <h2 style="margin:0;">JNR Falcon-X 18K</h2>
-            <p style="color:#007bff; font-size: 0.7rem; letter-spacing: 2px; font-weight: 900; margin-top: 5px;">VENDU PAR PACK DE 10 PCS</p>
-            
-            <div class="product-description">
-                La Puff <b>JNR 18K</b> (JNR Falcon-X 18K / JNR18K) est l'un des modèles les plus recherchés pour sa grande autonomie et sa simplicité d'utilisation. Conçue pour les vapoteurs qui veulent une puff performante et durable, elle offre jusqu'à <b>18 000 puffs</b> dans un format rechargeable et fiable. <br><br>
-                Cette JNR 18K combine un réservoir 24 ml, une batterie 950 mAh rechargeable et un <b>écran HD</b> permettant de suivre le niveau en temps réel. Grâce à sa technologie <b>Dual Mesh</b>, la vapeur reste dense et les saveurs stables du début à la fin.
-            </div>
-
-            <div class="specs-container">
-                <div class="specs-title">⚙️ Spécifications</div>
-                <div class="spec-row">
-                    <span class="spec-label">Nombre de puffs</span>
-                    <span class="spec-value">18 000 bouffées</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Capacité e-liquide</span>
-                    <span class="spec-value">24 mL</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Batterie</span>
-                    <span class="spec-value">950mAh rechargeable</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Technologie</span>
-                    <span class="spec-value">Dual Mesh Coil</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Écran</span>
-                    <span class="spec-value">HD (Batterie & Jus)</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Déclenchement</span>
-                    <span class="spec-value">Activation automatique</span>
-                </div>
-            </div>
-        </div>
+<div class="main-content">
+    <div class="catalogue-title">
+        <h1>Inventaire B2B</h1>
+        <p>SÉLECTION PREMIUM RÉSERVÉE AUX PROFESSIONNELS</p>
     </div>
 
-    <div class="order-zone">
-        <h2>Tarifs Dégressifs</h2>
+    <div class="products-grid">
         
-        <div class="price-tiers">
-            <div id="tier-1" class="tier">
-                <span class="tier-qty">30+ PCS</span>
-                <span class="tier-price">6.20€</span>
+        <div class="product-card">
+            <div class="product-img-box">
+                <img src="Gemini_Generated_Image_ar5ajear5ajear5a.jpg" class="product-img" alt="Razz Bar 30K">
             </div>
-            <div id="tier-2" class="tier">
-                <span class="tier-qty">50+ PCS</span>
-                <span class="tier-price">5.60€</span>
-            </div>
-            <div id="tier-3" class="tier">
-                <span class="tier-qty">70+ PCS</span>
-                <span class="tier-price">4.80€</span>
+            <div class="product-info">
+                <span class="product-badge">Top Ventes - 30 000 Puffs</span>
+                <h2 class="product-name">RAZZ BAR 30K</h2>
+                <p class="product-desc">
+                    L'évolution ultime des puffs rechargeables. Technologie Mesh Coil avancée pour une saveur constante.
+                </p>
+                
+                <div class="mini-specs">
+                    <div class="mini-spec-item">
+                        <span class="mini-spec-label">Batterie</span>
+                        <span class="mini-spec-value">650mAh (USB-C)</span>
+                    </div>
+                    <div class="mini-spec-item">
+                        <span class="mini-spec-label">Liquide</span>
+                        <span class="mini-spec-value">28 mL</span>
+                    </div>
+                </div>
+
+                <div class="mini-specs" style="margin-top:-15px;">
+                    <div class="mini-spec-item" style="border-color: #00ff88;">
+                        <span class="mini-spec-label" style="color:#00ff88">Prix de base</span>
+                        <span class="mini-spec-value" style="color:#fff">6.70 € /u</span>
+                    </div>
+                    <div class="mini-spec-item">
+                        <span class="mini-spec-label">Format</span>
+                        <span class="mini-spec-value">Pack de 10</span>
+                    </div>
+                </div>
+
+                <a href="order-razzbar.html" class="btn-order">Configurer la commande</a>
             </div>
         </div>
 
-        <button class="add-box-btn" onclick="addBox()">+ Ajouter un pack de 10</button>
-        
-        <div id="cart-items"></div>
+        <div class="product-card">
+            <div class="product-img-box">
+                <img src="jnr puff.jpg" class="product-img" alt="JNR Falcon-X">
+            </div>
+            <div class="product-info">
+                <span class="product-badge">Écran HD - 18 000 Puffs</span>
+                <h2 class="product-name">JNR FALCON-X 18K</h2>
+                <p class="product-desc">
+                    Un modèle ultra-fiable avec écran de contrôle en temps réel (batterie et e-liquide). Dual Mesh Technology.
+                </p>
+                
+                <div class="mini-specs">
+                    <div class="mini-spec-item">
+                        <span class="mini-spec-label">Batterie</span>
+                        <span class="mini-spec-value">950mAh (USB-C)</span>
+                    </div>
+                    <div class="mini-spec-item">
+                        <span class="mini-spec-label">Liquide</span>
+                        <span class="mini-spec-value">24 mL</span>
+                    </div>
+                </div>
 
-        <div class="summary">
-            <div class="price-row">
-                <span>Quantité totale :</span>
-                <span id="total-qty" style="color:white; font-weight:700;">0 pcs</span>
+                <div class="mini-specs" style="margin-top:-15px;">
+                    <div class="mini-spec-item" style="border-color: #00ff88;">
+                        <span class="mini-spec-label" style="color:#00ff88">Prix de base</span>
+                        <span class="mini-spec-value" style="color:#fff">6.20 € /u</span>
+                    </div>
+                    <div class="mini-spec-item">
+                        <span class="mini-spec-label">Format</span>
+                        <span class="mini-spec-value">Pack de 10</span>
+                    </div>
+                </div>
+
+                <a href="order-falcon.html" class="btn-order">Configurer la commande</a>
             </div>
-            <div class="price-row">
-                <span>Prix unitaire :</span>
-                <span id="unit-price" style="color:#007bff; font-weight:900;">6.20 €</span>
-            </div>
-            <div class="total-row">
-                <span>TOTAL</span>
-                <span id="grand-total">0.00 €</span>
-            </div>
-            
-            <div id="economy-box" class="economy-msg"></div>
-            <div id="upsell" class="upsell-msg"></div>
-            
-            <p id="min-warn" style="color:#ff4444; font-size:0.65rem; font-weight:900; margin-top:20px; text-align:center; text-transform: uppercase;">Minimum requis : 3 packs (30 pcs)</p>
         </div>
 
-        <a href="#" id="tg-submit" class="btn-tg disabled">Finaliser sur Telegram</a>
     </div>
 </div>
-
-<script>
-    const flavors = [
-        "Cool Mint", "Cherry Ice", "Watermelon Ice", "Peach Ice", "Blue Razz Ice", "Black Ice", 
-        "Grape Ice", "Lemon & Lime", "Sour Apple Ice", "Strawberry Kiwi", "Blueberry Kiwi", 
-        "Passion Fruit Kiwi", "Mixed Berries", "Cherry Berry", "Berry Burst", "White Peach Razz", 
-        "Apple Pear", "Blueberry Cherry Cranberry", "Watermelon Lychee", "Triple Melon", 
-        "Cherry Watermelon Freeze", "Skittles", "Banana Ice", "Hawaii", "Tropical Fruit", 
-        "Love66", "Mi Amor", "Lady Killa", "Cherry Cola", "Mr. Blue", "Blue Razz Cherry", 
-        "Blueberry Raspberry Cherry", "Watermelon Bubble Gum", "Blue Cherry Explosion", 
-        "Cherry Peach Limonade"
-    ];
-
-    let boxes = [];
-
-    function addBox() {
-        boxes.push({ id: Date.now(), flavor: flavors[0], nicotine: "2%" });
-        renderCart();
-    }
-
-    function removeBox(id) {
-        boxes = boxes.filter(b => b.id !== id);
-        renderCart();
-    }
-
-    function updateBox(id, field, value) {
-        const box = boxes.find(b => b.id === id);
-        if (box) box[field] = value;
-        calculate();
-    }
-
-    function renderCart() {
-        const container = document.getElementById('cart-items');
-        container.innerHTML = '';
-        boxes.forEach((box, index) => {
-            const div = document.createElement('div');
-            div.className = 'box-item';
-            div.innerHTML = `
-                <div class="box-header">
-                    <span style="font-weight:900; font-size:0.65rem; color:#666; letter-spacing:1px;">JNR PACK #${index+1}</span>
-                    <span class="remove-btn" onclick="removeBox(${box.id})">×</span>
-                </div>
-                <div class="box-controls">
-                    <select class="select-flavor" onchange="updateBox(${box.id}, 'flavor', this.value)">
-                        ${flavors.map(f => `<option value="${f}" ${box.flavor === f ? 'selected' : ''}>${f}</option>`).join('')}
-                    </select>
-                    <select class="select-nic" onchange="updateBox(${box.id}, 'nicotine', this.value)">
-                        <option value="2%" ${box.nicotine === "2%" ? 'selected' : ''}>2% Nic</option>
-                        <option value="5%" ${box.nicotine === "5%" ? 'selected' : ''}>5% Nic</option>
-                    </select>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-        calculate();
-    }
-
-    function calculate() {
-        const qty = boxes.length * 10;
-        const basePrice = 6.20;
-        let price = basePrice;
-        
-        document.querySelectorAll('.tier').forEach(t => t.classList.remove('active'));
-        
-        // Paliers ajustés à 30 / 50 / 70
-        if (qty >= 70) {
-            price = 4.80;
-            document.getElementById('tier-3').classList.add('active');
-        } else if (qty >= 50) {
-            price = 5.60;
-            document.getElementById('tier-2').classList.add('active');
-        } else if (qty >= 30) {
-            document.getElementById('tier-1').classList.add('active');
-        }
-
-        const total = qty * price;
-        const economy = (qty * basePrice) - total;
-
-        document.getElementById('total-qty').innerText = qty + " pcs";
-        document.getElementById('unit-price').innerText = price.toFixed(2) + " €";
-        document.getElementById('grand-total').innerText = total.toFixed(2) + " €";
-
-        const ecoBox = document.getElementById('economy-box');
-        if (economy > 0) {
-            ecoBox.style.display = 'block';
-            ecoBox.innerText = `ÉCONOMIE RÉALISÉE : ${economy.toFixed(2)} €`;
-        } else {
-            ecoBox.style.display = 'none';
-        }
-
-        const upsell = document.getElementById('upsell');
-        if (qty < 50 && qty >= 10) {
-            upsell.innerText = `Plus que ${50 - qty} pièces pour passer au tarif 5.60€ !`;
-        } else if (qty < 70 && qty >= 50) {
-            upsell.innerText = `Plus que ${70 - qty} pièces pour débloquer le tarif à 4.80€ !`;
-        } else {
-            upsell.innerText = "";
-        }
-
-        const btn = document.getElementById('tg-submit');
-        const warn = document.getElementById('min-warn');
-
-        if (qty >= 30) {
-            btn.classList.remove('disabled');
-            warn.style.display = 'none';
-        } else {
-            btn.classList.add('disabled');
-            warn.style.display = 'block';
-        }
-
-        let detailMsg = boxes.map((b, i) => `Pack ${i+1}: ${b.flavor} (${b.nicotine})`).join('\n');
-        let message = `Bonjour Yuko Vape, commande JNR FALCON-X 18K :\n\n${detailMsg}\n\nQuantité: ${qty} pcs\nPrix: ${price.toFixed(2)}€/u\nTOTAL: ${total.toFixed(2)}€\nÉconomie: ${economy.toFixed(2)}€`;
-        btn.href = "https://t.me/fildurasoir?text=" + encodeURIComponent(message);
-    }
-
-    for(let i=0; i<3; i++) addBox();
-</script>
 
 </body>
 </html>

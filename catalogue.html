@@ -12,15 +12,21 @@
         .nav-logo span { color: #007bff; }
         .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .container { padding: 140px 5% 80px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
+        .container { padding: 140px 5% 80px 5%; max-width: 1150px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
         
         .product-view { position: sticky; top: 140px; height: fit-content; }
-        .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; text-align: left; }
+        .img-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 25px; text-align: left; }
         .product-img { width: 100%; border-radius: 10px; margin-bottom: 20px; border: 1px solid #222; }
         
-        /* STYLE DESCRIPTION PRODUIT */
         .product-description { font-size: 0.85rem; color: #888; line-height: 1.6; margin-top: 20px; text-align: justify; }
         .product-description b { color: #fff; font-weight: 700; }
+
+        /* STYLE SPÉCIFICATIONS TECHNIQUES */
+        .specs-container { margin-top: 25px; border-top: 1px solid #222; padding-top: 20px; }
+        .specs-title { color: #7d5fff; font-weight: 900; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .spec-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.8rem; border-bottom: 1px dashed #1a1a1a; }
+        .spec-label { color: #666; }
+        .spec-value { color: #7d5fff; font-weight: 700; text-align: right; }
 
         .price-tiers { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
         .tier { flex: 1; background: #111; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; transition: 0.3s; }
@@ -78,8 +84,35 @@
             <p style="color:#007bff; font-size: 0.7rem; letter-spacing: 2px; font-weight: 900; margin-top: 5px;">VENDU PAR PACK DE 10 PCS</p>
             
             <div class="product-description">
-                Le <b>razzbar 30k</b> représente l'évolution ultime des cigarettes électroniques jetables rechargeables. Conçu pour offrir une expérience de vapotage exceptionnelle, ce dispositif combine la praticité du jetable avec la durabilité du rechargeable, proposant jusqu'à <b>30 000 bouffées</b> d'un plaisir gustatif ininterrompu. <br><br>
-                Destiné aux vapoteurs exigeants qui recherchent à la fois performance et économie, le <b>puff razz bar</b> s'impose comme une référence sur le marché français grâce à sa technologie mesh coil avancée, son large choix de saveurs et ses options de nicotine adaptées à tous les profils.
+                Le <b>razzbar 30k</b> représente l'évolution ultime des cigarettes électroniques jetables rechargeables. Conçu pour offrir une expérience de vapotage exceptionnelle, ce dispositif combine la praticité du jetable avec la durabilité du rechargeable, proposant jusqu'à <b>30 000 bouffées</b> d'un plaisir gustatif ininterrompu.
+            </div>
+
+            <div class="specs-container">
+                <div class="specs-title">⚙️ Spécifications</div>
+                <div class="spec-row">
+                    <span class="spec-label">Nombre de puffs</span>
+                    <span class="spec-value">30 000 bouffées</span>
+                </div>
+                <div class="spec-row">
+                    <span class="spec-label">Capacité e-liquide</span>
+                    <span class="spec-value">28 mL</span>
+                </div>
+                <div class="spec-row">
+                    <span class="spec-label">Batterie</span>
+                    <span class="spec-value">650mAh rechargeable</span>
+                </div>
+                <div class="spec-row">
+                    <span class="spec-label">Résistance</span>
+                    <span class="spec-value">1.0Ω mesh coil</span>
+                </div>
+                <div class="spec-row">
+                    <span class="spec-label">Rechargement</span>
+                    <span class="spec-value">USB Type-C</span>
+                </div>
+                <div class="spec-row">
+                    <span class="spec-label">Airflow</span>
+                    <span class="spec-value">Réglable</span>
+                </div>
             </div>
         </div>
     </div>

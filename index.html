@@ -8,9 +8,7 @@
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* =========================================
-           6. AMÉLIORATION DU HEADER (LOGO MASSIF)
-           ========================================= */
+        /* NAVIGATION - LOGO AGRANDI */
         nav { 
             display: flex; 
             justify-content: space-between; 
@@ -31,7 +29,7 @@
             text-decoration: none; 
             color: white; 
             white-space: nowrap; 
-            font-size: 1.8rem; /* Augmenté pour plus d'impact */
+            font-size: 1.8rem; 
             letter-spacing: -1px;
             display: flex;
             align-items: center;
@@ -60,40 +58,56 @@
         .cta-main { margin-top: 50px; padding: 22px 50px; background: #fff; color: #000; text-decoration: none; font-weight: 900; text-transform: uppercase; border-radius: 8px; transition: 0.3s; font-size: 1rem; box-shadow: 0 10px 30px rgba(255,255,255,0.1); }
         .cta-main:hover { background: #007bff; color: #fff; transform: translateY(-3px); }
 
-        /* =========================================
-           1. SECTION PREUVES & RÉASSURANCE
-           ========================================= */
+        /* STYLE BARRE DE CONFIANCE */
+        .trust-bar-mini {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .trust-icon { font-size: 1.5rem; }
+
+        .trust-text { text-align: left; display: flex; flex-direction: column; }
+
+        .trust-text strong {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .trust-text span { font-size: 0.65rem; color: #555; font-weight: 700; }
+
+        /* AUTRES SECTIONS */
         .trust-section { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
-        
         .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; }
-
         .trust-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 40px; position: relative; overflow: hidden; }
-        .trust-card:hover { border-color: #007bff; }
-
         .trust-badge { background: #007bff; color: white; padding: 5px 15px; border-radius: 50px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; display: inline-block; }
-
         .trust-card h2 { font-weight: 900; font-size: 1.8rem; margin: 0 0 15px 0; text-transform: uppercase; }
         .trust-card p { color: #888; line-height: 1.6; font-size: 0.95rem; margin-bottom: 30px; }
-
         .btn-trust { display: inline-block; padding: 15px 30px; border: 2px solid #222; border-radius: 10px; color: white; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; transition: 0.3s; }
-        .btn-trust:hover { border-color: #007bff; background: rgba(0,123,255,0.05); }
-
-        /* Galerie de stock factice (Placeholder pour tes futures photos) */
         .stock-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
         .stock-img { width: 100%; aspect-ratio: 1; background: #111; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 900; font-size: 0.7rem; text-align: center; padding: 10px; text-transform: uppercase; border: 1px dashed #222; }
-
-        /* Info barre rapide */
-        .trust-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #111; margin-top: 80px; border: 1px solid #111; }
-        .bar-item { background: #050505; padding: 40px; text-align: center; }
-        .bar-item h3 { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; color: #007bff; }
-        .bar-item p { font-size: 0.8rem; color: #555; margin: 0; }
 
         footer { padding: 80px 5%; text-align: center; border-top: 1px solid #111; color: #222; font-size: 0.7rem; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; }
 
         @media (max-width: 900px) {
             .trust-grid { grid-template-columns: 1fr; }
             .hero h1 { font-size: 3rem; }
-            .trust-bar { grid-template-columns: 1fr; }
+            .trust-bar-mini { gap: 15px; }
         }
     </style>
 </head>
@@ -111,44 +125,50 @@
     <h1>YUKO <span>VAPE</span></h1>
     <p>Grossiste Puff Certifié • Hub Europe</p>
     <a href="catalogue.html" class="cta-main">Passer votre commande</a>
+
+    <div class="trust-bar-mini">
+        <div class="trust-item">
+            <span class="trust-icon">📦</span>
+            <div class="trust-text">
+                <strong>STOCK RÉEL</strong>
+                <span>Hub Pologne</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <span class="trust-icon">⚡</span>
+            <div class="trust-text">
+                <strong>ENVOI 24H</strong>
+                <span>Tracking Live</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <span class="trust-icon">🛡️</span>
+            <div class="trust-text">
+                <strong>CERTIFIÉ</strong>
+                <span>Direct Usine</span>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section class="trust-section">
     <div class="trust-grid">
-        
         <div class="trust-card">
             <span class="trust-badge">Preuve Sociale</span>
             <h2>Avis Clients & Receptions</h2>
-            <p>La confiance ne se demande pas, elle se prouve. Rejoignez notre canal Telegram pour consulter les photos de réceptions et les avis de nos partenaires partout en Europe.</p>
-            <a href="https://t.me/TON_CANAL_FEEDBACK" class="btn-trust">Voir les feedbacks Telegram</a>
+            <p>Rejoignez notre canal Telegram pour consulter les photos de réceptions et les avis de nos partenaires partout en Europe.</p>
+            <a href="#" class="btn-trust">Voir les feedbacks Telegram</a>
         </div>
 
         <div class="trust-card">
             <span class="trust-badge">Authenticité</span>
             <h2>En direct du Hub</h2>
-            <p>Nous ne sommes pas des intermédiaires fantômes. Nos stocks sont réels, physiquement présents dans notre hub logistique et prêts à être expédiés sous 24h.</p>
-            
+            <p>Nos stocks sont réels, physiquement présents dans notre hub logistique et prêts à être expédiés sous 24h.</p>
             <div class="stock-gallery">
-                <div class="stock-img">Photo Stock #1<br>(À venir)</div>
-                <div class="stock-img">Photo Stock #2<br>(À venir)</div>
-                <div class="stock-img">Photo Stock #3<br>(À venir)</div>
+                <div class="stock-img">Photo Stock #1</div>
+                <div class="stock-img">Photo Stock #2</div>
+                <div class="stock-img">Photo Stock #3</div>
             </div>
-        </div>
-
-    </div>
-
-    <div class="trust-bar">
-        <div class="bar-item">
-            <h3>Origine Certifiée</h3>
-            <p>Produits 100% authentiques sourcés direct usine.</p>
-        </div>
-        <div class="bar-item">
-            <h3>Zéro Douane</h3>
-            <p>Expédition intra-communautaire depuis la Pologne.</p>
-        </div>
-        <div class="bar-item">
-            <h3>Support B2B</h3>
-            <p>Assistance prioritaire Telegram 7j/7 pour les pros.</p>
         </div>
     </div>
 </section>

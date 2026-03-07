@@ -8,7 +8,6 @@
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* NAV - Logo visible */
         nav { display: flex; justify-content: space-between; padding: 15px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; height: 80px; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; white-space: nowrap; font-size: 1.2rem; display: flex; align-items: center; }
         .nav-logo span { color: #007bff; }
@@ -16,13 +15,12 @@
 
         .main-container { padding: 160px 5% 100px 5%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 420px; gap: 40px; }
 
-        /* GRILLE PRODUITS */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; }
         .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
         
-        /* Correction Image : On ajoute un léger padding en haut pour ne pas couper le texte de l'image */
-        .product-img-header { width: 100%; height: 380px; background: #000; overflow: hidden; display: flex; align-items: flex-end; }
-        .product-img-header img { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        /* Correction Image : "contain" pour voir tout le texte YUKO VAPE sans zoom */
+        .product-img-header { width: 100%; height: 380px; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .product-img-header img { width: 100%; height: 100%; object-fit: contain; }
 
         .product-content { padding: 25px; }
         .product-badge { color: #007bff; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
@@ -36,11 +34,10 @@
         .tier-active strong { color: #007bff; }
 
         .order-controls { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 10px; }
-        select, .btn-add { background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; font-family: 'Montserrat'; font-size: 0.8rem; cursor: pointer; }
+        select, .btn-add { background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; font-family: 'Montserrat'; font-size: 0.8rem; cursor: pointer; outline: none; }
         .btn-add { background: #007bff; color: white; border: none; font-weight: 900; text-transform: uppercase; transition: 0.3s; margin-top: 10px; width: 100%; }
         .btn-add:hover { background: #0056b3; }
 
-        /* SIDEBAR PANIER */
         .sidebar-cart { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; position: sticky; top: 160px; height: fit-content; }
         .cart-title { font-weight: 900; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 5px; }
         .cart-min-notice { font-size: 0.7rem; color: #ff4444; font-weight: 700; margin-bottom: 25px; display: block; text-transform: uppercase; }
@@ -48,7 +45,6 @@
         .cart-items { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
         .cart-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; font-size: 0.8rem; position: relative; display: flex; justify-content: space-between; align-items: center; }
         
-        .item-details { flex-grow: 1; }
         .item-qty-badge { background: #007bff; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 900; margin-right: 8px; font-size: 0.75rem; }
 
         .remove-item { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.6rem; transition: 0.2s; padding-left: 15px; }
@@ -59,7 +55,7 @@
         .btn-finalize:hover { background: #007bff; color: white; }
         .btn-finalize.disabled { opacity: 0.15; pointer-events: none; filter: grayscale(1); }
 
-        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; padding-top: 130px; } .sidebar-cart { position: relative; top: 0; } .product-img-header { height: 300px; } }
+        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; padding-top: 130px; } .sidebar-cart { position: relative; top: 0; } }
     </style>
 </head>
 <body>
@@ -94,10 +90,19 @@
                         <option value="Triple Melon">Triple Melon</option>
                         <option value="Strawberry Ice">Strawberry Ice</option>
                         <option value="Sour Apple">Sour Apple</option>
+                        <option value="Mango Peach Watermelon">Mango Peach Watermelon</option>
+                        <option value="Strawberry Banana">Strawberry Banana</option>
                         <option value="Blueberry Ice">Blueberry Ice</option>
+                        <option value="Juicy Peach Ice">Juicy Peach Ice</option>
+                        <option value="Strawberry Kiwi">Strawberry Kiwi</option>
                         <option value="Watermelon Ice">Watermelon Ice</option>
+                        <option value="Summer Dream">Summer Dream</option>
+                        <option value="Strawberry Watermelon">Strawberry Watermelon</option>
                         <option value="Mixed Berries">Mixed Berries</option>
                         <option value="Blue Razz Ice">Blue Razz Ice</option>
+                        <option value="Lemon Lime">Lemon Lime</option>
+                        <option value="Cola Ice">Cola Ice</option>
+                        <option value="Blackberry Ice">Blackberry Ice</option>
                     </select>
                     <select id="nic-razz">
                         <option value="2%">2% Nic</option>
@@ -124,13 +129,41 @@
 
                 <div class="order-controls">
                     <select id="flavor-jnr">
-                        <option value="Black Ice">Black Ice</option>
-                        <option value="Blue Razz Cherry">Blue Razz Cherry</option>
-                        <option value="Hawaii">Hawaii</option>
-                        <option value="Love 66">Love 66</option>
                         <option value="Cool Mint">Cool Mint</option>
-                        <option value="Mixed Berries">Mixed Berries</option>
+                        <option value="Cherry Ice">Cherry Ice</option>
                         <option value="Watermelon Ice">Watermelon Ice</option>
+                        <option value="Peach Ice">Peach Ice</option>
+                        <option value="Blue Razz Ice">Blue Razz Ice</option>
+                        <option value="Black Ice">Black Ice</option>
+                        <option value="Grape Ice">Grape Ice</option>
+                        <option value="Lemon & Lime">Lemon & Lime</option>
+                        <option value="Sour Apple Ice">Sour Apple Ice</option>
+                        <option value="Strawberry Kiwi">Strawberry Kiwi</option>
+                        <option value="Blueberry Kiwi">Blueberry Kiwi</option>
+                        <option value="Passion Fruit Kiwi">Passion Fruit Kiwi</option>
+                        <option value="Mixed Berries">Mixed Berries</option>
+                        <option value="Cherry Berry">Cherry Berry</option>
+                        <option value="Berry Burst">Berry Burst</option>
+                        <option value="White Peach Razz">White Peach Razz</option>
+                        <option value="Apple Pear">Apple Pear</option>
+                        <option value="Blueberry Cherry Cranberry">Blueberry Cherry Cranberry</option>
+                        <option value="Watermelon Lychee">Watermelon Lychee</option>
+                        <option value="Triple Melon">Triple Melon</option>
+                        <option value="Cherry Watermelon Freeze">Cherry Watermelon Freeze</option>
+                        <option value="Skittles">Skittles</option>
+                        <option value="Banana Ice">Banana Ice</option>
+                        <option value="Hawaii">Hawaii</option>
+                        <option value="Tropical Fruit">Tropical Fruit</option>
+                        <option value="Love66">Love66</option>
+                        <option value="Mi Amor">Mi Amor</option>
+                        <option value="Lady Killa">Lady Killa</option>
+                        <option value="Cherry Cola">Cherry Cola</option>
+                        <option value="Mr. Blue">Mr. Blue</option>
+                        <option value="Blue Razz Cherry">Blue Razz Cherry</option>
+                        <option value="Blueberry Raspberry Cherry">Blueberry Raspberry Cherry</option>
+                        <option value="Watermelon Bubble Gum">Watermelon Bubble Gum</option>
+                        <option value="Blue Cherry Explosion">Blue Cherry Explosion</option>
+                        <option value="Cherry Peach Limonade">Cherry Peach Limonade</option>
                     </select>
                     <select id="nic-jnr">
                         <option value="2%">2% Nic (Unique)</option>
@@ -171,7 +204,6 @@
         const flavor = document.getElementById(`flavor-${idPrefix}`).value;
         const nic = document.getElementById(`nic-${idPrefix}`).value;
         
-        // On cherche si une boîte identique existe déjà
         const existingItem = cart.find(item => item.name === name && item.flavor === flavor && item.nic === nic);
         
         if (existingItem) {
@@ -213,10 +245,8 @@
     function updateTotal() {
         let totalQty = 0;
         cart.forEach(item => totalQty += (item.count * 10));
-        
         let totalPrice = 0;
 
-        // Reset des paliers visuels
         document.querySelectorAll('.tier-box').forEach(el => el.classList.remove('tier-active'));
 
         cart.forEach(item => {

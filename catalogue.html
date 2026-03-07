@@ -8,28 +8,30 @@
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* NAVIGATION - Logo visible en entier */
+        /* NAV - Logo visible */
         nav { display: flex; justify-content: space-between; padding: 15px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; height: 80px; }
         .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; white-space: nowrap; font-size: 1.2rem; display: flex; align-items: center; }
         .nav-logo span { color: #007bff; }
         .nav-links a { color: #888; margin-left: 25px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .main-container { padding: 160px 5% 100px 5%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 40px; }
+        .main-container { padding: 160px 5% 100px 5%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 420px; gap: 40px; }
 
         /* GRILLE PRODUITS */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; }
         .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
-        .product-img-header { width: 100%; height: 350px; background: #000; overflow: hidden; }
-        .product-img-header img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Correction Image : On ajoute un léger padding en haut pour ne pas couper le texte de l'image */
+        .product-img-header { width: 100%; height: 380px; background: #000; overflow: hidden; display: flex; align-items: flex-end; }
+        .product-img-header img { width: 100%; height: 100%; object-fit: contain; background: #000; }
+
         .product-content { padding: 25px; }
         .product-badge { color: #007bff; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
         .product-title { font-size: 1.6rem; font-weight: 900; margin: 10px 0; }
 
-        /* TABLEAU DE PRIX DÉGRESSIF */
         .price-tier { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 0; background: #111; padding: 10px; border-radius: 10px; border: 1px solid #222; }
         .tier-box { text-align: center; padding: 5px; border-radius: 5px; transition: 0.3s; }
-        .tier-box span { display: block; font-size: 0.6rem; color: #666; font-weight: 700; }
-        .tier-box strong { font-size: 0.85rem; color: #fff; }
+        .tier-box span { display: block; font-size: 0.55rem; color: #555; font-weight: 700; }
+        .tier-box strong { font-size: 0.8rem; color: #fff; }
         .tier-active { background: #007bff22; border: 1px solid #007bff; }
         .tier-active strong { color: #007bff; }
 
@@ -43,21 +45,21 @@
         .cart-title { font-weight: 900; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 5px; }
         .cart-min-notice { font-size: 0.7rem; color: #ff4444; font-weight: 700; margin-bottom: 25px; display: block; text-transform: uppercase; }
         
-        .cart-items { max-height: 350px; overflow-y: auto; margin-bottom: 20px; }
-        .cart-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; font-size: 0.8rem; position: relative; }
+        .cart-items { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; font-size: 0.8rem; position: relative; display: flex; justify-content: space-between; align-items: center; }
         
-        /* CROIX DE SUPPRESSION AMÉLIORÉE */
-        .remove-item { position: absolute; right: 12px; top: 8px; color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.6rem; transition: 0.2s; line-height: 1; text-shadow: 0 0 5px rgba(255, 68, 68, 0.3); }
-        .remove-item:hover { color: #ff1a1a; transform: scale(1.2); }
+        .item-details { flex-grow: 1; }
+        .item-qty-badge { background: #007bff; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 900; margin-right: 8px; font-size: 0.75rem; }
+
+        .remove-item { color: #ff4444; cursor: pointer; font-weight: 900; font-size: 1.6rem; transition: 0.2s; padding-left: 15px; }
+        .remove-item:hover { transform: scale(1.2); }
         
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
-        .total-row { font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
-        
+        .total-row { font-size: 1.8rem; font-weight: 900; margin-top: 10px; border-top: 1px solid #222; padding-top: 20px; }
         .btn-finalize { display: block; width: 100%; padding: 20px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 20px; transition: 0.3s; }
         .btn-finalize:hover { background: #007bff; color: white; }
         .btn-finalize.disabled { opacity: 0.15; pointer-events: none; filter: grayscale(1); }
 
-        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; padding-top: 130px; } .sidebar-cart { position: relative; top: 0; } }
+        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; padding-top: 130px; } .sidebar-cart { position: relative; top: 0; } .product-img-header { height: 300px; } }
     </style>
 </head>
 <body>
@@ -92,26 +94,17 @@
                         <option value="Triple Melon">Triple Melon</option>
                         <option value="Strawberry Ice">Strawberry Ice</option>
                         <option value="Sour Apple">Sour Apple</option>
-                        <option value="Mango Peach Watermelon">Mango Peach Watermelon</option>
-                        <option value="Strawberry Banana">Strawberry Banana</option>
                         <option value="Blueberry Ice">Blueberry Ice</option>
-                        <option value="Juicy Peach Ice">Juicy Peach Ice</option>
-                        <option value="Strawberry Kiwi">Strawberry Kiwi</option>
                         <option value="Watermelon Ice">Watermelon Ice</option>
-                        <option value="Summer Dream">Summer Dream</option>
-                        <option value="Strawberry Watermelon">Strawberry Watermelon</option>
                         <option value="Mixed Berries">Mixed Berries</option>
                         <option value="Blue Razz Ice">Blue Razz Ice</option>
-                        <option value="Lemon Lime">Lemon Lime</option>
-                        <option value="Cola Ice">Cola Ice</option>
-                        <option value="Blackberry Ice">Blackberry Ice</option>
                     </select>
                     <select id="nic-razz">
                         <option value="2%">2% Nic</option>
                         <option value="5%">5% Nic</option>
                     </select>
                 </div>
-                <button class="btn-add" onclick="addToCart('RAZZ BAR 30K', 'razz')">+ AJOUTER UNE BOÎTE (10 PCS)</button>
+                <button class="btn-add" onclick="addToCart('RAZZ BAR 30K', 'razz')">+ Ajouter une boîte (10 pcs)</button>
             </div>
         </div>
 
@@ -133,31 +126,17 @@
                     <select id="flavor-jnr">
                         <option value="Black Ice">Black Ice</option>
                         <option value="Blue Razz Cherry">Blue Razz Cherry</option>
-                        <option value="Blue Razz Ice">Blue Razz Ice</option>
-                        <option value="Cherry Watermelon Freeze">Cherry Watermelon Freeze</option>
-                        <option value="Fizzy Cherry Cola">Fizzy Cherry Cola</option>
-                        <option value="Dragon Fruit">Dragon Fruit</option>
                         <option value="Hawaii">Hawaii</option>
-                        <option value="Tropicana Zest">Tropicana Zest</option>
                         <option value="Love 66">Love 66</option>
-                        <option value="Zesty Marmalade Crunch">Zesty Marmalade Crunch</option>
-                        <option value="Kiwi Passion Fruit Guava">Kiwi Passion Fruit Guava</option>
-                        <option value="Mango Passion">Mango Passion</option>
-                        <option value="Passion Fruit Kiwi">Passion Fruit Kiwi</option>
-                        <option value="Cherry Berry">Cherry Berry</option>
+                        <option value="Cool Mint">Cool Mint</option>
                         <option value="Mixed Berries">Mixed Berries</option>
-                        <option value="Peach Berry">Peach Berry</option>
-                        <option value="Strawberry Ice">Strawberry Ice</option>
-                        <option value="Strawberry Kiwi">Strawberry Kiwi</option>
                         <option value="Watermelon Ice">Watermelon Ice</option>
-                        <option value="Watermelon Mango Peach">Watermelon Mango Peach</option>
-                        <option value="White Peach Razz">White Peach Razz</option>
                     </select>
                     <select id="nic-jnr">
                         <option value="2%">2% Nic (Unique)</option>
                     </select>
                 </div>
-                <button class="btn-add" onclick="addToCart('JNR FALCON-X 18K', 'jnr')">+ AJOUTER UNE BOÎTE (10 PCS)</button>
+                <button class="btn-add" onclick="addToCart('JNR FALCON-X 18K', 'jnr')">+ Ajouter une boîte (10 pcs)</button>
             </div>
         </div>
 
@@ -165,19 +144,19 @@
 
     <div class="sidebar-cart">
         <div class="cart-title">📦 Votre Commande</div>
-        <span class="cart-min-notice">MINIMUM REQUIS : 30 PIÈCES (3 BOÎTES)</span>
+        <span class="cart-min-notice">Minimum requis : 30 pièces (3 boîtes)</span>
         
         <div id="cart-list" class="cart-items">
             <p id="empty-msg" style="color:#444; font-size:0.8rem;">Votre panier est vide.</p>
         </div>
 
         <div class="cart-summary">
-            <div class="summary-row">
-                <span>Quantité Totale :</span>
-                <span id="total-qty" style="font-weight:900;">0 pcs</span>
+            <div class="summary-row" style="color:#aaa; font-size:0.8rem;">
+                <span>Total pièces :</span>
+                <span id="total-qty" style="font-weight:900; color:white;">0 pcs</span>
             </div>
             <div class="total-row">
-                <span style="font-size:0.8rem; color:#007bff; display:block;">TOTAL ESTIMÉ</span>
+                <span style="font-size:0.8rem; color:#007bff; display:block; text-transform:uppercase;">Total Estimé</span>
                 <span id="grand-total">0.00 €</span>
             </div>
             <a href="#" id="tg-btn" class="btn-finalize disabled">Finaliser sur Telegram</a>
@@ -191,7 +170,15 @@
     function addToCart(name, idPrefix) {
         const flavor = document.getElementById(`flavor-${idPrefix}`).value;
         const nic = document.getElementById(`nic-${idPrefix}`).value;
-        cart.push({ name, flavor, nic, id: Date.now() });
+        
+        // On cherche si une boîte identique existe déjà
+        const existingItem = cart.find(item => item.name === name && item.flavor === flavor && item.nic === nic);
+        
+        if (existingItem) {
+            existingItem.count += 1;
+        } else {
+            cart.push({ name, flavor, nic, count: 1, id: Date.now() });
+        }
         renderCart();
     }
 
@@ -209,9 +196,14 @@
             cart.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'cart-item';
-                div.innerHTML = `<span class="remove-item" onclick="removeItem(${item.id})">×</span>
-                    <strong>${item.name}</strong><br>
-                    <span style="color:#888;">Boîte de 10 | ${item.flavor} | ${item.nic}</span>`;
+                div.innerHTML = `
+                    <div class="item-details">
+                        <span class="item-qty-badge">x${item.count}</span>
+                        <strong>${item.name}</strong><br>
+                        <span style="color:#666; font-size:0.75rem;">${item.flavor} | ${item.nic}</span>
+                    </div>
+                    <span class="remove-item" onclick="removeItem(${item.id})">×</span>
+                `;
                 list.appendChild(div);
             });
         }
@@ -219,34 +211,37 @@
     }
 
     function updateTotal() {
-        const qty = cart.length * 10;
-        let total = 0;
+        let totalQty = 0;
+        cart.forEach(item => totalQty += (item.count * 10));
+        
+        let totalPrice = 0;
 
+        // Reset des paliers visuels
         document.querySelectorAll('.tier-box').forEach(el => el.classList.remove('tier-active'));
 
         cart.forEach(item => {
-            let price = 0;
+            let unitPrice = 0;
             if (item.name.includes('RAZZ')) {
-                if (qty >= 70) { price = 5.20; document.querySelector('.tier-razz-3').classList.add('tier-active'); }
-                else if (qty >= 50) { price = 6.10; document.querySelector('.tier-razz-2').classList.add('tier-active'); }
-                else { price = 6.70; if(qty >= 30) document.querySelector('.tier-razz-1').classList.add('tier-active'); }
+                if (totalQty >= 70) { unitPrice = 5.20; document.querySelector('.tier-razz-3').classList.add('tier-active'); }
+                else if (totalQty >= 50) { unitPrice = 6.10; document.querySelector('.tier-razz-2').classList.add('tier-active'); }
+                else { unitPrice = 6.70; if(totalQty >= 30) document.querySelector('.tier-razz-1').classList.add('tier-active'); }
             } else {
-                if (qty >= 70) { price = 4.80; document.querySelector('.tier-jnr-3').classList.add('tier-active'); }
-                else if (qty >= 50) { price = 5.60; document.querySelector('.tier-jnr-2').classList.add('tier-active'); }
-                else { price = 6.20; if(qty >= 30) document.querySelector('.tier-jnr-1').classList.add('tier-active'); }
+                if (totalQty >= 70) { unitPrice = 4.80; document.querySelector('.tier-jnr-3').classList.add('tier-active'); }
+                else if (totalQty >= 50) { unitPrice = 5.60; document.querySelector('.tier-jnr-2').classList.add('tier-active'); }
+                else { unitPrice = 6.20; if(totalQty >= 30) document.querySelector('.tier-jnr-1').classList.add('tier-active'); }
             }
-            total += (10 * price);
+            totalPrice += (item.count * 10 * unitPrice);
         });
 
-        document.getElementById('total-qty').innerText = qty + " pcs";
-        document.getElementById('grand-total').innerText = total.toFixed(2) + " €";
+        document.getElementById('total-qty').innerText = totalQty + " pcs";
+        document.getElementById('grand-total').innerText = totalPrice.toFixed(2) + " €";
 
         const btn = document.getElementById('tg-btn');
-        if (qty >= 30) {
+        if (totalQty >= 30) {
             btn.classList.remove('disabled');
-            let message = "Bonjour Yuko Vape, commande :\n" + 
-                cart.map((item, i) => `Boîte ${i+1}: ${item.name} - ${item.flavor} (${item.nic})`).join('\n') + 
-                `\n\nTotal: ${qty} pcs\nTotal estimé: ${total.toFixed(2)}€`;
+            let message = "Bonjour Yuko Vape, voici ma commande :\n\n" + 
+                cart.map(item => `- ${item.count} boîte(s) ${item.name} : ${item.flavor} (${item.nic})`).join('\n') + 
+                `\n\nTotal: ${totalQty} pièces\nTOTAL ESTIMÉ: ${totalPrice.toFixed(2)}€`;
             btn.href = "https://t.me/fildurasoir?text=" + encodeURIComponent(message);
         } else {
             btn.classList.add('disabled');

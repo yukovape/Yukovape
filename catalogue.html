@@ -8,64 +8,15 @@
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* =========================================
-           NAVIGATION - CORRECTION LOGO ENTIER
-           ========================================= */
-        nav { 
-            display: flex; 
-            justify-content: space-between; 
-            padding: 15px 5%; /* Padding vertical réduit pour centrer */
-            align-items: center; 
-            background: #000; 
-            position: fixed; 
-            width: 90%; 
-            z-index: 1000; 
-            border-bottom: 1px solid #111; 
-            height: 80px; /* Hauteur fixe augmentée pour laisser respirer le logo */
-        }
-
-        .nav-logo { 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            text-decoration: none; 
-            color: white; 
-            white-space: nowrap; /* Force le texte sur une seule ligne */
-            font-size: 1.2rem; /* Taille de police légèrement réduite pour ordinateur */
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-        }
-        
+        /* NAVIGATION */
+        nav { display: flex; justify-content: space-between; padding: 15px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; height: 80px; }
+        .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; white-space: nowrap; font-size: 1.2rem; display: flex; align-items: center; }
         .nav-logo span { color: #007bff; }
+        .nav-links a { color: #888; margin-left: 25px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a { 
-            color: #888; 
-            margin-left: 25px; 
-            text-decoration: none; 
-            font-size: 0.8rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            transition: 0.3s;
-        }
-        
-        .nav-links a:hover { color: white; }
-
-        /* Ajustements mobiles pour la nav */
-        @media (max-width: 768px) {
-            nav { height: 70px; padding: 10px 5%; }
-            .nav-logo { font-size: 1.1rem; }
-            .nav-links a { margin-left: 15px; font-size: 0.7rem; }
-        }
-
-        /* =========================================
-           RESTE DU STYLE (INCHANGÉ)
-           ========================================= */
         .main-container { padding: 160px 5% 100px 5%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 40px; }
+
+        /* GRILLE PRODUITS */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; }
         .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
         .product-img-header { width: 100%; height: 350px; background: #000; overflow: hidden; }
@@ -73,20 +24,36 @@
         .product-content { padding: 25px; }
         .product-badge { color: #007bff; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
         .product-title { font-size: 1.6rem; font-weight: 900; margin: 10px 0; }
-        .order-controls { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; }
+
+        /* TABLEAU DE PRIX DÉGRESSIF */
+        .price-tier { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 0; background: #111; padding: 10px; border-radius: 10px; border: 1px solid #222; }
+        .tier-box { text-align: center; padding: 5px; border-radius: 5px; transition: 0.3s; }
+        .tier-box span { display: block; font-size: 0.6rem; color: #666; font-weight: 700; }
+        .tier-box strong { font-size: 0.85rem; color: #fff; }
+        .tier-active { background: #007bff22; border: 1px solid #007bff; }
+        .tier-active strong { color: #007bff; }
+
+        .order-controls { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 10px; }
         select, .btn-add { background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; font-family: 'Montserrat'; font-size: 0.8rem; cursor: pointer; }
-        .btn-add { background: #007bff; color: white; border: none; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
+        .btn-add { background: #007bff; color: white; border: none; font-weight: 900; text-transform: uppercase; transition: 0.3s; margin-top: 10px; width: 100%; }
         .btn-add:hover { background: #0056b3; }
+
+        /* SIDEBAR PANIER */
         .sidebar-cart { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; position: sticky; top: 160px; height: fit-content; }
-        .cart-title { font-weight: 900; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 25px; }
-        .cart-items { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-title { font-weight: 900; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 5px; }
+        .cart-min-notice { font-size: 0.7rem; color: #ff4444; font-weight: 700; margin-bottom: 25px; display: block; text-transform: uppercase; }
+        
+        .cart-items { max-height: 350px; overflow-y: auto; margin-bottom: 20px; }
         .cart-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; font-size: 0.8rem; position: relative; }
         .remove-item { position: absolute; right: 10px; top: 10px; color: #ff4444; cursor: pointer; font-weight: 900; }
+        
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
         .total-row { font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
+        
         .btn-finalize { display: block; width: 100%; padding: 20px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 20px; transition: 0.3s; }
         .btn-finalize:hover { background: #007bff; color: white; }
-        .btn-finalize.disabled { opacity: 0.2; pointer-events: none; }
+        .btn-finalize.disabled { opacity: 0.15; pointer-events: none; filter: grayscale(1); }
+
         @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; padding-top: 130px; } .sidebar-cart { position: relative; top: 0; } }
     </style>
 </head>
@@ -110,31 +77,31 @@
             <div class="product-content">
                 <span class="product-badge">Top Ventes - 30 000 Puffs</span>
                 <h2 class="product-title">RAZZ BAR 30K</h2>
+                
+                <div class="price-tier">
+                    <div class="tier-box tier-razz-1"><span>30+ PCS</span><strong>6.70€</strong></div>
+                    <div class="tier-box tier-razz-2"><span>50+ PCS</span><strong>6.10€</strong></div>
+                    <div class="tier-box tier-razz-3"><span>70+ PCS</span><strong>5.20€</strong></div>
+                </div>
+
                 <div class="order-controls">
                     <select id="flavor-razz">
                         <option value="Triple Melon">Triple Melon</option>
                         <option value="Strawberry Ice">Strawberry Ice</option>
                         <option value="Sour Apple">Sour Apple</option>
-                        <option value="Mango Peach Watermelon">Mango Peach Watermelon</option>
-                        <option value="Strawberry Banana">Strawberry Banana</option>
                         <option value="Blueberry Ice">Blueberry Ice</option>
-                        <option value="Juicy Peach Ice">Juicy Peach Ice</option>
-                        <option value="Strawberry Kiwi">Strawberry Kiwi</option>
                         <option value="Watermelon Ice">Watermelon Ice</option>
-                        <option value="Summer Dream">Summer Dream</option>
-                        <option value="Strawberry Watermelon">Strawberry Watermelon</option>
                         <option value="Mixed Berries">Mixed Berries</option>
                         <option value="Blue Razz Ice">Blue Razz Ice</option>
                         <option value="Lemon Lime">Lemon Lime</option>
                         <option value="Cola Ice">Cola Ice</option>
-                        <option value="Blackberry Ice">Blackberry Ice</option>
                     </select>
                     <select id="nic-razz">
-                        <option value="2%">2% Nic</option>
-                        <option value="5%">5% Nic</option>
+                        <option value="2%">2%</option>
+                        <option value="5%">5%</option>
                     </select>
                 </div>
-                <button class="btn-add" style="width:100%; margin-top:10px;" onclick="addToCart('RAZZ BAR 30K', 'razz')">+ Ajouter un Pack (10 pcs)</button>
+                <button class="btn-add" onclick="addToCart('RAZZ BAR 30K', 'razz')">+ Ajouter un Pack (10 pcs)</button>
             </div>
         </div>
 
@@ -145,35 +112,28 @@
             <div class="product-content">
                 <span class="product-badge">Écran HD - 18 000 Puffs</span>
                 <h2 class="product-title">JNR FALCON-X 18K</h2>
+                
+                <div class="price-tier">
+                    <div class="tier-box tier-jnr-1"><span>30+ PCS</span><strong>6.20€</strong></div>
+                    <div class="tier-box tier-jnr-2"><span>50+ PCS</span><strong>5.60€</strong></div>
+                    <div class="tier-box tier-jnr-3"><span>70+ PCS</span><strong>4.80€</strong></div>
+                </div>
+
                 <div class="order-controls">
                     <select id="flavor-jnr">
                         <option value="Black Ice">Black Ice</option>
                         <option value="Blue Razz Cherry">Blue Razz Cherry</option>
-                        <option value="Blue Razz Ice">Blue Razz Ice</option>
-                        <option value="Cherry Watermelon Freeze">Cherry Watermelon Freeze</option>
-                        <option value="Fizzy Cherry Cola">Fizzy Cherry Cola</option>
-                        <option value="Dragon Fruit">Dragon Fruit</option>
                         <option value="Hawaii">Hawaii</option>
-                        <option value="Tropicana Zest">Tropicana Zest</option>
                         <option value="Love 66">Love 66</option>
-                        <option value="Zesty Marmalade Crunch">Zesty Marmalade Crunch</option>
                         <option value="Kiwi Passion Fruit Guava">Kiwi Passion Fruit Guava</option>
                         <option value="Mango Passion">Mango Passion</option>
-                        <option value="Passion Fruit Kiwi">Passion Fruit Kiwi</option>
-                        <option value="Cherry Berry">Cherry Berry</option>
-                        <option value="Mixed Berries">Mixed Berries</option>
-                        <option value="Peach Berry">Peach Berry</option>
-                        <option value="Strawberry Ice">Strawberry Ice</option>
-                        <option value="Strawberry Kiwi">Strawberry Kiwi</option>
                         <option value="Watermelon Ice">Watermelon Ice</option>
-                        <option value="Watermelon Mango Peach">Watermelon Mango Peach</option>
-                        <option value="White Peach Razz">White Peach Razz</option>
                     </select>
                     <select id="nic-jnr">
-                        <option value="2%">2% Nic (Unique)</option>
+                        <option value="2%">2% (Unique)</option>
                     </select>
                 </div>
-                <button class="btn-add" style="width:100%; margin-top:10px;" onclick="addToCart('JNR FALCON-X 18K', 'jnr')">+ Ajouter un Pack (10 pcs)</button>
+                <button class="btn-add" onclick="addToCart('JNR FALCON-X 18K', 'jnr')">+ Ajouter un Pack (10 pcs)</button>
             </div>
         </div>
 
@@ -181,6 +141,8 @@
 
     <div class="sidebar-cart">
         <div class="cart-title">📦 Votre Commande</div>
+        <span class="cart-min-notice">Minimum requis : 30 pièces (3 packs)</span>
+        
         <div id="cart-list" class="cart-items">
             <p id="empty-msg" style="color:#444; font-size:0.8rem;">Votre panier est vide.</p>
         </div>
@@ -188,7 +150,7 @@
         <div class="cart-summary">
             <div class="summary-row">
                 <span>Quantité Totale :</span>
-                <span id="total-qty">0 pcs</span>
+                <span id="total-qty" style="font-weight:900;">0 pcs</span>
             </div>
             <div class="total-row">
                 <span style="font-size:0.8rem; color:#007bff; display:block;">TOTAL ESTIMÉ</span>
@@ -234,23 +196,36 @@
     function updateTotal() {
         const qty = cart.length * 10;
         let total = 0;
+
+        // Reset visuel des paliers
+        document.querySelectorAll('.tier-box').forEach(el => el.classList.remove('tier-active'));
+
+        // Calcul et mise en avant visuelle
         cart.forEach(item => {
             let price = 0;
             if (item.name.includes('RAZZ')) {
-                if (qty >= 70) price = 5.20; else if (qty >= 50) price = 6.10; else price = 6.70;
+                if (qty >= 70) { price = 5.20; document.querySelector('.tier-razz-3').classList.add('tier-active'); }
+                else if (qty >= 50) { price = 6.10; document.querySelector('.tier-razz-2').classList.add('tier-active'); }
+                else { price = 6.70; document.querySelector('.tier-razz-1').classList.add('tier-active'); }
             } else {
-                if (qty >= 70) price = 4.80; else if (qty >= 50) price = 5.60; else price = 6.20;
+                if (qty >= 70) { price = 4.80; document.querySelector('.tier-jnr-3').classList.add('tier-active'); }
+                else if (qty >= 50) { price = 5.60; document.querySelector('.tier-jnr-2').classList.add('tier-active'); }
+                else { price = 6.20; document.querySelector('.tier-jnr-1').classList.add('tier-active'); }
             }
             total += (10 * price);
         });
+
         document.getElementById('total-qty').innerText = qty + " pcs";
         document.getElementById('grand-total').innerText = total.toFixed(2) + " €";
+
         const btn = document.getElementById('tg-btn');
         if (qty >= 30) {
             btn.classList.remove('disabled');
             let message = "Bonjour Yuko Vape, commande :\n" + cart.map((item, i) => `${i+1}. ${item.name} - ${item.flavor} (${item.nic})`).join('\n') + `\n\nTotal: ${qty} pcs\nTotal estimé: ${total.toFixed(2)}€`;
             btn.href = "https://t.me/fildurasoir?text=" + encodeURIComponent(message);
-        } else { btn.classList.add('disabled'); }
+        } else {
+            btn.classList.add('disabled');
+        }
     }
 </script>
 </body>

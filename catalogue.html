@@ -8,47 +8,86 @@
     <style>
         body { margin: 0; font-family: 'Montserrat', sans-serif; background: #050505; color: white; -webkit-font-smoothing: antialiased; }
         
-        /* Navigation Corrigée pour Ordinateur */
-        nav { display: flex; justify-content: space-between; padding: 25px 5%; align-items: center; background: #000; position: fixed; width: 90%; z-index: 1000; border-bottom: 1px solid #111; }
-        .nav-logo { font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; white-space: nowrap; min-width: fit-content; }
+        /* =========================================
+           NAVIGATION - CORRECTION LOGO ENTIER
+           ========================================= */
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 15px 5%; /* Padding vertical réduit pour centrer */
+            align-items: center; 
+            background: #000; 
+            position: fixed; 
+            width: 90%; 
+            z-index: 1000; 
+            border-bottom: 1px solid #111; 
+            height: 80px; /* Hauteur fixe augmentée pour laisser respirer le logo */
+        }
+
+        .nav-logo { 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            text-decoration: none; 
+            color: white; 
+            white-space: nowrap; /* Force le texte sur une seule ligne */
+            font-size: 1.2rem; /* Taille de police légèrement réduite pour ordinateur */
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        
         .nav-logo span { color: #007bff; }
-        .nav-links a { color: #888; margin-left: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
 
-        .main-container { padding: 140px 5% 100px 5%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 40px; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
 
-        /* Grille Produits */
+        .nav-links a { 
+            color: #888; 
+            margin-left: 25px; 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+        }
+        
+        .nav-links a:hover { color: white; }
+
+        /* Ajustements mobiles pour la nav */
+        @media (max-width: 768px) {
+            nav { height: 70px; padding: 10px 5%; }
+            .nav-logo { font-size: 1.1rem; }
+            .nav-links a { margin-left: 15px; font-size: 0.7rem; }
+        }
+
+        /* =========================================
+           RESTE DU STYLE (INCHANGÉ)
+           ========================================= */
+        .main-container { padding: 160px 5% 100px 5%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 40px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; }
         .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
-
-        /* Images plein format */
         .product-img-header { width: 100%; height: 350px; background: #000; overflow: hidden; }
         .product-img-header img { width: 100%; height: 100%; object-fit: cover; }
-
         .product-content { padding: 25px; }
         .product-badge { color: #007bff; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
         .product-title { font-size: 1.6rem; font-weight: 900; margin: 10px 0; }
-
-        /* Sélecteurs */
         .order-controls { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; }
         select, .btn-add { background: #111; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; font-family: 'Montserrat'; font-size: 0.8rem; cursor: pointer; }
         .btn-add { background: #007bff; color: white; border: none; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
         .btn-add:hover { background: #0056b3; }
-
-        /* Sidebar Panier */
-        .sidebar-cart { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; position: sticky; top: 140px; height: fit-content; }
+        .sidebar-cart { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 30px; position: sticky; top: 160px; height: fit-content; }
         .cart-title { font-weight: 900; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 25px; }
         .cart-items { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
         .cart-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #007bff; font-size: 0.8rem; position: relative; }
         .remove-item { position: absolute; right: 10px; top: 10px; color: #ff4444; cursor: pointer; font-weight: 900; }
-
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
         .total-row { font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
-        
         .btn-finalize { display: block; width: 100%; padding: 20px; background: #fff; color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 20px; transition: 0.3s; }
         .btn-finalize:hover { background: #007bff; color: white; }
         .btn-finalize.disabled { opacity: 0.2; pointer-events: none; }
-
-        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; } .sidebar-cart { position: relative; top: 0; } }
+        @media (max-width: 1000px) { .main-container { grid-template-columns: 1fr; padding-top: 130px; } .sidebar-cart { position: relative; top: 0; } }
     </style>
 </head>
 <body>

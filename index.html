@@ -2,685 +2,592 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YUKO VAPE | Grossiste Puff B2B Premium</title>
-  <meta name="description" content="Grossiste puff B2B — Stock réel, livraison Europe en 1 semaine, certifications CE/TPD. Minimum 30 pièces."/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Yuko Vape — Commander</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --gold: #c9a84c;
-      --gold-l: #e8c97a;
-      --black: #0a0a0a;
-      --dark: #111;
-      --card: #161616;
-      --border: rgba(201,168,76,0.2);
-      --text: #e8e8e8;
-      --muted: #888;
+      --green: #00e676;
+      --green2: #00c853;
+      --green-dim: rgba(0,230,118,0.12);
+      --green-border: rgba(0,230,118,0.3);
+      --bg: #0a0a0a;
+      --card: #111;
+      --card2: #181818;
+      --text: #f0f0f0;
+      --muted: #666;
+      --red: #ff4444;
     }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
-    body {
-      background:var(--black); color:var(--text);
-      font-family:'DM Sans',sans-serif; font-weight:400; line-height:1.6;
-      overflow-x:hidden;
-      padding-bottom:68px; /* espace barre fixe */
-    }
-    a { -webkit-tap-highlight-color:transparent; }
-    h1,h2 { font-family:'Bebas Neue',sans-serif; }
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    html,body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
+    body { padding-bottom: 90px; }
 
-    /* ═══════════════════════
-       BARRE FIXE BAS — CTA permanent mobile
-    ═══════════════════════ */
-    .sticky-cta {
-      position:fixed; bottom:0; left:0; right:0; z-index:500;
-      display:flex; height:68px;
-      box-shadow:0 -2px 24px rgba(0,0,0,0.5);
+    /* HEADER */
+    .header {
+      background: #0d0d0d;
+      border-bottom: 1px solid rgba(0,230,118,0.15);
+      padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
     }
-    .sticky-cta-main {
-      flex:1; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:1px;
-      background:var(--gold); text-decoration:none;
-      transition:background .15s;
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 3px;
+      background: linear-gradient(135deg, #00e676, #c9a84c);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .sticky-cta-main:active { background:var(--gold-l); }
-    .sticky-cta-label {
-      font-size:.58rem; font-weight:600; letter-spacing:1.5px;
-      text-transform:uppercase; color:var(--black); opacity:.65;
+    .header-badge {
+      background: var(--green-dim); border: 1px solid var(--green-border);
+      color: var(--green); font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px;
     }
-    .sticky-cta-text {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:1.2rem; letter-spacing:2px; color:var(--black);
+    .cart-btn {
+      background: var(--green-dim); border: 1px solid var(--green-border);
+      color: var(--green); padding: 8px 14px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;
     }
-    .sticky-divider { width:1px; background:rgba(0,0,0,.2); }
-    .sticky-tg {
-      width:80px; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:2px;
-      background:#0a0a0a; text-decoration:none;
-      border-left:1px solid var(--border);
-    }
-    .sticky-tg:active { background:#1a1a1a; }
-    .sticky-tg-icon { font-size:1.4rem; }
-    .sticky-tg-lbl { font-size:.55rem; font-weight:600; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
-
-    /* ═══════════════════════
-       NAV MOBILE
-    ═══════════════════════ */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:200;
-      height:54px;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 16px;
-      background:rgba(10,10,10,.95);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--border);
-    }
-    .nav-logo {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:1.4rem; color:var(--gold); letter-spacing:3px; text-decoration:none;
-    }
-    /* Desktop links — cachés mobile */
-    .nav-links-desk { display:none; gap:28px; align-items:center; }
-    .nav-links-desk a {
-      color:var(--muted); text-decoration:none; font-size:.82rem;
-      letter-spacing:1.5px; text-transform:uppercase; transition:color .2s;
-    }
-    .nav-links-desk a:hover { color:var(--gold); }
-    .nav-links-desk .nav-cta {
-      background:var(--gold); color:var(--black); padding:8px 18px;
-      border-radius:2px; font-weight:600;
-    }
-    /* Hamburger mobile */
-    .nav-hamburger {
-      background:none; border:none; cursor:pointer; padding:4px;
-      display:flex; flex-direction:column; gap:5px;
-    }
-    .nav-hamburger span {
-      display:block; width:22px; height:2px;
-      background:var(--text); border-radius:2px; transition:all .3s;
-    }
-    .nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity:0; }
-    .nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
-
-    /* Menu déroulant mobile */
-    .nav-menu {
-      position:fixed; top:54px; left:0; right:0; z-index:190;
-      background:rgba(10,10,10,.98); backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--border);
-      display:flex; flex-direction:column;
-      transform:translateY(-100%); opacity:0; pointer-events:none;
-      transition:transform .3s, opacity .3s;
-    }
-    .nav-menu.open { transform:translateY(0); opacity:1; pointer-events:all; }
-    .nav-menu a {
-      padding:16px 20px; color:var(--text); text-decoration:none;
-      font-size:.95rem; letter-spacing:1px; text-transform:uppercase;
-      border-bottom:1px solid var(--border); transition:color .2s;
-    }
-    .nav-menu a:last-child { border-bottom:none; }
-    .nav-menu .menu-cta {
-      background:var(--gold); color:var(--black); font-weight:700;
-      text-align:center; margin:12px 16px 16px; border-radius:2px; border:none;
+    .cart-badge {
+      background: var(--green); color: #000;
+      border-radius: 50%; width: 18px; height: 18px;
+      font-size: 0.65rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* ═══════════════════════
-       HERO
-    ═══════════════════════ */
-    .hero {
-      min-height:100svh;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      text-align:center; padding:70px 20px 32px;
-      position:relative; overflow:hidden;
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: #0d0d0d;
+      border-top: 1px solid rgba(0,230,118,0.15);
+      display: flex;
+      padding-bottom: env(safe-area-inset-bottom);
     }
-    .hero::before {
-      content:''; position:absolute; inset:0; pointer-events:none;
-      background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,.07) 0%, transparent 70%);
+    .nav-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 10px 0; gap: 4px; cursor: pointer;
+      color: var(--muted); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      transition: color 0.2s; border: none; background: none;
     }
-    .hero-in { position:relative; z-index:2; width:100%; max-width:500px; }
+    .nav-btn .nav-icon { font-size: 1.3rem; }
+    .nav-btn.active { color: var(--green); }
+    .nav-btn.active .nav-icon { filter: drop-shadow(0 0 6px rgba(0,230,118,0.6)); }
 
-    .hero-badge {
-      display:inline-flex; align-items:center; gap:8px;
-      border:1px solid var(--border); background:rgba(201,168,76,.06); color:var(--gold);
-      font-size:.7rem; letter-spacing:2px; text-transform:uppercase;
-      padding:7px 16px; border-radius:100px; margin-bottom:24px;
-      animation:up .6s ease both;
-    }
-    .hero-badge-dot { width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    /* VIEWS */
+    .view { display: none; padding: 12px; }
+    .view.active { display: block; }
 
-    .hero h1 {
-      font-size:clamp(4.5rem,22vw,9rem); line-height:.9;
-      letter-spacing:4px; color:#fff;
-      animation:up .7s .1s ease both;
+    /* PRODUCT CARD */
+    .product-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s;
     }
-    .hero h1 span { color:var(--gold); }
+    .product-card:hover { border-color: var(--green-border); }
+    .product-img-wrap { position: relative; }
+    .product-img-wrap img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .product-img-placeholder {
+      width: 100%; height: 180px; background: var(--card2);
+      display: flex; align-items: center; justify-content: center; font-size: 4rem;
+    }
+    .product-qty-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 0.75rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .product-body { padding: 14px; }
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 2px; color: #fff;
+      margin-bottom: 2px;
+    }
+    .product-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 14px; }
 
-    .hero-sub {
-      margin-top:16px; font-size:.9rem; color:var(--muted);
-      letter-spacing:.5px; line-height:1.7;
-      animation:up .7s .2s ease both;
+    /* TIERS */
+    .tiers { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tier-btn {
+      flex: 1; background: var(--card2);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 10px 6px; text-align: center;
+      cursor: pointer; transition: all 0.15s;
     }
+    .tier-btn.selected {
+      border-color: var(--green);
+      background: var(--green-dim);
+      box-shadow: 0 0 12px rgba(0,230,118,0.15);
+    }
+    .tier-qty { font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; }
+    .tier-price { font-size: 1rem; font-weight: 800; color: var(--green); }
+    .tier-btn.selected .tier-qty { color: rgba(0,230,118,0.7); }
 
-    /* Stats 2×2 sur mobile */
-    .stats {
-      display:grid; grid-template-columns:1fr 1fr;
-      border:1px solid var(--border); border-radius:4px;
-      overflow:hidden; margin-top:32px; width:100%;
-      animation:up .7s .3s ease both;
+    /* FLAVOR */
+    .flavor-label {
+      font-size: 0.68rem; color: var(--muted); margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
     }
-    .stat {
-      padding:18px 12px; text-align:center;
-      border-right:1px solid var(--border);
-      border-bottom:1px solid var(--border);
+    .flavor-select {
+      width: 100%; background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 11px 14px;
+      border-radius: 10px; font-size: 0.9rem; margin-bottom: 14px;
+      outline: none; font-family: 'Inter', sans-serif;
     }
-    .stat:nth-child(2) { border-right:none; }
-    .stat:nth-child(3) { border-bottom:none; border-right:1px solid var(--border); }
-    .stat:nth-child(4) { border-bottom:none; border-right:none; }
-    .stat-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--gold); letter-spacing:2px; }
-    .stat-lbl { font-size:.65rem; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; }
+    .flavor-select:focus { border-color: var(--green-border); }
 
-    /* Boutons hero pleine largeur */
-    .hero-btns {
-      display:flex; flex-direction:column; gap:10px;
-      margin-top:24px; width:100%;
-      animation:up .7s .35s ease both;
+    /* QTY */
+    .qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .qty-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; flex: 1; }
+    .qty-controls { display: flex; align-items: center; gap: 12px; }
+    .qty-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--card2); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text); font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
     }
-    .btn-primary {
-      background:var(--gold); color:var(--black);
-      padding:16px; border-radius:2px; text-align:center;
-      font-family:'DM Sans',sans-serif; font-weight:700; font-size:.9rem;
-      letter-spacing:1.5px; text-transform:uppercase; text-decoration:none;
-      display:block; transition:background .2s;
-    }
-    .btn-primary:active { background:var(--gold-l); }
-    .btn-secondary {
-      border:1px solid var(--border); color:var(--text);
-      padding:14px; border-radius:2px; text-align:center;
-      font-size:.88rem; letter-spacing:1.5px; text-transform:uppercase;
-      text-decoration:none; display:block; transition:border-color .2s, color .2s;
-    }
-    .btn-secondary:active { border-color:var(--gold); color:var(--gold); }
+    .qty-btn:active { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+    .qty-val { font-size: 1.1rem; font-weight: 800; min-width: 32px; text-align: center; }
 
-    /* ═══════════════════════
-       SECTIONS
-    ═══════════════════════ */
-    .section { padding:52px 20px; }
-    .section-label { font-size:.68rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
-    .section-title { font-size:2rem; letter-spacing:2px; color:#fff; line-height:1; margin-bottom:12px; }
-    .section-sub { color:var(--muted); font-size:.9rem; line-height:1.7; }
-    .alt-bg { background:var(--dark); }
+    /* ADD BTN */
+    .add-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e676, #00c853);
+      color: #000; border: none; border-radius: 10px;
+      padding: 14px; font-size: 0.95rem; font-weight: 800;
+      cursor: pointer; letter-spacing: 0.5px;
+      transition: opacity 0.2s, transform 0.1s;
+      box-shadow: 0 4px 20px rgba(0,230,118,0.25);
+    }
+    .add-btn:active { transform: scale(0.98); opacity: 0.9; }
+    .add-btn:disabled { background: #222; color: var(--muted); cursor: not-allowed; box-shadow: none; }
 
-    /* ═══════════════════════
-       FEATURES — liste verticale mobile
-    ═══════════════════════ */
-    .features-list { display:flex; flex-direction:column; gap:2px; margin-top:28px; }
-    .feature-card {
-      background:var(--card); border:1px solid var(--border);
-      padding:22px 20px; display:flex; gap:16px; align-items:flex-start;
+    /* CART */
+    .cart-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .cart-empty .icon { font-size: 3.5rem; margin-bottom: 16px; opacity: 0.4; }
+    .cart-item {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
     }
-    .feature-icon { font-size:1.7rem; flex-shrink:0; margin-top:2px; }
-    .feature-title { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:1.5px; color:#fff; margin-bottom:4px; }
-    .feature-desc { font-size:.83rem; color:var(--muted); line-height:1.65; }
+    .cart-item-name { font-weight: 700; font-size: 0.92rem; }
+    .cart-item-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .cart-item-price { font-weight: 800; color: var(--green); font-size: 0.92rem; white-space: nowrap; }
+    .cart-remove { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 4px; }
+    .cart-total {
+      background: var(--green-dim); border: 1px solid var(--green-border);
+      border-radius: 12px; padding: 16px; margin: 14px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .cart-total-label { font-size: 0.78rem; color: rgba(0,230,118,0.7); text-transform: uppercase; letter-spacing: 1px; }
+    .cart-total-pcs { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .cart-total-amount { font-size: 1.6rem; font-weight: 800; color: var(--green); }
+    .min-warning {
+      background: rgba(255,68,68,0.1); border: 1px solid rgba(255,68,68,0.3);
+      color: #ff6666; border-radius: 10px; padding: 10px 14px;
+      font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;
+    }
+    .checkout-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e676, #00c853);
+      color: #000; border: none; border-radius: 12px;
+      padding: 16px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(0,230,118,0.3);
+    }
+    .checkout-btn:disabled { background: #222; color: var(--muted); cursor: not-allowed; box-shadow: none; }
 
-    /* ═══════════════════════
-       REVIEWS — scroll horizontal
-    ═══════════════════════ */
-    .reviews-section { background:var(--dark); padding:52px 0; overflow:hidden; }
-    .reviews-header { padding:0 20px 32px; }
-    .reviews-score { display:flex; align-items:center; gap:14px; margin-top:12px; }
-    .reviews-score-num { font-family:'Bebas Neue',sans-serif; font-size:2.4rem; color:#fff; line-height:1; }
-    .reviews-stars { color:var(--gold); font-size:1.1rem; letter-spacing:2px; }
-    .reviews-score-sub { font-size:.75rem; color:var(--muted); margin-top:2px; }
-
-    /* Swipe scroll */
-    .reviews-scroll {
-      display:flex; gap:14px; overflow-x:auto; padding:0 20px 8px;
-      -webkit-overflow-scrolling:touch; scrollbar-width:none;
-      scroll-snap-type:x mandatory;
+    /* CHECKOUT */
+    .form-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 2px; color: var(--muted);
+      margin: 20px 0 12px; text-transform: uppercase;
     }
-    .reviews-scroll::-webkit-scrollbar { display:none; }
-    .review-card {
-      flex:0 0 280px; scroll-snap-align:start;
-      background:var(--card); border:1px solid var(--border);
-      border-radius:8px; padding:22px 18px;
+    .form-group { margin-bottom: 12px; }
+    .form-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; display: block; font-weight: 600; }
+    .form-input {
+      width: 100%; background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 12px 14px;
+      border-radius: 10px; font-size: 0.92rem;
+      outline: none; font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
     }
-    .review-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-    .review-avatar {
-      width:38px; height:38px; border-radius:50%; flex-shrink:0;
-      background:linear-gradient(135deg,var(--gold),#7a5c1a);
-      display:flex; align-items:center; justify-content:center;
-      font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--black);
+    .form-input:focus { border-color: var(--green-border); }
+    .form-select {
+      width: 100%; background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 12px 14px;
+      border-radius: 10px; font-size: 0.92rem;
+      outline: none; font-family: 'Inter', sans-serif;
     }
-    .review-name { font-weight:600; font-size:.88rem; color:var(--text); }
-    .review-meta { font-size:.7rem; color:var(--muted); margin-top:1px; }
-    .review-stars { color:var(--gold); font-size:.85rem; letter-spacing:1px; margin-bottom:8px; }
-    .review-text { font-size:.82rem; color:#aaa; line-height:1.7; }
-    .review-tag {
-      display:inline-block; margin-top:12px;
-      background:rgba(201,168,76,.08); border:1px solid var(--border);
-      color:var(--gold); font-size:.65rem; letter-spacing:1.5px;
-      text-transform:uppercase; padding:3px 10px; border-radius:100px;
+    .order-summary {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 16px; margin-bottom: 16px;
     }
-
-    /* ═══════════════════════
-       COUNTRIES — 2×2 grid
-    ═══════════════════════ */
-    .countries-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px; }
-    .country-card {
-      background:var(--card); border:1px solid var(--border);
-      padding:22px 14px; text-align:center; border-radius:6px;
+    .order-line {
+      display: flex; justify-content: space-between;
+      font-size: 0.82rem; padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .country-flag { font-size:2.2rem; margin-bottom:8px; }
-    .country-name { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:2px; }
-    .country-delay { font-size:.72rem; color:var(--gold); margin-top:3px; letter-spacing:1px; }
-
-    /* ═══════════════════════
-       TRUST — cartes verticales
-    ═══════════════════════ */
-    .trust-list-wrap { display:flex; flex-direction:column; gap:16px; margin-top:28px; }
-    .trust-card {
-      background:var(--card); border:1px solid var(--border);
-      padding:24px 20px; border-radius:4px;
+    .order-line:last-child { border-bottom: none; }
+    .order-line span:first-child { color: var(--muted); }
+    .order-total-line {
+      display: flex; justify-content: space-between;
+      font-weight: 800; padding-top: 12px; margin-top: 4px;
+      font-size: 1.05rem;
     }
-    .trust-card-title { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px; color:var(--gold); margin-bottom:10px; }
-    .trust-list { list-style:none; }
-    .trust-list li {
-      font-size:.85rem; color:var(--text); padding:8px 0;
-      border-bottom:1px solid rgba(255,255,255,.05);
-      display:flex; align-items:flex-start; gap:10px; line-height:1.5;
+    .order-total-line span:last-child { color: var(--green); }
+    .confirm-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e676, #00c853);
+      color: #000; border: none; border-radius: 12px;
+      padding: 16px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(0,230,118,0.3);
     }
-    .trust-list li:last-child { border-bottom:none; }
-    .trust-list li::before { content:'✓'; color:var(--gold); font-weight:700; flex-shrink:0; }
-    .trust-card p { font-size:.85rem; color:var(--muted); line-height:1.8; }
-
-    /* ═══════════════════════
-       FAQ
-    ═══════════════════════ */
-    .faq-list { margin-top:28px; }
-    .faq-item { border-bottom:1px solid var(--border); }
-    .faq-q {
-      width:100%; background:none; border:none; color:var(--text);
-      font-family:'DM Sans',sans-serif; font-size:.95rem; font-weight:600;
-      text-align:left; padding:18px 0; cursor:pointer;
-      display:flex; justify-content:space-between; align-items:center; gap:12px;
-      transition:color .2s; -webkit-tap-highlight-color:transparent;
-    }
-    .faq-q .arrow { transition:transform .3s; color:var(--gold); font-size:1.1rem; flex-shrink:0; }
-    .faq-q.open { color:var(--gold); }
-    .faq-q.open .arrow { transform:rotate(45deg); }
-    .faq-a { max-height:0; overflow:hidden; transition:max-height .35s ease, padding .3s; font-size:.85rem; color:var(--muted); line-height:1.8; }
-    .faq-a.open { max-height:300px; padding-bottom:18px; }
-
-    /* ═══════════════════════
-       CONTACT
-    ═══════════════════════ */
-    .contact-info { margin-bottom:32px; }
-    .contact-info h2 { font-size:2rem; letter-spacing:2px; color:#fff; margin-bottom:10px; }
-    .contact-info p { color:var(--muted); font-size:.9rem; margin-bottom:24px; }
-    .contact-item { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
-    .contact-icon {
-      width:42px; height:42px; background:rgba(201,168,76,.1);
-      border:1px solid var(--border); border-radius:4px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.1rem; flex-shrink:0;
-    }
-    .contact-item-label { font-size:.68rem; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
-    .contact-item-val { font-size:.9rem; color:var(--text); font-weight:500; }
-    .contact-form { display:flex; flex-direction:column; gap:12px; }
-    .contact-form input, .contact-form textarea {
-      background:var(--card); border:1px solid var(--border);
-      color:var(--text); padding:14px 16px;
-      font-family:'DM Sans',sans-serif; font-size:.9rem;
-      border-radius:2px; outline:none; transition:border-color .2s;
-      width:100%; -webkit-appearance:none;
-    }
-    .contact-form input:focus, .contact-form textarea:focus { border-color:var(--gold); }
-    .contact-form input::placeholder, .contact-form textarea::placeholder { color:var(--muted); }
-    .contact-form textarea { min-height:110px; resize:vertical; }
-    .contact-form button {
-      background:var(--gold); color:var(--black); border:none;
-      padding:16px; font-family:'DM Sans',sans-serif;
-      font-weight:700; font-size:.9rem; letter-spacing:1.5px; text-transform:uppercase;
-      border-radius:2px; cursor:pointer; transition:background .2s;
-    }
-    .contact-form button:active { background:var(--gold-l); }
-
-    /* ═══════════════════════
-       FOOTER
-    ═══════════════════════ */
-    footer {
-      border-top:1px solid var(--border);
-      padding:32px 20px 24px;
-      text-align:center;
-    }
-    .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--gold); letter-spacing:3px; margin-bottom:16px; }
-    .footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:12px 24px; margin-bottom:16px; }
-    .footer-links a { color:var(--muted); font-size:.8rem; text-decoration:none; letter-spacing:.5px; }
-    .footer-copy { color:var(--muted); font-size:.72rem; }
-
-    /* ═══════════════════════
-       DESKTOP — ≥ 768px
-    ═══════════════════════ */
-    @media(min-width:768px) {
-      body { padding-bottom:0; }
-      .sticky-cta { display:none; }
-      nav { height:64px; padding:0 48px; }
-      .nav-hamburger { display:none; }
-      .nav-links-desk { display:flex; }
-      .nav-menu { display:none !important; }
-      .hero { padding:120px 24px 80px; }
-      .hero h1 { font-size:clamp(5rem,10vw,9rem); }
-      .hero-btns { flex-direction:row; justify-content:center; }
-      .btn-primary, .btn-secondary { display:inline-block; padding:16px 36px; }
-      .stats { grid-template-columns:repeat(4,1fr); max-width:700px; margin:48px auto 0; }
-      .stat { border-right:1px solid var(--border); border-bottom:none; }
-      .stat:last-child { border-right:none; }
-      .section { padding:96px 48px; max-width:1100px; margin:0 auto; }
-      .alt-bg > .section { max-width:1100px; margin:0 auto; }
-      .features-list { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; }
-      .countries-grid { grid-template-columns:repeat(4,1fr); gap:16px; }
-      .trust-list-wrap { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-      .trust-card.full { grid-column:1/-1; }
-      .contact-wrap { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
-      .contact-info { margin-bottom:0; }
-      footer { display:flex; justify-content:space-between; align-items:center; padding:40px 48px; text-align:left; }
-      .footer-logo { margin-bottom:0; }
-      .section-title { font-size:clamp(2.2rem,5vw,3.5rem); }
-      .reviews-scroll { padding:0 48px 12px; }
-      .reviews-header { padding:0 48px 48px; }
-      .review-card { flex:0 0 320px; }
+    .back-btn {
+      width: 100%; background: var(--card2); color: var(--text);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px; font-size: 0.9rem;
+      cursor: pointer; margin-bottom: 14px; font-family: 'Inter', sans-serif;
     }
 
-    /* ═══════════════════════
-       ANIMATIONS
-    ═══════════════════════ */
-    @keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+    /* SUCCESS */
+    .success-view { text-align: center; padding: 60px 20px; }
+    .success-glow {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--green-dim); border: 2px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; margin: 0 auto 24px;
+      box-shadow: 0 0 40px rgba(0,230,118,0.3);
+    }
+    .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--green); margin-bottom: 12px; }
+    .success-sub { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+
+    /* LOADER */
+    .loader { display: flex; justify-content: center; align-items: center; padding: 60px; }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(0,230,118,0.15);
+      border-top-color: var(--green);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; border: 1px solid var(--green-border);
+      color: var(--green); padding: 10px 20px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 700; z-index: 999;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .toast.show { opacity: 1; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,230,118,0.2); border-radius: 2px; }
   </style>
 </head>
 <body>
 
-<!-- ── BARRE FIXE BAS (mobile) ── -->
-<div class="sticky-cta">
-  <a href="catalogue.html" class="sticky-cta-main">
-    <span class="sticky-cta-label">📦 Commander maintenant</span>
-    <span class="sticky-cta-text">VOIR LE CATALOGUE</span>
-  </a>
-  <div class="sticky-divider"></div>
-  <a href="https://t.me/yukovapefr" class="sticky-tg">
-    <span class="sticky-tg-icon">✈️</span>
-    <span class="sticky-tg-lbl">Telegram</span>
-  </a>
-</div>
-
-<!-- ── NAV ── -->
-<nav>
-  <a href="index.html" class="nav-logo">YUKO VAPE</a>
-  <div class="nav-links-desk">
-    <a href="catalogue.html">Catalogue</a>
-    <a href="logistique.html">Logistique</a>
-    <a href="#contact">Contact</a>
-    <a href="catalogue.html" class="nav-cta">Commander</a>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo-text">YUKO VAPE</div>
+    <div class="header-badge">B2B</div>
   </div>
-  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
+  <button class="cart-btn" onclick="showView('cart')">
+    🛒 <span id="cartBadge" class="cart-badge">0</span>
   </button>
-</nav>
-
-<!-- ── MENU MOBILE ── -->
-<div class="nav-menu" id="navMenu">
-  <a href="catalogue.html" onclick="closeMenu()">📦 Catalogue</a>
-  <a href="logistique.html" onclick="closeMenu()">🚚 Logistique</a>
-  <a href="#contact" onclick="closeMenu()">✉️ Contact</a>
-  <a href="catalogue.html" class="menu-cta" onclick="closeMenu()">Commander →</a>
 </div>
 
-<!-- ── HERO ── -->
-<div class="hero">
-  <div class="hero-in">
-    <div class="hero-badge"><span class="hero-badge-dot"></span> Grossiste B2B · Hub Pologne · Europe</div>
-    <h1>YUKO<br/><span>VAPE</span></h1>
-    <p class="hero-sub">Puffs certifiées direct usine · Livraison Europe en 1 semaine · Stock réel</p>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">60K+</div><div class="stat-lbl">Puffs vendues</div></div>
-      <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Pays livrés</div></div>
-      <div class="stat"><div class="stat-num">24H</div><div class="stat-lbl">Expédition</div></div>
-      <div class="stat"><div class="stat-num">B2B</div><div class="stat-lbl">Uniquement</div></div>
-    </div>
-    <div class="hero-btns">
-      <a href="catalogue.html" class="btn-primary">Voir le catalogue</a>
-      <a href="logistique.html" class="btn-secondary">Infos logistique</a>
-    </div>
+<!-- VIEWS -->
+<div class="view active" id="view-catalogue">
+  <div class="loader"><div class="spinner"></div></div>
+</div>
+
+<div class="view" id="view-cart"></div>
+<div class="view" id="view-checkout"></div>
+
+<div class="view" id="view-success">
+  <div class="success-view">
+    <div class="success-glow">✓</div>
+    <div class="success-title">COMMANDE ENVOYÉE</div>
+    <p class="success-sub">Votre commande a bien été transmise.<br/>Nous allons vous contacter sur Telegram très rapidement.</p>
+    <a href="https://t.me/yukovapefr" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:28px;background:var(--green);color:#000;padding:16px 24px;border-radius:10px;text-decoration:none;font-weight:800;font-size:1rem;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(0,230,118,0.3);">
+      ✈️ Continuer sur Telegram →
+    </a>
+    <p style="font-size:0.72rem;color:var(--muted);margin-top:14px;">Redirection automatique dans <span id="countdown">3</span>s...</p>
   </div>
 </div>
 
-<!-- ── FEATURES ── -->
-<section class="section">
-  <div class="section-label">Pourquoi Yuko Vape</div>
-  <div class="section-title">CE QUI NOUS DIFFÉRENCIE</div>
-  <p class="section-sub">Un partenaire fiable pour les revendeurs européens qui veulent du stock réel, des prix compétitifs et une logistique sans friction.</p>
-  <div class="features-list">
-    <div class="feature-card">
-      <div class="feature-icon">📦</div>
-      <div><div class="feature-title">Stock Physique Réel</div><p class="feature-desc">Nos produits sont stockés dans notre hub à Koszalin, Pologne. Pas de dropshipping, pas d'intermédiaire.</p></div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <div><div class="feature-title">Expédition 24H</div><p class="feature-desc">Commande validée = expédiée sous 24h ouvrées. Tracking live fourni à chaque envoi sans exception.</p></div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🛡️</div>
-      <div><div class="feature-title">Produits Certifiés</div><p class="feature-desc">Toutes nos puffs proviennent directement des usines partenaires avec certifications CE et TPD disponibles.</p></div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">💬</div>
-      <div><div class="feature-title">Support Réactif</div><p class="feature-desc">Un interlocuteur dédié sur Telegram pour chaque commande. Réponse garantie sous 2h en semaine.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── REVIEWS ── -->
-<div class="reviews-section">
-  <div class="reviews-header">
-    <div class="section-label">Témoignages</div>
-    <div class="section-title">AVIS CLIENTS</div>
-    <div class="reviews-score">
-      <div class="reviews-score-num">4.9</div>
-      <div>
-        <div class="reviews-stars">★★★★★</div>
-        <div class="reviews-score-sub">+40 partenaires revendeurs</div>
-      </div>
-    </div>
-  </div>
-  <div class="reviews-scroll">
-    <div class="review-card">
-      <div class="review-header"><div class="review-avatar">KR</div><div><div class="review-name">Kevin R.</div><div class="review-meta">🇫🇷 Revendeur · Lyon</div></div></div>
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">Commande reçue en 6 jours, tout était nickel. Le suivi Telegram est vraiment réactif, j'ai eu une réponse en moins d'une heure. Je recommande sans hésiter.</p>
-      <span class="review-tag">3 commandes</span>
-    </div>
-    <div class="review-card">
-      <div class="review-header"><div class="review-avatar" style="background:linear-gradient(135deg,#7a9bc9,#2a4a7a)">AM</div><div><div class="review-name">Axel M.</div><div class="review-meta">🇧🇪 Revendeur · Bruxelles</div></div></div>
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">Les prix sont compétitifs et le stock est vraiment disponible, pas comme certains qui font du dropshipping en prétendant avoir du stock.</p>
-      <span class="review-tag">5 commandes</span>
-    </div>
-    <div class="review-card">
-      <div class="review-header"><div class="review-avatar" style="background:linear-gradient(135deg,#c97a7a,#7a2a2a)">SB</div><div><div class="review-name">Sofia B.</div><div class="review-meta">🇨🇭 Revendeuse · Genève</div></div></div>
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">Emballage discret comme promis. 70 pcs commandées pour tester, le rapport qualité/prix est imbattable sur le marché suisse.</p>
-      <span class="review-tag">2 commandes</span>
-    </div>
-    <div class="review-card">
-      <div class="review-header"><div class="review-avatar" style="background:linear-gradient(135deg,#7ac97a,#2a7a2a)">TN</div><div><div class="review-name">Thomas N.</div><div class="review-meta">🇫🇷 Revendeur · Marseille</div></div></div>
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">Partenaire fiable depuis plusieurs mois. Livraison toujours dans les délais, tracking envoyé rapidement. SAV réactif en cas de problème.</p>
-      <span class="review-tag">7 commandes</span>
-    </div>
-    <div class="review-card">
-      <div class="review-header"><div class="review-avatar" style="background:linear-gradient(135deg,#c9c97a,#7a7a2a)">JL</div><div><div class="review-name">Julie L.</div><div class="review-meta">🇱🇺 Revendeuse · Luxembourg</div></div></div>
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">J'étais sceptique mais les photos du stock sur Telegram m'ont convaincue. Première livraison parfaite, je continue régulièrement.</p>
-      <span class="review-tag">4 commandes</span>
-    </div>
-    <div class="review-card">
-      <div class="review-header"><div class="review-avatar" style="background:linear-gradient(135deg,#9bc97a,#3a7a2a)">ML</div><div><div class="review-name">Marc L.</div><div class="review-meta">🇧🇪 Revendeur · Liège</div></div></div>
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">4 mois de commandes régulières, aucun souci. Les prix dégressifs à 70 pcs sont vraiment intéressants quand on tourne bien.</p>
-      <span class="review-tag">9 commandes</span>
-    </div>
-  </div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-catalogue" onclick="showView('catalogue')">
+    <span class="nav-icon">🏠</span>Accueil
+  </button>
+  <button class="nav-btn" id="nav-cart" onclick="showView('cart')">
+    <span class="nav-icon">🛒</span>Panier
+  </button>
+  <button class="nav-btn" id="nav-contact" onclick="openContact()">
+    <span class="nav-icon">✉️</span>Contact
+  </button>
 </div>
 
-<!-- ── LIVRAISON ── -->
-<div class="alt-bg">
-  <section class="section">
-    <div class="section-label">Zone de livraison</div>
-    <div class="section-title">LIVRAISON EUROPE</div>
-    <p class="section-sub">Nous livrons dans 4 pays avec un délai garanti d'une semaine. Emballage discret, colis sécurisé.</p>
-    <div class="countries-grid">
-      <div class="country-card"><div class="country-flag">🇫🇷</div><div class="country-name">France</div><div class="country-delay">~1 semaine</div></div>
-      <div class="country-card"><div class="country-flag">🇧🇪</div><div class="country-name">Belgique</div><div class="country-delay">~1 semaine</div></div>
-      <div class="country-card"><div class="country-flag">🇨🇭</div><div class="country-name">Suisse</div><div class="country-delay">~1 semaine</div></div>
-      <div class="country-card"><div class="country-flag">🇱🇺</div><div class="country-name">Luxembourg</div><div class="country-delay">~1 semaine</div></div>
-    </div>
-  </section>
-</div>
+<div class="toast" id="toast"></div>
 
-<!-- ── TRUST ── -->
-<section class="section">
-  <div class="section-label">Transparence</div>
-  <div class="section-title">POURQUOI NOUS FAIRE CONFIANCE</div>
-  <div class="trust-list-wrap">
-    <div class="trust-card">
-      <div class="trust-card-title">✅ Ce qu'on garantit</div>
-      <ul class="trust-list">
-        <li>Stock physiquement présent à Koszalin, Pologne</li>
-        <li>Produits conformes CE / TPD sur demande</li>
-        <li>Photos de réception publiées sur Telegram</li>
-        <li>Numéro de suivi fourni à chaque expédition</li>
-        <li>Emballage discret et sécurisé</li>
-      </ul>
-    </div>
-    <div class="trust-card">
-      <div class="trust-card-title">📋 Conditions B2B</div>
-      <ul class="trust-list">
-        <li>Minimum de commande : 30 pièces</li>
-        <li>Prix dégressifs selon volume</li>
-        <li>Paiement avant expédition</li>
-        <li>Litige traité sous 48h ouvrées</li>
-        <li>Réservé aux professionnels revendeurs</li>
-      </ul>
-    </div>
-    <div class="trust-card full">
-      <div class="trust-card-title">💬 Avis & Réceptions clients</div>
-      <p>Notre canal Telegram regroupe les photos de réceptions et avis de nos partenaires revendeurs. Rejoignez-le pour consulter les preuves avant de passer commande.</p>
-      <br/>
-      <a href="https://t.me/+IokgB2PQxKYwODZk" class="btn-primary" style="display:inline-block;padding:14px 28px;margin-top:4px;">Voir les feedbacks Telegram</a>
-    </div>
-  </div>
-</section>
+<script>
+  const API = '';
+  let products = [], cart = [], productStates = {};
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
 
-<!-- ── FAQ ── -->
-<div class="alt-bg">
-  <section class="section">
-    <div class="section-label">Questions fréquentes</div>
-    <div class="section-title">FAQ</div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Quel est le minimum de commande ? <span class="arrow">+</span></button>
-        <div class="faq-a">Le minimum est de 30 pièces (3 boîtes de 10). Des prix dégressifs s'appliquent à partir de 50 et 70 pièces selon les produits.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Quels modes de paiement acceptez-vous ? <span class="arrow">+</span></button>
-        <div class="faq-a">Contactez-nous via Telegram ou par email à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91e8e4fafee7f0e1f4bce1e3fed1f6fcf0f8fdbff2fefc">[email&#160;protected]</a> pour discuter des modalités de paiement adaptées à votre situation.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Les produits sont-ils certifiés ? <span class="arrow">+</span></button>
-        <div class="faq-a">Oui, tous nos produits proviennent directement d'usines partenaires avec certifications CE et TPD. Les documents sont disponibles sur demande.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Comment se passe la livraison ? <span class="arrow">+</span></button>
-        <div class="faq-a">Les commandes sont expédiées depuis Koszalin (Pologne) sous 24h ouvrées après validation. Un numéro de tracking vous est communiqué. Le délai est d'environ 1 semaine pour tous les pays desservis.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Livrez-vous en dehors des 4 pays listés ? <span class="arrow">+</span></button>
-        <div class="faq-a">Actuellement nous livrons en France, Belgique, Suisse et Luxembourg. Pour d'autres pays européens, contactez-nous pour étudier la faisabilité.</div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ── CONTACT ── -->
-<section class="section" id="contact">
-  <div class="contact-wrap">
-    <div class="contact-info">
-      <div class="section-label">Nous contacter</div>
-      <h2>PARLONS BUSINESS</h2>
-      <p>Vous êtes revendeur et souhaitez travailler avec nous ? Contactez-nous pour un devis ou toute question.</p>
-      <div class="contact-item">
-        <div class="contact-icon">✉️</div>
-        <div><div class="contact-item-label">Email pro</div><div class="contact-item-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="29505c42465f48594c04595b46694e44484045074a4644">[email&#160;protected]</a></div></div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon">📍</div>
-        <div><div class="contact-item-label">Hub logistique</div><div class="contact-item-val">Koszalin, Pologne (UE)</div></div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon">💬</div>
-        <div><div class="contact-item-label">Telegram</div><div class="contact-item-val"><a href="https://t.me/yukovapefr" style="color:var(--gold);text-decoration:none;">Nous écrire sur Telegram →</a></div></div>
-      </div>
-    </div>
-    <form class="contact-form" onsubmit="sendContact(event)">
-      <input type="text" placeholder="Votre nom / société" required/>
-      <input type="email" placeholder="Email professionnel" required/>
-      <input type="text" placeholder="Pays de livraison souhaité"/>
-      <textarea placeholder="Votre message (volume, produit, question...)"></textarea>
-      <button type="submit">Envoyer la demande</button>
-    </form>
-  </div>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-logo">YUKO VAPE</div>
-  <div class="footer-links">
-    <a href="catalogue.html">Catalogue</a>
-    <a href="logistique.html">Logistique</a>
-    <a href="#contact">Contact</a>
-    <a href="mentions-legales.html">Mentions légales</a>
-  </div>
-  <div class="footer-copy">© 2026 YUKO VAPE · Grossiste B2B · Koszalin, Pologne</div>
-</footer>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // FAQ
-  function toggleFaq(btn) {
-    const a = btn.nextElementSibling;
-    const open = a.classList.contains('open');
-    document.querySelectorAll('.faq-a').forEach(x => x.classList.remove('open'));
-    document.querySelectorAll('.faq-q').forEach(x => x.classList.remove('open'));
-    if (!open) { a.classList.add('open'); btn.classList.add('open'); }
+  async function init() {
+    await loadProducts();
   }
 
-  // Menu hamburger
-  function toggleMenu() {
-    const menu = document.getElementById('navMenu');
-    const btn = document.getElementById('hamburger');
-    menu.classList.toggle('open');
-    btn.classList.toggle('open');
+  async function loadProducts() {
+    try {
+      const res = await fetch(`${API}/api/products`);
+      products = await res.json();
+      products.forEach(p => {
+        productStates[p.id] = {
+          selectedTier: p.tiers?.[0] || null,
+          flavor: p.flavors?.[0] || '',
+          qty: p.tiers?.[0]?.qty || 30
+        };
+      });
+      renderCatalogue();
+    } catch(e) {
+      document.getElementById('view-catalogue').innerHTML = '<p style="text-align:center;padding:40px;color:var(--muted)">Impossible de charger les produits.</p>';
+    }
   }
-  function closeMenu() {
-    document.getElementById('navMenu').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('open');
-  }
-  // Fermer menu au clic extérieur
-  document.addEventListener('click', e => {
-    const nav = document.querySelector('nav');
-    const menu = document.getElementById('navMenu');
-    if (!nav.contains(e.target) && !menu.contains(e.target)) closeMenu();
-  });
 
-  // Contact form
-  function sendContact(e) {
-    e.preventDefault();
-    const btn = e.targ
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    const navBtn = document.getElementById('nav-' + name);
+    if (navBtn) navBtn.classList.add('active');
+    if (name === 'cart') renderCart();
+    if (name === 'checkout') renderCheckout();
+  }
+
+  function openContact() {
+    window.open('https://t.me/yukovapefr', '_blank');
+  }
+
+  function renderCatalogue() {
+    const el = document.getElementById('view-catalogue');
+    if (!products.length) {
+      el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:3rem;margin-bottom:16px">📦</div><p>Aucun produit disponible</p></div>';
+      return;
+    }
+    el.innerHTML = products.map(p => renderProductCard(p)).join('');
+  }
+
+  function renderProductCard(p) {
+    const state = productStates[p.id];
+    const tiers = p.tiers || [];
+    const flavors = p.flavors || [];
+
+    const tiersHTML = tiers.map((t, i) => `
+      <div class="tier-btn ${state.selectedTier?.qty === t.qty ? 'selected' : ''}" onclick="selectTier('${p.id}', ${i})">
+        <div class="tier-qty">${t.label}</div>
+        <div class="tier-price">${t.price.toFixed(2)}€</div>
+      </div>`).join('');
+
+    const flavorsHTML = flavors.length ? `
+      <div class="flavor-label">Parfum</div>
+      <select class="flavor-select" onchange="selectFlavor('${p.id}', this.value)">
+        ${flavors.map(f => `<option value="${f}" ${state.flavor===f?'selected':''}>${f}</option>`).join('')}
+      </select>` : '';
+
+    const imgHTML = p.image_url
+      ? `<div class="product-img-wrap"><img src="${p.image_url}" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>📦</div>'"><div class="product-qty-badge">🏷 ${p.name}</div></div>`
+      : `<div class="product-img-placeholder">📦</div>`;
+
+    return `
+      <div class="product-card" id="pcard-${p.id}">
+        ${imgHTML}
+        <div class="product-body">
+          <div class="product-name">${p.name}</div>
+          ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+          <div class="tiers">${tiersHTML}</div>
+          ${flavorsHTML}
+          <div class="qty-row">
+            <div class="qty-label">Quantité</div>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty('${p.id}', -10)">−</button>
+              <div class="qty-val" id="qty-${p.id}">${state.qty}</div>
+              <button class="qty-btn" onclick="changeQty('${p.id}', 10)">+</button>
+            </div>
+          </div>
+          <button class="add-btn" onclick="addToCart('${p.id}')">+ Ajouter au panier</button>
+        </div>
+      </div>`;
+  }
+
+  function selectTier(productId, tierIndex) {
+    const p = products.find(x => x.id === productId);
+    if (!p) return;
+    productStates[productId].selectedTier = p.tiers[tierIndex];
+    productStates[productId].qty = p.tiers[tierIndex].qty;
+    document.getElementById('pcard-' + productId).outerHTML = renderProductCard(p);
+  }
+
+  function selectFlavor(productId, flavor) { productStates[productId].flavor = flavor; }
+
+  function changeQty(productId, delta) {
+    const state = productStates[productId];
+    const minQty = state.selectedTier?.qty || 10;
+    state.qty = Math.max(minQty, state.qty + delta);
+    document.getElementById('qty-' + productId).textContent = state.qty;
+    const p = products.find(x => x.id === productId);
+    if (p) { let best = p.tiers[0]; for (const t of p.tiers) { if (state.qty >= t.qty) best = t; } state.selectedTier = best; }
+  }
+
+  function addToCart(productId) {
+    const p = products.find(x => x.id === productId);
+    const state = productStates[productId];
+    if (!state.selectedTier) return;
+    if (!state.flavor && p.flavors?.length) { showToast('⚠️ Choisissez un parfum'); return; }
+    let bestTier = p.tiers[0];
+    for (const t of p.tiers) { if (state.qty >= t.qty) bestTier = t; }
+    const item = { product_id: p.id, product_name: p.name, flavor: state.flavor, qty: state.qty, unit_price: bestTier.price, total: state.qty * bestTier.price };
+    const existing = cart.find(c => c.product_id === p.id && c.flavor === state.flavor);
+    if (existing) { existing.qty += state.qty; existing.total = existing.qty * bestTier.price; }
+    else cart.push(item);
+    updateCartBadge();
+    showToast(`✅ ${p.name} ajouté !`);
+  }
+
+  function updateCartBadge() {
+    document.getElementById('cartBadge').textContent = cart.reduce((s,i) => s + i.qty, 0);
+  }
+  function getCartTotal() { return cart.reduce((s,i) => s + i.total, 0); }
+  function getTotalQty() { return cart.reduce((s,i) => s + i.qty, 0); }
+
+  function renderCart() {
+    const el = document.getElementById('view-cart');
+    if (!cart.length) {
+      el.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><p style="font-weight:700;margin-bottom:6px">Panier vide</p><p style="font-size:0.8rem">Ajoutez des produits depuis l'accueil</p></div>`;
+      return;
+    }
+    const totalQty = getTotalQty();
+    const minOk = totalQty >= 30;
+    el.innerHTML = `
+      ${cart.map((item, i) => `
+        <div class="cart-item">
+          <div style="flex:1">
+            <div class="cart-item-name">${item.product_name}</div>
+            <div class="cart-item-sub">${item.flavor} · ${item.qty} pcs × ${item.unit_price.toFixed(2)}€</div>
+          </div>
+          <div class="cart-item-price">${item.total.toFixed(2)}€</div>
+          <button class="cart-remove" onclick="removeFromCart(${i})">✕</button>
+        </div>`).join('')}
+      <div class="cart-total">
+        <div>
+          <div class="cart-total-label">Total estimé</div>
+          <div class="cart-total-pcs">${totalQty} pièces</div>
+        </div>
+        <div class="cart-total-amount">${getCartTotal().toFixed(2)}€</div>
+      </div>
+      ${!minOk ? `<div class="min-warning">⚠️ Minimum 30 pièces requis (${totalQty}/30)</div>` : ''}
+      <button class="checkout-btn" onclick="showView('checkout')" ${!minOk?'disabled':''}>Commander →</button>`;
+  }
+
+  function removeFromCart(i) { cart.splice(i,1); updateCartBadge(); renderCart(); }
+
+  function renderCheckout() {
+    const el = document.getElementById('view-checkout');
+    el.innerHTML = `
+      <button class="back-btn" onclick="showView('cart')">← Retour au panier</button>
+      <div class="order-summary">
+        ${cart.map(item => `
+          <div class="order-line">
+            <span>${item.product_name} — ${item.flavor}</span>
+            <span>${item.qty} pcs</span>
+          </div>`).join('')}
+        <div class="order-total-line"><span>Total</span><span>${getCartTotal().toFixed(2)}€</span></div>
+      </div>
+      <div class="form-section-title">Vos informations</div>
+      <div class="form-group">
+        <label class="form-label">Nom / Société *</label>
+        <input class="form-input" id="f-name" placeholder="ex: Jean Dupont" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telegram ou Email *</label>
+        <input class="form-input" id="f-contact" placeholder="@votretelegram ou email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pays de livraison</label>
+        <select class="form-select" id="f-country">
+          <option value="France">🇫🇷 France</option>
+          <option value="Belgique">🇧🇪 Belgique</option>
+          <option value="Suisse">🇨🇭 Suisse</option>
+          <option value="Luxembourg">🇱🇺 Luxembourg</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label class="form-label">Notes (optionnel)</label>
+        <textarea class="form-input" id="f-notes" rows="3" placeholder="Informations complémentaires..."></textarea>
+      </div>
+      <button class="confirm-btn" onclick="submitOrder()">✅ Confirmer la commande</button>`;
+  }
+
+  async function submitOrder() {
+    const name = document.getElementById('f-name')?.value?.trim();
+    const contact = document.getElementById('f-contact')?.value?.trim();
+    const country = document.getElementById('f-country')?.value;
+    const notes = document.getElementById('f-notes')?.value?.trim();
+    if (!name || !contact) { showToast('⚠️ Remplissez tous les champs'); return; }
+    const btn = document.querySelector('.confirm-btn');
+    btn.disabled = true; btn.textContent = 'Envoi en cours...';
+    try {
+      const res = await fetch(`${API}/api/orders`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ customer_name: name, customer_contact: contact, country, items: cart, total: getCartTotal(), notes })
+      });
+      if (!res.ok) throw new Error();
+      cart = []; updateCartBadge();
+      showView('success');
+      // Countdown + redirection vers @yukovapefr
+      let count = 3;
+      const cd = document.getElementById('countdown');
+      const iv = setInterval(() => {
+        count--;
+        if (cd) cd.textContent = count;
+        if (count <= 0) {
+          clearInterval(iv);
+          window.open('https://t.me/yukovapefr', '_blank');
+          if (tg) tg.close();
+        }
+      }, 1000);
+    } catch(e) {
+      btn.disabled = false; btn.textContent = '✅ Confirmer la commande';
+      showToast('❌ Erreur, réessayez');
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  init();
+</script>
+</body>
+</html>

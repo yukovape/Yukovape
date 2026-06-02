@@ -1,452 +1,593 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Yuko Vape — Grossiste</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Yuko Vape — Commander</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            dark: { 900: '#0A0A0A', 800: '#111111', 700: '#1A1A1A', 600: '#222222', 500: '#2A2A2A' },
-            cyan: { brand: '#00F5D4', dim: '#00C4AA', glow: 'rgba(0,245,212,0.15)' },
-            smoke: { 400: '#888888', 500: '#666666', 600: '#444444' }
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: #0A0A0A; color: #fff; }
-
-    /* Splash screen */
-    #splash {
-      position: fixed; inset: 0; z-index: 100; background: #0A0A0A;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      transition: opacity 0.5s ease;
+    :root {
+      --green: #00e676;
+      --green2: #00c853;
+      --green-dim: rgba(0,230,118,0.12);
+      --green-border: rgba(0,230,118,0.3);
+      --bg: #0a0a0a;
+      --card: #111;
+      --card2: #181818;
+      --text: #f0f0f0;
+      --muted: #666;
+      --red: #ff4444;
     }
-    #splash.fade-out { opacity: 0; pointer-events: none; }
-    .logo-ring {
-      width: 140px; height: 140px; border-radius: 50%;
-      border: 3px solid #00F5D4;
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    html,body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
+    body { padding-bottom: 90px; }
+
+    /* HEADER */
+    .header {
+      background: #0d0d0d;
+      border-bottom: 1px solid rgba(0,230,118,0.15);
+      padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 3px;
+      background: linear-gradient(135deg, #00e676, #c9a84c);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header-badge {
+      background: var(--green-dim); border: 1px solid var(--green-border);
+      color: var(--green); font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .cart-btn {
+      background: var(--green-dim); border: 1px solid var(--green-border);
+      color: var(--green); padding: 8px 14px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;
+    }
+    .cart-badge {
+      background: var(--green); color: #000;
+      border-radius: 50%; width: 18px; height: 18px;
+      font-size: 0.65rem; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
-      animation: ring-pulse 2s ease-in-out infinite;
     }
-    @keyframes ring-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,212,0.4); }
-      50% { box-shadow: 0 0 20px 8px rgba(0,245,212,0.15); }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: #0d0d0d;
+      border-top: 1px solid rgba(0,230,118,0.15);
+      display: flex;
+      padding-bottom: env(safe-area-inset-bottom);
     }
-    .splash-bar { width: 60px; height: 3px; border-radius: 3px; background: #222; overflow: hidden; margin-top: 40px; }
-    .splash-bar-fill { height: 100%; width: 0%; background: #00F5D4; border-radius: 3px; animation: load-bar 1.8s ease forwards; }
-    @keyframes load-bar { to { width: 100%; } }
-
-    /* Marquee */
-    .marquee-track {
-      display: flex; gap: 32px; width: max-content;
-      animation: marquee 18s linear infinite;
+    .nav-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 10px 0; gap: 4px; cursor: pointer;
+      color: var(--muted); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      transition: color 0.2s; border: none; background: none;
     }
-    @keyframes marquee { to { transform: translateX(-50%); } }
+    .nav-btn .nav-icon { font-size: 1.3rem; }
+    .nav-btn.active { color: var(--green); }
+    .nav-btn.active .nav-icon { filter: drop-shadow(0 0 6px rgba(0,230,118,0.6)); }
 
-    /* Qty buttons */
-    .qty-btn { transition: all 0.12s ease; }
-    .qty-btn:active { transform: scale(0.88); }
+    /* VIEWS */
+    .view { display: none; padding: 12px; }
+    .view.active { display: block; }
 
-    /* Cart bar */
-    .cart-bar { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
-    .cart-bar.hidden-bar { transform: translateY(120%); }
+    /* PRODUCT CARD */
+    .product-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .product-card:hover { border-color: var(--green-border); }
+    .product-img-wrap { position: relative; }
+    .product-img-wrap img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .product-img-placeholder {
+      width: 100%; height: 180px; background: var(--card2);
+      display: flex; align-items: center; justify-content: center; font-size: 4rem;
+    }
+    .product-qty-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 0.75rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .product-body { padding: 14px; }
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 2px; color: #fff;
+      margin-bottom: 2px;
+    }
+    .product-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 14px; }
 
-    /* Modal */
-    .modal-overlay { transition: opacity 0.25s ease; }
-    .modal-panel { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    /* TIERS */
+    .tiers { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tier-btn {
+      flex: 1; background: var(--card2);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 10px 6px; text-align: center;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .tier-btn.selected {
+      border-color: var(--green);
+      background: var(--green-dim);
+      box-shadow: 0 0 12px rgba(0,230,118,0.15);
+    }
+    .tier-qty { font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; }
+    .tier-price { font-size: 1rem; font-weight: 800; color: var(--green); }
+    .tier-btn.selected .tier-qty { color: rgba(0,230,118,0.7); }
 
-    /* Glow badge */
-    .glow-badge { animation: glow-pulse 2s infinite; }
-    @keyframes glow-pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+    /* FLAVOR */
+    .flavor-label {
+      font-size: 0.68rem; color: var(--muted); margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
+    }
+    .flavor-select {
+      width: 100%; background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 11px 14px;
+      border-radius: 10px; font-size: 0.9rem; margin-bottom: 14px;
+      outline: none; font-family: 'Inter', sans-serif;
+    }
+    .flavor-select:focus { border-color: var(--green-border); }
 
-    /* Focus */
-    input:focus { outline: none; border-color: #00F5D4; box-shadow: 0 0 0 2px rgba(0,245,212,0.25); }
+    /* QTY */
+    .qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .qty-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; flex: 1; }
+    .qty-controls { display: flex; align-items: center; gap: 12px; }
+    .qty-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--card2); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text); font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .qty-btn:active { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+    .qty-val { font-size: 1.1rem; font-weight: 800; min-width: 32px; text-align: center; }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 0; }
+    /* ADD BTN */
+    .add-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e676, #00c853);
+      color: #000; border: none; border-radius: 10px;
+      padding: 14px; font-size: 0.95rem; font-weight: 800;
+      cursor: pointer; letter-spacing: 0.5px;
+      transition: opacity 0.2s, transform 0.1s;
+      box-shadow: 0 4px 20px rgba(0,230,118,0.25);
+    }
+    .add-btn:active { transform: scale(0.98); opacity: 0.9; }
+    .add-btn:disabled { background: #222; color: var(--muted); cursor: not-allowed; box-shadow: none; }
+
+    /* CART */
+    .cart-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .cart-empty .icon { font-size: 3.5rem; margin-bottom: 16px; opacity: 0.4; }
+    .cart-item {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .cart-item-name { font-weight: 700; font-size: 0.92rem; }
+    .cart-item-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .cart-item-price { font-weight: 800; color: var(--green); font-size: 0.92rem; white-space: nowrap; }
+    .cart-remove { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 4px; }
+    .cart-total {
+      background: var(--green-dim); border: 1px solid var(--green-border);
+      border-radius: 12px; padding: 16px; margin: 14px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .cart-total-label { font-size: 0.78rem; color: rgba(0,230,118,0.7); text-transform: uppercase; letter-spacing: 1px; }
+    .cart-total-pcs { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .cart-total-amount { font-size: 1.6rem; font-weight: 800; color: var(--green); }
+    .min-warning {
+      background: rgba(255,68,68,0.1); border: 1px solid rgba(255,68,68,0.3);
+      color: #ff6666; border-radius: 10px; padding: 10px 14px;
+      font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;
+    }
+    .checkout-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e676, #00c853);
+      color: #000; border: none; border-radius: 12px;
+      padding: 16px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(0,230,118,0.3);
+    }
+    .checkout-btn:disabled { background: #222; color: var(--muted); cursor: not-allowed; box-shadow: none; }
+
+    /* CHECKOUT */
+    .form-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 2px; color: var(--muted);
+      margin: 20px 0 12px; text-transform: uppercase;
+    }
+    .form-group { margin-bottom: 12px; }
+    .form-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; display: block; font-weight: 600; }
+    .form-input {
+      width: 100%; background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 12px 14px;
+      border-radius: 10px; font-size: 0.92rem;
+      outline: none; font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--green-border); }
+    .form-select {
+      width: 100%; background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 12px 14px;
+      border-radius: 10px; font-size: 0.92rem;
+      outline: none; font-family: 'Inter', sans-serif;
+    }
+    .order-summary {
+      background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 16px; margin-bottom: 16px;
+    }
+    .order-line {
+      display: flex; justify-content: space-between;
+      font-size: 0.82rem; padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .order-line:last-child { border-bottom: none; }
+    .order-line span:first-child { color: var(--muted); }
+    .order-total-line {
+      display: flex; justify-content: space-between;
+      font-weight: 800; padding-top: 12px; margin-top: 4px;
+      font-size: 1.05rem;
+    }
+    .order-total-line span:last-child { color: var(--green); }
+    .confirm-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00e676, #00c853);
+      color: #000; border: none; border-radius: 12px;
+      padding: 16px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(0,230,118,0.3);
+    }
+    .back-btn {
+      width: 100%; background: var(--card2); color: var(--text);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px; font-size: 0.9rem;
+      cursor: pointer; margin-bottom: 14px; font-family: 'Inter', sans-serif;
+    }
+
+    /* SUCCESS */
+    .success-view { text-align: center; padding: 60px 20px; }
+    .success-glow {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--green-dim); border: 2px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; margin: 0 auto 24px;
+      box-shadow: 0 0 40px rgba(0,230,118,0.3);
+    }
+    .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--green); margin-bottom: 12px; }
+    .success-sub { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+
+    /* LOADER */
+    .loader { display: flex; justify-content: center; align-items: center; padding: 60px; }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(0,230,118,0.15);
+      border-top-color: var(--green);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; border: 1px solid var(--green-border);
+      color: var(--green); padding: 10px 20px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 700; z-index: 999;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .toast.show { opacity: 1; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,230,118,0.2); border-radius: 2px; }
   </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-  <!-- ======================================================= -->
-  <!-- SPLASH SCREEN                                            -->
-  <!-- ======================================================= -->
-  <div id="splash">
-    <div class="logo-ring">
-      <span class="text-3xl">💨</span>
-    </div>
-    <h1 class="text-xl font-black tracking-[0.35em] uppercase mt-5">YUKO VAPE</h1>
-    <p class="text-[11px] tracking-[0.3em] uppercase text-cyan-brand mt-1.5">Grossiste 2026</p>
-    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo-text">YUKO VAPE</div>
+    <div class="header-badge">B2B</div>
   </div>
+  <button class="cart-btn" onclick="showView('cart')">
+    🛒 <span id="cartBadge" class="cart-badge">0</span>
+  </button>
+</div>
 
-  <!-- ======================================================= -->
-  <!-- MAIN APP (hidden during splash)                          -->
-  <!-- ======================================================= -->
-  <div id="app" class="opacity-0 transition-opacity duration-500 pb-28">
+<!-- VIEWS -->
+<div class="view active" id="view-catalogue">
+  <div class="loader"><div class="spinner"></div></div>
+</div>
 
-    <!-- ===== SCROLLING TICKER BAR ===== -->
-    <div class="bg-dark-700 py-2 overflow-hidden border-b border-dark-600">
-      <div class="marquee-track text-[10px] font-semibold tracking-[0.25em] uppercase text-smoke-400">
-        <span>✦ LIVRAISON EXPRESS</span><span>·</span><span>PRIX GROSSISTE</span><span>·</span>
-        <span>✦ PUFFS AUTHENTIQUES</span><span>·</span><span>STOCK PERMANENT</span><span>·</span>
-        <span>✦ LIVRAISON EXPRESS</span><span>·</span><span>PRIX GROSSISTE</span><span>·</span>
-        <span>✦ PUFFS AUTHENTIQUES</span><span>·</span><span>STOCK PERMANENT</span><span>·</span>
-      </div>
-    </div>
+<div class="view" id="view-cart"></div>
+<div class="view" id="view-checkout"></div>
 
-    <!-- ===== HEADER / NAV ===== -->
-    <header class="flex items-center justify-between px-5 py-3.5">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center">
-          <svg class="w-4.5 h-4.5 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        </div>
-      </div>
-      <!-- Logo center -->
-      <div class="flex flex-col items-center">
-        <span class="text-base font-black tracking-[0.3em] uppercase">YUKO</span>
-        <span class="text-[9px] tracking-[0.4em] uppercase text-cyan-brand -mt-0.5">VAPE</span>
-      </div>
-      <!-- Cart icon -->
-      <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center relative" id="header-cart-icon">
-        <svg class="w-4.5 h-4.5 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-        <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-      </div>
-    </header>
-
-    <!-- ===== HERO SECTION ===== -->
-    <section class="px-5 pt-2 pb-4">
-      <p class="text-[11px] tracking-[0.25em] uppercase text-cyan-brand font-semibold mb-2">💨 Catalogue Grossiste 2026</p>
-      <h2 class="text-[40px] font-black leading-[0.95] tracking-tight uppercase">YUKO<br>VAPE</h2>
-      <p class="text-sm font-semibold text-white/90 mt-3">Des puffs de qualité premium</p>
-      <p class="text-xs text-smoke-400">à prix grossiste — livraison express</p>
-
-      <!-- Badges -->
-      <div class="flex flex-wrap gap-2 mt-4">
-        <span class="bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🚚 Expédition 24h</span>
-        <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">⭐ 4.9/5</span>
-        <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🔒 Sécurisé</span>
-      </div>
-    </section>
-
-    <!-- ===== WELCOME BANNER ===== -->
-    <div class="mx-5 mb-5 bg-dark-700 border border-dark-500 rounded-2xl px-4 py-3">
-      <p class="text-sm" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
-    </div>
-
-    <!-- ===== DISCOUNT BANNER (hidden) ===== -->
-    <div id="discount-banner" class="hidden mx-5 mb-4 bg-cyan-brand/10 border border-cyan-brand/25 rounded-2xl px-4 py-3 text-center">
-      <p class="text-xs font-semibold text-cyan-brand">
-        <span class="glow-badge inline-block bg-cyan-brand text-dark-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full mr-1.5">-10%</span>
-        Remise grossiste activée — +50 unités au panier
-      </p>
-    </div>
-
-    <!-- ===== SECTION TITLE ===== -->
-    <div class="px-5 mb-4 flex items-center gap-3">
-      <h3 class="text-xs font-bold tracking-[0.25em] uppercase text-white">Tous les articles</h3>
-      <div class="flex-1 h-px bg-dark-600"></div>
-    </div>
-
-    <!-- ===== PRODUCT LIST ===== -->
-    <div id="product-list" class="px-5 space-y-3">
-      <!-- Rendered by JS -->
-    </div>
-
-    <!-- ===== WHY US SECTION ===== -->
-    <section class="mt-8 mx-5 bg-dark-700 rounded-2xl p-5 border border-dark-500">
-      <h3 class="text-xs font-bold tracking-[0.25em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
-      <div class="grid grid-cols-3 gap-3 text-center">
-        <div>
-          <div class="text-2xl mb-1.5">🚚</div>
-          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p>
-        </div>
-        <div>
-          <div class="text-2xl mb-1.5">⭐</div>
-          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p>
-        </div>
-        <div>
-          <div class="text-2xl mb-1.5">🔒</div>
-          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer spacer -->
-    <div class="h-8"></div>
+<div class="view" id="view-success">
+  <div class="success-view">
+    <div class="success-glow">✓</div>
+    <div class="success-title">COMMANDE ENVOYÉE</div>
+    <p class="success-sub">Votre commande a bien été transmise.<br/>Nous allons vous contacter sur Telegram très rapidement.</p>
+    <a href="https://t.me/yukovapefr" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:28px;background:var(--green);color:#000;padding:16px 24px;border-radius:10px;text-decoration:none;font-weight:800;font-size:1rem;letter-spacing:0.5px;box-shadow:0 4px 20px rgba(0,230,118,0.3);">
+      ✈️ Continuer sur Telegram →
+    </a>
+    <p style="font-size:0.72rem;color:var(--muted);margin-top:14px;">Redirection automatique dans <span id="countdown">3</span>s...</p>
   </div>
+</div>
 
-  <!-- ======================================================= -->
-  <!-- STICKY CART BAR                                          -->
-  <!-- ======================================================= -->
-  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2">
-    <button onclick="openCheckout()" class="w-full bg-cyan-brand text-dark-900 rounded-2xl px-5 py-4 flex items-center justify-between shadow-[0_0_30px_rgba(0,245,212,0.2)] active:scale-[0.98] transition-transform">
-      <div class="flex items-center gap-3">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-        <span class="font-bold text-sm">Panier : <span id="cart-count">0</span> articles</span>
-      </div>
-      <span class="font-extrabold text-base" id="cart-total">0,00 €</span>
-    </button>
-  </div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-catalogue" onclick="showView('catalogue')">
+    <span class="nav-icon">🏠</span>Accueil
+  </button>
+  <button class="nav-btn" id="nav-cart" onclick="showView('cart')">
+    <span class="nav-icon">🛒</span>Panier
+  </button>
+  <button class="nav-btn" id="nav-contact" onclick="openContact()">
+    <span class="nav-icon">✉️</span>Contact
+  </button>
+</div>
 
-  <!-- ======================================================= -->
-  <!-- CHECKOUT MODAL                                           -->
-  <!-- ======================================================= -->
-  <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
-    <div class="modal-overlay absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeCheckout()"></div>
-    <div class="modal-panel absolute bottom-0 left-0 right-0 bg-dark-800 rounded-t-3xl max-h-[90vh] overflow-y-auto border-t border-dark-500">
-      <div class="p-5">
-        <div class="w-10 h-1 bg-dark-500 rounded-full mx-auto mb-5"></div>
+<div class="toast" id="toast"></div>
 
-        <h3 class="text-lg font-black tracking-wide uppercase mb-1">Finaliser la commande</h3>
-        <p class="text-[11px] text-smoke-500 mb-5">Vérifiez votre panier puis remplissez vos informations.</p>
+<script>
+  const API = '';
+  let products = [], cart = [], productStates = {};
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
 
-        <!-- Cart items -->
-        <div id="checkout-items" class="space-y-2 mb-4"></div>
+  async function init() {
+    await loadProducts();
+  }
 
-        <div id="checkout-discount" class="hidden text-[11px] text-cyan-brand font-bold mb-1 text-right">Remise 10% appliquée</div>
-        <div class="flex justify-between items-center border-t border-dark-600 pt-3 mb-6">
-          <span class="text-sm font-semibold text-smoke-400">Total</span>
-          <span class="text-xl font-black text-cyan-brand" id="checkout-total">0,00 €</span>
-        </div>
-
-        <div class="w-full h-px bg-dark-600 mb-5"></div>
-
-        <!-- Form -->
-        <div class="space-y-3.5">
-          <div>
-            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label>
-            <input id="shop-name" type="text" placeholder="Ex: Tabac du Centre" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse de livraison</label>
-            <input id="shop-address" type="text" placeholder="12 Rue de Paris, 75001 Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Numéro de téléphone</label>
-            <input id="shop-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
-          </div>
-        </div>
-
-        <button onclick="confirmOrder()" class="w-full mt-6 mb-2 bg-cyan-brand text-dark-900 font-black py-4 rounded-2xl text-sm tracking-wider uppercase active:scale-[0.98] transition-transform shadow-[0_0_25px_rgba(0,245,212,0.2)]">
-          Envoyer la commande
-        </button>
-        <button onclick="closeCheckout()" class="w-full text-smoke-500 text-xs py-2 mb-2">Annuler</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================================================= -->
-  <!-- JAVASCRIPT                                               -->
-  <!-- ======================================================= -->
-  <script>
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      tg.setHeaderColor('#0A0A0A');
-      tg.setBackgroundColor('#0A0A0A');
+  async function loadProducts() {
+    try {
+      const res = await fetch(`${API}/api/products`);
+      products = await res.json();
+      products.forEach(p => {
+        productStates[p.id] = {
+          selectedTier: p.tiers?.[0] || null,
+          flavor: p.flavors?.[0] || '',
+          qty: p.tiers?.[0]?.qty || 30
+        };
+      });
+      renderCatalogue();
+    } catch(e) {
+      document.getElementById('view-catalogue').innerHTML = '<p style="text-align:center;padding:40px;color:var(--muted)">Impossible de charger les produits.</p>';
     }
+  }
 
-    // --- Splash screen ---
-    setTimeout(() => {
-      document.getElementById('splash').classList.add('fade-out');
-      document.getElementById('app').style.opacity = '1';
-      setTimeout(() => { document.getElementById('splash').remove(); }, 600);
-    }, 2200);
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    const navBtn = document.getElementById('nav-' + name);
+    if (navBtn) navBtn.classList.add('active');
+    if (name === 'cart') renderCart();
+    if (name === 'checkout') renderCheckout();
+  }
 
-    // --- User greeting ---
-    const firstName = tg?.initDataUnsafe?.user?.first_name || '';
-    const welcomeEl = document.getElementById('welcome-text');
-    if (firstName) {
-      welcomeEl.textContent = `👋 Bonjour ${firstName} — Bienvenue chez Yuko Vape !`;
+  function openContact() {
+    window.open('https://t.me/yukovapefr', '_blank');
+  }
+
+  function renderCatalogue() {
+    const el = document.getElementById('view-catalogue');
+    if (!products.length) {
+      el.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:3rem;margin-bottom:16px">📦</div><p>Aucun produit disponible</p></div>';
+      return;
     }
+    el.innerHTML = products.map(p => renderProductCard(p)).join('');
+  }
 
-    // --- Product Data ---
-    // 🔧 IMAGES : Remplace les valeurs `image` par l'URL de tes propres photos.
-    //    Format recommandé : carré, min 200×200px, fond transparent ou sombre.
-    const products = [
-      {
-        id: 1,
-        name: 'Razz Bar 30K',
-        flavor: 'Blueberry Sour Raspberry',
-        puffs: '30 000 puffs',
-        image: '', // 🖼️ Remplace par l'URL de ton image Razz Bar
-        price: 8.50,
-        qty: 0,
-      },
-      {
-        id: 2,
-        name: 'JNR',
-        flavor: 'Blue Razz Ice',
-        puffs: '12 000 puffs',
-        image: '', // 🖼️ Remplace par l'URL de ton image JNR
-        price: 7.90,
-        qty: 0,
-      },
-      {
-        id: 3,
-        name: 'Crystal Pro Max',
-        flavor: 'Watermelon Ice',
-        puffs: '15 000 puffs',
-        image: '', // 🖼️ Remplace par ton image
-        price: 9.20,
-        qty: 0,
-      },
-      {
-        id: 4,
-        name: 'Lost Mary BM600',
-        flavor: 'Grape Ice',
-        puffs: '600 puffs',
-        image: '', // 🖼️ Remplace par ton image
-        price: 6.80,
-        qty: 0,
-      },
-      {
-        id: 5,
-        name: 'Elfbar BC5000',
-        flavor: 'Strawberry Mango',
-        puffs: '5 000 puffs',
-        image: '', // 🖼️ Remplace par ton image
-        price: 10.50,
-        qty: 0,
-      },
-    ];
+  function renderProductCard(p) {
+    const state = productStates[p.id];
+    const tiers = p.tiers || [];
+    const flavors = p.flavors || [];
 
-    const DISCOUNT_THRESHOLD = 50;
-    const DISCOUNT_RATE = 0.10;
+    const tiersHTML = tiers.map((t, i) => `
+      <div class="tier-btn ${state.selectedTier?.qty === t.qty ? 'selected' : ''}" onclick="selectTier('${p.id}', ${i})">
+        <div class="tier-qty">${t.label}</div>
+        <div class="tier-price">${t.price.toFixed(2)}€</div>
+      </div>`).join('');
 
-    // --- Render ---
-    function renderProducts() {
-      const c = document.getElementById('product-list');
-      c.innerHTML = products.map(p => `
-        <div class="bg-dark-700 rounded-2xl border border-dark-500 p-3.5 flex items-center gap-3.5">
-          <!-- Image -->
-          <div class="w-[68px] h-[68px] rounded-xl bg-dark-600 flex-shrink-0 flex items-center justify-center overflow-hidden">
-            ${p.image
-              ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover rounded-xl">`
-              : `<span class="text-2xl opacity-40">💨</span>`
-            }
-          </div>
-          <!-- Info -->
-          <div class="flex-1 min-w-0">
-            <h4 class="text-sm font-bold leading-tight truncate">${p.name}</h4>
-            <p class="text-[11px] text-smoke-400 mt-0.5">${p.flavor}</p>
-            <div class="flex items-center gap-2 mt-1.5">
-              <span class="text-sm font-extrabold text-cyan-brand">${formatPrice(p.price)}</span>
-              <span class="text-[9px] text-smoke-500 bg-dark-600 px-1.5 py-0.5 rounded-full">${p.puffs}</span>
+    const flavorsHTML = flavors.length ? `
+      <div class="flavor-label">Parfum</div>
+      <select class="flavor-select" onchange="selectFlavor('${p.id}', this.value)">
+        ${flavors.map(f => `<option value="${f}" ${state.flavor===f?'selected':''}>${f}</option>`).join('')}
+      </select>` : '';
+
+    const imgHTML = p.image_url
+      ? `<div class="product-img-wrap"><img src="${p.image_url}" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>📦</div>'"><div class="product-qty-badge">🏷 ${p.name}</div></div>`
+      : `<div class="product-img-placeholder">📦</div>`;
+
+    return `
+      <div class="product-card" id="pcard-${p.id}">
+        ${imgHTML}
+        <div class="product-body">
+          <div class="product-name">${p.name}</div>
+          ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+          <div class="tiers">${tiersHTML}</div>
+          ${flavorsHTML}
+          <div class="qty-row">
+            <div class="qty-label">Quantité</div>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty('${p.id}', -10)">−</button>
+              <div class="qty-val" id="qty-${p.id}">${state.qty}</div>
+              <button class="qty-btn" onclick="changeQty('${p.id}', 10)">+</button>
             </div>
           </div>
-          <!-- Qty -->
-          <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button onclick="changeQty(${p.id},-1)" class="qty-btn w-8 h-8 rounded-full border border-dark-500 flex items-center justify-center text-smoke-400 ${p.qty===0?'opacity-20 pointer-events-none':''}">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
-            </button>
-            <span class="w-7 text-center text-sm font-bold">${p.qty}</span>
-            <button onclick="changeQty(${p.id},1)" class="qty-btn w-8 h-8 rounded-full bg-cyan-brand text-dark-900 flex items-center justify-center shadow-[0_0_12px_rgba(0,245,212,0.25)]">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
-            </button>
+          <button class="add-btn" onclick="addToCart('${p.id}')">+ Ajouter au panier</button>
+        </div>
+      </div>`;
+  }
+
+  function selectTier(productId, tierIndex) {
+    const p = products.find(x => x.id === productId);
+    if (!p) return;
+    productStates[productId].selectedTier = p.tiers[tierIndex];
+    productStates[productId].qty = p.tiers[tierIndex].qty;
+    document.getElementById('pcard-' + productId).outerHTML = renderProductCard(p);
+  }
+
+  function selectFlavor(productId, flavor) { productStates[productId].flavor = flavor; }
+
+  function changeQty(productId, delta) {
+    const state = productStates[productId];
+    const minQty = state.selectedTier?.qty || 10;
+    state.qty = Math.max(minQty, state.qty + delta);
+    document.getElementById('qty-' + productId).textContent = state.qty;
+    const p = products.find(x => x.id === productId);
+    if (p) { let best = p.tiers[0]; for (const t of p.tiers) { if (state.qty >= t.qty) best = t; } state.selectedTier = best; }
+  }
+
+  function addToCart(productId) {
+    const p = products.find(x => x.id === productId);
+    const state = productStates[productId];
+    if (!state.selectedTier) return;
+    if (!state.flavor && p.flavors?.length) { showToast('⚠️ Choisissez un parfum'); return; }
+    let bestTier = p.tiers[0];
+    for (const t of p.tiers) { if (state.qty >= t.qty) bestTier = t; }
+    const item = { product_id: p.id, product_name: p.name, flavor: state.flavor, qty: state.qty, unit_price: bestTier.price, total: state.qty * bestTier.price };
+    const existing = cart.find(c => c.product_id === p.id && c.flavor === state.flavor);
+    if (existing) { existing.qty += state.qty; existing.total = existing.qty * bestTier.price; }
+    else cart.push(item);
+    updateCartBadge();
+    showToast(`✅ ${p.name} ajouté !`);
+  }
+
+  function updateCartBadge() {
+    document.getElementById('cartBadge').textContent = cart.reduce((s,i) => s + i.qty, 0);
+  }
+  function getCartTotal() { return cart.reduce((s,i) => s + i.total, 0); }
+  function getTotalQty() { return cart.reduce((s,i) => s + i.qty, 0); }
+
+  function renderCart() {
+    const el = document.getElementById('view-cart');
+    if (!cart.length) {
+      el.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><p style="font-weight:700;margin-bottom:6px">Panier vide</p><p style="font-size:0.8rem">Ajoutez des produits depuis l'accueil</p></div>`;
+      return;
+    }
+    const totalQty = getTotalQty();
+    const minOk = totalQty >= 30;
+    el.innerHTML = `
+      ${cart.map((item, i) => `
+        <div class="cart-item">
+          <div style="flex:1">
+            <div class="cart-item-name">${item.product_name}</div>
+            <div class="cart-item-sub">${item.flavor} · ${item.qty} pcs × ${item.unit_price.toFixed(2)}€</div>
           </div>
+          <div class="cart-item-price">${item.total.toFixed(2)}€</div>
+          <button class="cart-remove" onclick="removeFromCart(${i})">✕</button>
+        </div>`).join('')}
+      <div class="cart-total">
+        <div>
+          <div class="cart-total-label">Total estimé</div>
+          <div class="cart-total-pcs">${totalQty} pièces</div>
         </div>
-      `).join('');
+        <div class="cart-total-amount">${getCartTotal().toFixed(2)}€</div>
+      </div>
+      ${!minOk ? `<div class="min-warning">⚠️ Minimum 30 pièces requis (${totalQty}/30)</div>` : ''}
+      <button class="checkout-btn" onclick="showView('checkout')" ${!minOk?'disabled':''}>Commander →</button>`;
+  }
+
+  function removeFromCart(i) { cart.splice(i,1); updateCartBadge(); renderCart(); }
+
+  function renderCheckout() {
+    const el = document.getElementById('view-checkout');
+    el.innerHTML = `
+      <button class="back-btn" onclick="showView('cart')">← Retour au panier</button>
+      <div class="order-summary">
+        ${cart.map(item => `
+          <div class="order-line">
+            <span>${item.product_name} — ${item.flavor}</span>
+            <span>${item.qty} pcs</span>
+          </div>`).join('')}
+        <div class="order-total-line"><span>Total</span><span>${getCartTotal().toFixed(2)}€</span></div>
+      </div>
+      <div class="form-section-title">Vos informations</div>
+      <div class="form-group">
+        <label class="form-label">Nom / Société *</label>
+        <input class="form-input" id="f-name" placeholder="ex: Jean Dupont" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telegram ou Email *</label>
+        <input class="form-input" id="f-contact" placeholder="@votretelegram ou email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pays de livraison</label>
+        <select class="form-select" id="f-country">
+          <option value="France">🇫🇷 France</option>
+          <option value="Belgique">🇧🇪 Belgique</option>
+          <option value="Suisse">🇨🇭 Suisse</option>
+          <option value="Luxembourg">🇱🇺 Luxembourg</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label class="form-label">Notes (optionnel)</label>
+        <textarea class="form-input" id="f-notes" rows="3" placeholder="Informations complémentaires..."></textarea>
+      </div>
+      <button class="confirm-btn" onclick="submitOrder()">✅ Confirmer la commande</button>`;
+  }
+
+  async function submitOrder() {
+    const name = document.getElementById('f-name')?.value?.trim();
+    const contact = document.getElementById('f-contact')?.value?.trim();
+    const country = document.getElementById('f-country')?.value;
+    const notes = document.getElementById('f-notes')?.value?.trim();
+    if (!name || !contact) { showToast('⚠️ Remplissez tous les champs'); return; }
+    const btn = document.querySelector('.confirm-btn');
+    btn.disabled = true; btn.textContent = 'Envoi en cours...';
+    try {
+      const res = await fetch(`${API}/api/orders`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ customer_name: name, customer_contact: contact, country, items: cart, total: getCartTotal(), notes })
+      });
+      if (!res.ok) throw new Error();
+      cart = []; updateCartBadge();
+      showView('success');
+      // Countdown + redirection vers @yukovapefr
+      let count = 3;
+      const cd = document.getElementById('countdown');
+      const iv = setInterval(() => {
+        count--;
+        if (cd) cd.textContent = count;
+        if (count <= 0) {
+          clearInterval(iv);
+          window.open('https://t.me/yukovapefr', '_blank');
+          if (tg) tg.close();
+        }
+      }, 1000);
+    } catch(e) {
+      btn.disabled = false; btn.textContent = '✅ Confirmer la commande';
+      showToast('❌ Erreur, réessayez');
     }
+  }
 
-    function changeQty(id, delta) {
-      const p = products.find(x => x.id === id);
-      if (!p) return;
-      p.qty = Math.max(0, p.qty + delta);
-      renderProducts();
-      updateCart();
-    }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
 
-    // --- Cart ---
-    function getCartItems() { return products.filter(p => p.qty > 0); }
-    function getTotalUnits() { return products.reduce((s,p) => s + p.qty, 0); }
-    function getSubtotal() { return products.reduce((s,p) => s + p.price * p.qty, 0); }
-    function isDiscountActive() { return getTotalUnits() >= DISCOUNT_THRESHOLD; }
-    function getFinalTotal() { const s = getSubtotal(); return isDiscountActive() ? s * (1 - DISCOUNT_RATE) : s; }
-
-    function updateCart() {
-      const units = getTotalUnits();
-      const bar = document.getElementById('cart-bar');
-      const banner = document.getElementById('discount-banner');
-      const badge = document.getElementById('header-cart-badge');
-
-      document.getElementById('cart-count').textContent = units;
-      document.getElementById('cart-total').textContent = formatPrice(getFinalTotal());
-
-      if (units > 0) {
-        bar.classList.remove('hidden-bar');
-        badge.classList.remove('hidden');
-        badge.textContent = units > 99 ? '99+' : units;
-      } else {
-        bar.classList.add('hidden-bar');
-        badge.classList.add('hidden');
-      }
-
-      if (isDiscountActive()) { banner.classList.remove('hidden'); }
-      else { banner.classList.add('hidden'); }
-    }
-
-    // --- Checkout ---
-    function openCheckout() {
-      const modal = document.getElementById('checkout-modal');
-      const ic = document.getElementById('checkout-items');
-      ic.innerHTML = getCartItems().map(p => `
-        <div class="flex justify-between items-center text-sm py-1.5">
-          <span class="text-smoke-400">${p.name} <span class="text-smoke-600">×${p.qty}</span></span>
-          <span class="font-semibold text-white">${formatPrice(p.price * p.qty)}</span>
-        </div>
-      `).join('');
-
-      document.getElementById('checkout-discount').classList.toggle('hidden', !isDiscountActive());
-      document.getElementById('checkout-total').textContent = formatPrice(getFinalTotal());
-      modal.classList.remove('hidden');
-    }
-
-    function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
-
-    function confirmOrder() {
-      const name = document.getElementById('shop-name').value.trim();
-      const addr = document.getElementById('shop-address').value.trim();
-      const phone = document.getElementById('shop-phone').value.trim();
-      if (!name || !addr || !phone) { alert('Veuillez remplir tous les champs.'); return; }
-
-      const order = {
-        shop: { name, address: addr, phone },
-        items: getCartItems().map(p => ({
-          id: p.id, name: p.name, flavor: p.flavor,
-          unit_price: p.price, quantity: p.qty,
-          line_total: +(p.price * p.qty).toFixed(2),
-        })),
-        total_units: getTotalUnits(),
-        subtotal: +getSubtotal().toFixed(2),
-        discount_applied: isDiscountActive(),
-        discount_rate: isDiscountActive() ? DISCOUNT_RATE : 0,
-        total: +getFinalTotal().toFixed(2),
-        currency: 'EUR',
-        timestamp: new Date().toISOString(),
-      };
-
-      if (tg?.sendData) tg.sendData(JSON.stringify(order));
-      if (tg?.close) tg.close();
-    }
-
-    function formatPrice(n) { return n.toLocaleString('fr-FR', { style:'currency', currency:'EUR' }); }
-
-    // --- Init ---
-    renderProducts();
-    updateCart();
-  </script>
+  init();
+</script>
 </body>
 </html>

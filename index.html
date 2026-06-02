@@ -11,170 +11,277 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              deep: '#1B2A4A',
-              steel: '#2C3E50',
-              ice: '#5DADE2',
-              copper: '#D4956A',
-              bg: '#F8F9FA',
-              card: '#FFFFFF',
-            }
-          },
-          fontFamily: {
-            display: ['Inter', 'system-ui', 'sans-serif'],
+            dark: { 900: '#0A0A0A', 800: '#111111', 700: '#1A1A1A', 600: '#222222', 500: '#2A2A2A' },
+            cyan: { brand: '#00F5D4', dim: '#00C4AA', glow: 'rgba(0,245,212,0.15)' },
+            smoke: { 400: '#888888', 500: '#666666', 600: '#444444' }
           }
         }
       }
     }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Inter', system-ui, sans-serif; }
-    .qty-btn { transition: all 0.15s ease; }
-    .qty-btn:active { transform: scale(0.9); }
-    .cart-bar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .cart-bar.hidden-bar { transform: translateY(120%); }
-    .modal-overlay { transition: opacity 0.25s ease; }
-    .modal-panel { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .discount-badge { animation: pulse-soft 2s infinite; }
-    @keyframes pulse-soft {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #0A0A0A; color: #fff; }
+
+    /* Splash screen */
+    #splash {
+      position: fixed; inset: 0; z-index: 100; background: #0A0A0A;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease;
     }
-    input:focus { outline: none; box-shadow: 0 0 0 2px #5DADE2; }
+    #splash.fade-out { opacity: 0; pointer-events: none; }
+    .logo-ring {
+      width: 140px; height: 140px; border-radius: 50%;
+      border: 3px solid #00F5D4;
+      display: flex; align-items: center; justify-content: center;
+      animation: ring-pulse 2s ease-in-out infinite;
+    }
+    @keyframes ring-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,212,0.4); }
+      50% { box-shadow: 0 0 20px 8px rgba(0,245,212,0.15); }
+    }
+    .splash-bar { width: 60px; height: 3px; border-radius: 3px; background: #222; overflow: hidden; margin-top: 40px; }
+    .splash-bar-fill { height: 100%; width: 0%; background: #00F5D4; border-radius: 3px; animation: load-bar 1.8s ease forwards; }
+    @keyframes load-bar { to { width: 100%; } }
+
+    /* Marquee */
+    .marquee-track {
+      display: flex; gap: 32px; width: max-content;
+      animation: marquee 18s linear infinite;
+    }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* Qty buttons */
+    .qty-btn { transition: all 0.12s ease; }
+    .qty-btn:active { transform: scale(0.88); }
+
+    /* Cart bar */
+    .cart-bar { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    .cart-bar.hidden-bar { transform: translateY(120%); }
+
+    /* Modal */
+    .modal-overlay { transition: opacity 0.25s ease; }
+    .modal-panel { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+
+    /* Glow badge */
+    .glow-badge { animation: glow-pulse 2s infinite; }
+    @keyframes glow-pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+
+    /* Focus */
+    input:focus { outline: none; border-color: #00F5D4; box-shadow: 0 0 0 2px rgba(0,245,212,0.25); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 0; }
   </style>
 </head>
-<body class="bg-brand-bg min-h-screen pb-28">
+<body class="min-h-screen">
 
-  <!-- ============================================= -->
-  <!-- HEADER                                        -->
-  <!-- ============================================= -->
-  <header class="sticky top-0 z-30 bg-brand-deep text-white px-4 py-4 shadow-lg">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-lg font-extrabold tracking-widest">YUKO VAPE</h1>
-        <p class="text-xs text-brand-ice/80 font-medium mt-0.5" id="welcome-text">Bienvenue</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="text-[10px] uppercase tracking-wider bg-brand-copper/90 text-white px-2 py-0.5 rounded-full font-semibold">Grossiste</span>
+  <!-- ======================================================= -->
+  <!-- SPLASH SCREEN                                            -->
+  <!-- ======================================================= -->
+  <div id="splash">
+    <div class="logo-ring">
+      <span class="text-3xl">💨</span>
+    </div>
+    <h1 class="text-xl font-black tracking-[0.35em] uppercase mt-5">YUKO VAPE</h1>
+    <p class="text-[11px] tracking-[0.3em] uppercase text-cyan-brand mt-1.5">Grossiste 2026</p>
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- MAIN APP (hidden during splash)                          -->
+  <!-- ======================================================= -->
+  <div id="app" class="opacity-0 transition-opacity duration-500 pb-28">
+
+    <!-- ===== SCROLLING TICKER BAR ===== -->
+    <div class="bg-dark-700 py-2 overflow-hidden border-b border-dark-600">
+      <div class="marquee-track text-[10px] font-semibold tracking-[0.25em] uppercase text-smoke-400">
+        <span>✦ LIVRAISON EXPRESS</span><span>·</span><span>PRIX GROSSISTE</span><span>·</span>
+        <span>✦ PUFFS AUTHENTIQUES</span><span>·</span><span>STOCK PERMANENT</span><span>·</span>
+        <span>✦ LIVRAISON EXPRESS</span><span>·</span><span>PRIX GROSSISTE</span><span>·</span>
+        <span>✦ PUFFS AUTHENTIQUES</span><span>·</span><span>STOCK PERMANENT</span><span>·</span>
       </div>
     </div>
-  </header>
 
-  <!-- ============================================= -->
-  <!-- DISCOUNT BANNER (hidden by default)           -->
-  <!-- ============================================= -->
-  <div id="discount-banner" class="hidden bg-gradient-to-r from-brand-ice/10 to-brand-copper/10 border-b border-brand-ice/20 px-4 py-2.5 text-center">
-    <p class="text-xs font-semibold text-brand-steel">
-      <span class="discount-badge inline-block bg-brand-ice text-white text-[10px] px-2 py-0.5 rounded-full mr-1.5">-10%</span>
-      Remise grossiste activée — plus de 50 unités au panier
-    </p>
-  </div>
-
-  <!-- ============================================= -->
-  <!-- SECTION TITLE                                 -->
-  <!-- ============================================= -->
-  <div class="px-4 pt-5 pb-3">
-    <h2 class="text-sm font-bold text-brand-steel uppercase tracking-wider">Catalogue</h2>
-    <div class="w-10 h-0.5 bg-brand-copper mt-1.5 rounded-full"></div>
-  </div>
-
-  <!-- ============================================= -->
-  <!-- PRODUCT LIST                                  -->
-  <!-- ============================================= -->
-  <div id="product-list" class="px-4 space-y-3">
-    <!-- Products are rendered by JS -->
-  </div>
-
-  <!-- ============================================= -->
-  <!-- STICKY CART BAR                               -->
-  <!-- ============================================= -->
-  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2">
-    <button onclick="openCheckout()" class="w-full bg-brand-deep text-white rounded-2xl px-5 py-4 flex items-center justify-between shadow-xl active:scale-[0.98] transition-transform">
+    <!-- ===== HEADER / NAV ===== -->
+    <header class="flex items-center justify-between px-5 py-3.5">
       <div class="flex items-center gap-3">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-        <span class="font-semibold text-sm">Voir le panier (<span id="cart-count">0</span> articles)</span>
+        <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center">
+          <svg class="w-4.5 h-4.5 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
       </div>
-      <span class="font-bold text-base" id="cart-total">0,00 €</span>
+      <!-- Logo center -->
+      <div class="flex flex-col items-center">
+        <span class="text-base font-black tracking-[0.3em] uppercase">YUKO</span>
+        <span class="text-[9px] tracking-[0.4em] uppercase text-cyan-brand -mt-0.5">VAPE</span>
+      </div>
+      <!-- Cart icon -->
+      <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center relative" id="header-cart-icon">
+        <svg class="w-4.5 h-4.5 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+      </div>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="px-5 pt-2 pb-4">
+      <p class="text-[11px] tracking-[0.25em] uppercase text-cyan-brand font-semibold mb-2">💨 Catalogue Grossiste 2026</p>
+      <h2 class="text-[40px] font-black leading-[0.95] tracking-tight uppercase">YUKO<br>VAPE</h2>
+      <p class="text-sm font-semibold text-white/90 mt-3">Des puffs de qualité premium</p>
+      <p class="text-xs text-smoke-400">à prix grossiste — livraison express</p>
+
+      <!-- Badges -->
+      <div class="flex flex-wrap gap-2 mt-4">
+        <span class="bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🚚 Expédition 24h</span>
+        <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">⭐ 4.9/5</span>
+        <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🔒 Sécurisé</span>
+      </div>
+    </section>
+
+    <!-- ===== WELCOME BANNER ===== -->
+    <div class="mx-5 mb-5 bg-dark-700 border border-dark-500 rounded-2xl px-4 py-3">
+      <p class="text-sm" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
+    </div>
+
+    <!-- ===== DISCOUNT BANNER (hidden) ===== -->
+    <div id="discount-banner" class="hidden mx-5 mb-4 bg-cyan-brand/10 border border-cyan-brand/25 rounded-2xl px-4 py-3 text-center">
+      <p class="text-xs font-semibold text-cyan-brand">
+        <span class="glow-badge inline-block bg-cyan-brand text-dark-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full mr-1.5">-10%</span>
+        Remise grossiste activée — +50 unités au panier
+      </p>
+    </div>
+
+    <!-- ===== SECTION TITLE ===== -->
+    <div class="px-5 mb-4 flex items-center gap-3">
+      <h3 class="text-xs font-bold tracking-[0.25em] uppercase text-white">Tous les articles</h3>
+      <div class="flex-1 h-px bg-dark-600"></div>
+    </div>
+
+    <!-- ===== PRODUCT LIST ===== -->
+    <div id="product-list" class="px-5 space-y-3">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- ===== WHY US SECTION ===== -->
+    <section class="mt-8 mx-5 bg-dark-700 rounded-2xl p-5 border border-dark-500">
+      <h3 class="text-xs font-bold tracking-[0.25em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div>
+          <div class="text-2xl mb-1.5">🚚</div>
+          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p>
+        </div>
+        <div>
+          <div class="text-2xl mb-1.5">⭐</div>
+          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p>
+        </div>
+        <div>
+          <div class="text-2xl mb-1.5">🔒</div>
+          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer spacer -->
+    <div class="h-8"></div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- STICKY CART BAR                                          -->
+  <!-- ======================================================= -->
+  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2">
+    <button onclick="openCheckout()" class="w-full bg-cyan-brand text-dark-900 rounded-2xl px-5 py-4 flex items-center justify-between shadow-[0_0_30px_rgba(0,245,212,0.2)] active:scale-[0.98] transition-transform">
+      <div class="flex items-center gap-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        <span class="font-bold text-sm">Panier : <span id="cart-count">0</span> articles</span>
+      </div>
+      <span class="font-extrabold text-base" id="cart-total">0,00 €</span>
     </button>
   </div>
 
-  <!-- ============================================= -->
-  <!-- CHECKOUT MODAL                                -->
-  <!-- ============================================= -->
+  <!-- ======================================================= -->
+  <!-- CHECKOUT MODAL                                           -->
+  <!-- ======================================================= -->
   <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
-    <div class="modal-overlay absolute inset-0 bg-black/50" onclick="closeCheckout()"></div>
-    <div class="modal-panel absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[90vh] overflow-y-auto">
+    <div class="modal-overlay absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeCheckout()"></div>
+    <div class="modal-panel absolute bottom-0 left-0 right-0 bg-dark-800 rounded-t-3xl max-h-[90vh] overflow-y-auto border-t border-dark-500">
       <div class="p-5">
-        <!-- Handle -->
-        <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-5"></div>
+        <div class="w-10 h-1 bg-dark-500 rounded-full mx-auto mb-5"></div>
 
-        <h3 class="text-lg font-bold text-brand-steel mb-1">Finaliser la commande</h3>
-        <p class="text-xs text-gray-400 mb-5">Vérifiez votre panier puis remplissez vos informations.</p>
+        <h3 class="text-lg font-black tracking-wide uppercase mb-1">Finaliser la commande</h3>
+        <p class="text-[11px] text-smoke-500 mb-5">Vérifiez votre panier puis remplissez vos informations.</p>
 
-        <!-- Cart Summary -->
+        <!-- Cart items -->
         <div id="checkout-items" class="space-y-2 mb-4"></div>
 
-        <div id="checkout-discount" class="hidden text-xs text-brand-ice font-semibold mb-1 text-right">Remise 10% appliquée</div>
-        <div class="flex justify-between items-center border-t border-gray-100 pt-3 mb-6">
-          <span class="text-sm font-semibold text-gray-500">Total</span>
-          <span class="text-xl font-extrabold text-brand-deep" id="checkout-total">0,00 €</span>
+        <div id="checkout-discount" class="hidden text-[11px] text-cyan-brand font-bold mb-1 text-right">Remise 10% appliquée</div>
+        <div class="flex justify-between items-center border-t border-dark-600 pt-3 mb-6">
+          <span class="text-sm font-semibold text-smoke-400">Total</span>
+          <span class="text-xl font-black text-cyan-brand" id="checkout-total">0,00 €</span>
         </div>
 
-        <!-- Separator -->
-        <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-copper/30 to-transparent mb-5"></div>
+        <div class="w-full h-px bg-dark-600 mb-5"></div>
 
         <!-- Form -->
         <div class="space-y-3.5">
           <div>
-            <label class="block text-xs font-semibold text-brand-steel mb-1">Nom de la boutique</label>
-            <input id="shop-name" type="text" placeholder="Ex: Tabac du Centre" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-brand-bg placeholder-gray-400">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label>
+            <input id="shop-name" type="text" placeholder="Ex: Tabac du Centre" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-brand-steel mb-1">Adresse de livraison</label>
-            <input id="shop-address" type="text" placeholder="12 Rue de Paris, 75001 Paris" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-brand-bg placeholder-gray-400">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse de livraison</label>
+            <input id="shop-address" type="text" placeholder="12 Rue de Paris, 75001 Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-brand-steel mb-1">Numéro de téléphone</label>
-            <input id="shop-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-brand-bg placeholder-gray-400">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Numéro de téléphone</label>
+            <input id="shop-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
         </div>
 
-        <!-- Confirm Button -->
-        <button onclick="confirmOrder()" class="w-full mt-6 mb-2 bg-brand-deep text-white font-bold py-4 rounded-2xl text-sm tracking-wide active:scale-[0.98] transition-transform shadow-lg">
-          Confirmer la commande
+        <button onclick="confirmOrder()" class="w-full mt-6 mb-2 bg-cyan-brand text-dark-900 font-black py-4 rounded-2xl text-sm tracking-wider uppercase active:scale-[0.98] transition-transform shadow-[0_0_25px_rgba(0,245,212,0.2)]">
+          Envoyer la commande
         </button>
-        <button onclick="closeCheckout()" class="w-full text-gray-400 text-xs py-2 mb-2">Annuler</button>
+        <button onclick="closeCheckout()" class="w-full text-smoke-500 text-xs py-2 mb-2">Annuler</button>
       </div>
     </div>
   </div>
 
-  <!-- ============================================= -->
-  <!-- JAVASCRIPT                                    -->
-  <!-- ============================================= -->
+  <!-- ======================================================= -->
+  <!-- JAVASCRIPT                                               -->
+  <!-- ======================================================= -->
   <script>
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
       tg.expand();
+      tg.setHeaderColor('#0A0A0A');
+      tg.setBackgroundColor('#0A0A0A');
     }
 
+    // --- Splash screen ---
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('fade-out');
+      document.getElementById('app').style.opacity = '1';
+      setTimeout(() => { document.getElementById('splash').remove(); }, 600);
+    }, 2200);
+
     // --- User greeting ---
-    const firstName = tg?.initDataUnsafe?.user?.first_name || 'Partenaire';
-    document.getElementById('welcome-text').textContent = `Bienvenue, ${firstName}`;
+    const firstName = tg?.initDataUnsafe?.user?.first_name || '';
+    const welcomeEl = document.getElementById('welcome-text');
+    if (firstName) {
+      welcomeEl.textContent = `👋 Bonjour ${firstName} — Bienvenue chez Yuko Vape !`;
+    }
 
     // --- Product Data ---
-    // 🔧 IMAGES : Remplace les valeurs de `image` par l'URL de tes propres photos.
-    //    Taille recommandée : 80×80px minimum, format carré, fond transparent ou blanc.
+    // 🔧 IMAGES : Remplace les valeurs `image` par l'URL de tes propres photos.
+    //    Format recommandé : carré, min 200×200px, fond transparent ou sombre.
     const products = [
       {
         id: 1,
         name: 'Razz Bar 30K',
         flavor: 'Blueberry Sour Raspberry',
-        // 🖼️ Remplace cette URL par l'image du Razz Bar
-        image: '',
+        puffs: '30 000 puffs',
+        image: '', // 🖼️ Remplace par l'URL de ton image Razz Bar
         price: 8.50,
         qty: 0,
       },
@@ -182,8 +289,8 @@
         id: 2,
         name: 'JNR',
         flavor: 'Blue Razz Ice',
-        // 🖼️ Remplace cette URL par l'image du JNR
-        image: '',
+        puffs: '12 000 puffs',
+        image: '', // 🖼️ Remplace par l'URL de ton image JNR
         price: 7.90,
         qty: 0,
       },
@@ -191,8 +298,8 @@
         id: 3,
         name: 'Crystal Pro Max',
         flavor: 'Watermelon Ice',
-        // 🖼️ Remplace cette URL par ton image
-        image: '',
+        puffs: '15 000 puffs',
+        image: '', // 🖼️ Remplace par ton image
         price: 9.20,
         qty: 0,
       },
@@ -200,8 +307,8 @@
         id: 4,
         name: 'Lost Mary BM600',
         flavor: 'Grape Ice',
-        // 🖼️ Remplace cette URL par ton image
-        image: '',
+        puffs: '600 puffs',
+        image: '', // 🖼️ Remplace par ton image
         price: 6.80,
         qty: 0,
       },
@@ -209,8 +316,8 @@
         id: 5,
         name: 'Elfbar BC5000',
         flavor: 'Strawberry Mango',
-        // 🖼️ Remplace cette URL par ton image
-        image: '',
+        puffs: '5 000 puffs',
+        image: '', // 🖼️ Remplace par ton image
         price: 10.50,
         qty: 0,
       },
@@ -219,33 +326,34 @@
     const DISCOUNT_THRESHOLD = 50;
     const DISCOUNT_RATE = 0.10;
 
-    // --- Render Products ---
+    // --- Render ---
     function renderProducts() {
-      const container = document.getElementById('product-list');
-      container.innerHTML = products.map(p => `
-        <div class="bg-brand-card rounded-2xl shadow-sm border border-gray-100/80 p-3.5 flex items-center gap-3.5">
-          <!-- Product Image -->
-          <div class="w-16 h-16 rounded-xl bg-brand-bg flex-shrink-0 flex items-center justify-center overflow-hidden">
+      const c = document.getElementById('product-list');
+      c.innerHTML = products.map(p => `
+        <div class="bg-dark-700 rounded-2xl border border-dark-500 p-3.5 flex items-center gap-3.5">
+          <!-- Image -->
+          <div class="w-[68px] h-[68px] rounded-xl bg-dark-600 flex-shrink-0 flex items-center justify-center overflow-hidden">
             ${p.image
               ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover rounded-xl">`
-              : `<svg class="w-7 h-7 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`
+              : `<span class="text-2xl opacity-40">💨</span>`
             }
           </div>
-
           <!-- Info -->
           <div class="flex-1 min-w-0">
-            <h3 class="text-sm font-bold text-brand-steel leading-tight truncate">${p.name}</h3>
-            <p class="text-[11px] text-gray-400 mt-0.5">${p.flavor}</p>
-            <p class="text-sm font-extrabold text-brand-deep mt-1">${formatPrice(p.price)}</p>
+            <h4 class="text-sm font-bold leading-tight truncate">${p.name}</h4>
+            <p class="text-[11px] text-smoke-400 mt-0.5">${p.flavor}</p>
+            <div class="flex items-center gap-2 mt-1.5">
+              <span class="text-sm font-extrabold text-cyan-brand">${formatPrice(p.price)}</span>
+              <span class="text-[9px] text-smoke-500 bg-dark-600 px-1.5 py-0.5 rounded-full">${p.puffs}</span>
+            </div>
           </div>
-
-          <!-- Quantity Selector -->
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button onclick="changeQty(${p.id}, -1)" class="qty-btn w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-brand-ice hover:text-brand-ice ${p.qty === 0 ? 'opacity-30 pointer-events-none' : ''}">
+          <!-- Qty -->
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="changeQty(${p.id},-1)" class="qty-btn w-8 h-8 rounded-full border border-dark-500 flex items-center justify-center text-smoke-400 ${p.qty===0?'opacity-20 pointer-events-none':''}">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
             </button>
-            <span class="w-8 text-center text-sm font-bold text-brand-steel">${p.qty}</span>
-            <button onclick="changeQty(${p.id}, 1)" class="qty-btn w-8 h-8 rounded-full bg-brand-deep text-white flex items-center justify-center shadow-sm">
+            <span class="w-7 text-center text-sm font-bold">${p.qty}</span>
+            <button onclick="changeQty(${p.id},1)" class="qty-btn w-8 h-8 rounded-full bg-cyan-brand text-dark-900 flex items-center justify-center shadow-[0_0_12px_rgba(0,245,212,0.25)]">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -253,110 +361,72 @@
       `).join('');
     }
 
-    // --- Quantity Change ---
     function changeQty(id, delta) {
-      const product = products.find(p => p.id === id);
-      if (!product) return;
-      product.qty = Math.max(0, product.qty + delta);
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      p.qty = Math.max(0, p.qty + delta);
       renderProducts();
       updateCart();
     }
 
-    // --- Cart Logic ---
-    function getCartItems() {
-      return products.filter(p => p.qty > 0);
-    }
-
-    function getTotalUnits() {
-      return products.reduce((sum, p) => sum + p.qty, 0);
-    }
-
-    function getSubtotal() {
-      return products.reduce((sum, p) => sum + p.price * p.qty, 0);
-    }
-
-    function isDiscountActive() {
-      return getTotalUnits() >= DISCOUNT_THRESHOLD;
-    }
-
-    function getFinalTotal() {
-      const sub = getSubtotal();
-      return isDiscountActive() ? sub * (1 - DISCOUNT_RATE) : sub;
-    }
+    // --- Cart ---
+    function getCartItems() { return products.filter(p => p.qty > 0); }
+    function getTotalUnits() { return products.reduce((s,p) => s + p.qty, 0); }
+    function getSubtotal() { return products.reduce((s,p) => s + p.price * p.qty, 0); }
+    function isDiscountActive() { return getTotalUnits() >= DISCOUNT_THRESHOLD; }
+    function getFinalTotal() { const s = getSubtotal(); return isDiscountActive() ? s * (1 - DISCOUNT_RATE) : s; }
 
     function updateCart() {
-      const totalUnits = getTotalUnits();
+      const units = getTotalUnits();
       const bar = document.getElementById('cart-bar');
       const banner = document.getElementById('discount-banner');
+      const badge = document.getElementById('header-cart-badge');
 
-      document.getElementById('cart-count').textContent = totalUnits;
+      document.getElementById('cart-count').textContent = units;
       document.getElementById('cart-total').textContent = formatPrice(getFinalTotal());
 
-      if (totalUnits > 0) {
+      if (units > 0) {
         bar.classList.remove('hidden-bar');
+        badge.classList.remove('hidden');
+        badge.textContent = units > 99 ? '99+' : units;
       } else {
         bar.classList.add('hidden-bar');
+        badge.classList.add('hidden');
       }
 
-      if (isDiscountActive()) {
-        banner.classList.remove('hidden');
-      } else {
-        banner.classList.add('hidden');
-      }
+      if (isDiscountActive()) { banner.classList.remove('hidden'); }
+      else { banner.classList.add('hidden'); }
     }
 
-    // --- Checkout Modal ---
+    // --- Checkout ---
     function openCheckout() {
       const modal = document.getElementById('checkout-modal');
-      const items = getCartItems();
-      const itemsContainer = document.getElementById('checkout-items');
-
-      itemsContainer.innerHTML = items.map(p => `
+      const ic = document.getElementById('checkout-items');
+      ic.innerHTML = getCartItems().map(p => `
         <div class="flex justify-between items-center text-sm py-1.5">
-          <span class="text-gray-600">${p.name} <span class="text-gray-400">×${p.qty}</span></span>
-          <span class="font-semibold text-brand-steel">${formatPrice(p.price * p.qty)}</span>
+          <span class="text-smoke-400">${p.name} <span class="text-smoke-600">×${p.qty}</span></span>
+          <span class="font-semibold text-white">${formatPrice(p.price * p.qty)}</span>
         </div>
       `).join('');
 
-      const discountEl = document.getElementById('checkout-discount');
-      if (isDiscountActive()) {
-        discountEl.classList.remove('hidden');
-      } else {
-        discountEl.classList.add('hidden');
-      }
-
+      document.getElementById('checkout-discount').classList.toggle('hidden', !isDiscountActive());
       document.getElementById('checkout-total').textContent = formatPrice(getFinalTotal());
-
       modal.classList.remove('hidden');
     }
 
-    function closeCheckout() {
-      document.getElementById('checkout-modal').classList.add('hidden');
-    }
+    function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
-    // --- Confirm Order ---
     function confirmOrder() {
-      const shopName = document.getElementById('shop-name').value.trim();
-      const shopAddress = document.getElementById('shop-address').value.trim();
-      const shopPhone = document.getElementById('shop-phone').value.trim();
-
-      if (!shopName || !shopAddress || !shopPhone) {
-        alert('Veuillez remplir tous les champs.');
-        return;
-      }
+      const name = document.getElementById('shop-name').value.trim();
+      const addr = document.getElementById('shop-address').value.trim();
+      const phone = document.getElementById('shop-phone').value.trim();
+      if (!name || !addr || !phone) { alert('Veuillez remplir tous les champs.'); return; }
 
       const order = {
-        shop: {
-          name: shopName,
-          address: shopAddress,
-          phone: shopPhone,
-        },
+        shop: { name, address: addr, phone },
         items: getCartItems().map(p => ({
-          id: p.id,
-          name: p.name,
-          flavor: p.flavor,
-          unit_price: p.price,
-          quantity: p.qty,
+          id: p.id, name: p.name, flavor: p.flavor,
+          unit_price: p.price, quantity: p.qty,
           line_total: +(p.price * p.qty).toFixed(2),
         })),
         total_units: getTotalUnits(),
@@ -368,24 +438,15 @@
         timestamp: new Date().toISOString(),
       };
 
-      if (tg?.sendData) {
-        tg.sendData(JSON.stringify(order));
-      }
-
-      if (tg?.close) {
-        tg.close();
-      }
+      if (tg?.sendData) tg.sendData(JSON.stringify(order));
+      if (tg?.close) tg.close();
     }
 
-    // --- Helpers ---
-    function formatPrice(amount) {
-      return amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
-    }
+    function formatPrice(n) { return n.toLocaleString('fr-FR', { style:'currency', currency:'EUR' }); }
 
     // --- Init ---
     renderProducts();
     updateCart();
   </script>
-
 </body>
 </html>

@@ -2,158 +2,390 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Restaurant</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Yuko Vape — Grossiste</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              deep: '#1B2A4A',
+              steel: '#2C3E50',
+              ice: '#5DADE2',
+              copper: '#D4956A',
+              bg: '#F8F9FA',
+              card: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            display: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #111;
-      color: #fff;
-      line-height: 1.6;
+    * { -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .qty-btn { transition: all 0.15s ease; }
+    .qty-btn:active { transform: scale(0.9); }
+    .cart-bar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .cart-bar.hidden-bar { transform: translateY(120%); }
+    .modal-overlay { transition: opacity 0.25s ease; }
+    .modal-panel { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .discount-badge { animation: pulse-soft 2s infinite; }
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
     }
-
-    header {
-      background: url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee') center/cover;
-      height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      background: rgba(0,0,0,0.6);
-      padding: 20px 40px;
-      border-radius: 15px;
-    }
-
-    .container {
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    h2 {
-      margin: 30px 0 10px;
-      border-bottom: 2px solid #c59d5f;
-      display: inline-block;
-      padding-bottom: 5px;
-    }
-
-    .item {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 10px;
-      background: #1a1a1a;
-    }
-
-    .item div {
-      max-width: 70%;
-    }
-
-    .price {
-      color: #c59d5f;
-      font-weight: bold;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      background: #000;
-      font-size: 0.9rem;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 20px;
-      border-radius: 30px;
-      background: #c59d5f;
-      color: #000;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
+    input:focus { outline: none; box-shadow: 0 0 0 2px #5DADE2; }
   </style>
 </head>
-<body>
+<body class="bg-brand-bg min-h-screen pb-28">
 
-<header>
-  <h1>LE NOM DU RESTO</h1>
-</header>
-
-<div class="container">
-
-  <h2>Entrées</h2>
-  <div class="item">
-    <div>
-      <strong>Burrata</strong><br>
-      Tomates fraîches, pesto maison
+  <!-- ============================================= -->
+  <!-- HEADER                                        -->
+  <!-- ============================================= -->
+  <header class="sticky top-0 z-30 bg-brand-deep text-white px-4 py-4 shadow-lg">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-lg font-extrabold tracking-widest">YUKO VAPE</h1>
+        <p class="text-xs text-brand-ice/80 font-medium mt-0.5" id="welcome-text">Bienvenue</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] uppercase tracking-wider bg-brand-copper/90 text-white px-2 py-0.5 rounded-full font-semibold">Grossiste</span>
+      </div>
     </div>
-    <div class="price">9€</div>
+  </header>
+
+  <!-- ============================================= -->
+  <!-- DISCOUNT BANNER (hidden by default)           -->
+  <!-- ============================================= -->
+  <div id="discount-banner" class="hidden bg-gradient-to-r from-brand-ice/10 to-brand-copper/10 border-b border-brand-ice/20 px-4 py-2.5 text-center">
+    <p class="text-xs font-semibold text-brand-steel">
+      <span class="discount-badge inline-block bg-brand-ice text-white text-[10px] px-2 py-0.5 rounded-full mr-1.5">-10%</span>
+      Remise grossiste activée — plus de 50 unités au panier
+    </p>
   </div>
 
-  <div class="item">
-    <div>
-      <strong>Carpaccio</strong><br>
-      Parmesan, roquette, citron
+  <!-- ============================================= -->
+  <!-- SECTION TITLE                                 -->
+  <!-- ============================================= -->
+  <div class="px-4 pt-5 pb-3">
+    <h2 class="text-sm font-bold text-brand-steel uppercase tracking-wider">Catalogue</h2>
+    <div class="w-10 h-0.5 bg-brand-copper mt-1.5 rounded-full"></div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- PRODUCT LIST                                  -->
+  <!-- ============================================= -->
+  <div id="product-list" class="px-4 space-y-3">
+    <!-- Products are rendered by JS -->
+  </div>
+
+  <!-- ============================================= -->
+  <!-- STICKY CART BAR                               -->
+  <!-- ============================================= -->
+  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2">
+    <button onclick="openCheckout()" class="w-full bg-brand-deep text-white rounded-2xl px-5 py-4 flex items-center justify-between shadow-xl active:scale-[0.98] transition-transform">
+      <div class="flex items-center gap-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="font-semibold text-sm">Voir le panier (<span id="cart-count">0</span> articles)</span>
+      </div>
+      <span class="font-bold text-base" id="cart-total">0,00 €</span>
+    </button>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- CHECKOUT MODAL                                -->
+  <!-- ============================================= -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0 bg-black/50" onclick="closeCheckout()"></div>
+    <div class="modal-panel absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[90vh] overflow-y-auto">
+      <div class="p-5">
+        <!-- Handle -->
+        <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-5"></div>
+
+        <h3 class="text-lg font-bold text-brand-steel mb-1">Finaliser la commande</h3>
+        <p class="text-xs text-gray-400 mb-5">Vérifiez votre panier puis remplissez vos informations.</p>
+
+        <!-- Cart Summary -->
+        <div id="checkout-items" class="space-y-2 mb-4"></div>
+
+        <div id="checkout-discount" class="hidden text-xs text-brand-ice font-semibold mb-1 text-right">Remise 10% appliquée</div>
+        <div class="flex justify-between items-center border-t border-gray-100 pt-3 mb-6">
+          <span class="text-sm font-semibold text-gray-500">Total</span>
+          <span class="text-xl font-extrabold text-brand-deep" id="checkout-total">0,00 €</span>
+        </div>
+
+        <!-- Separator -->
+        <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-copper/30 to-transparent mb-5"></div>
+
+        <!-- Form -->
+        <div class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-brand-steel mb-1">Nom de la boutique</label>
+            <input id="shop-name" type="text" placeholder="Ex: Tabac du Centre" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-brand-bg placeholder-gray-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-brand-steel mb-1">Adresse de livraison</label>
+            <input id="shop-address" type="text" placeholder="12 Rue de Paris, 75001 Paris" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-brand-bg placeholder-gray-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-brand-steel mb-1">Numéro de téléphone</label>
+            <input id="shop-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-brand-bg placeholder-gray-400">
+          </div>
+        </div>
+
+        <!-- Confirm Button -->
+        <button onclick="confirmOrder()" class="w-full mt-6 mb-2 bg-brand-deep text-white font-bold py-4 rounded-2xl text-sm tracking-wide active:scale-[0.98] transition-transform shadow-lg">
+          Confirmer la commande
+        </button>
+        <button onclick="closeCheckout()" class="w-full text-gray-400 text-xs py-2 mb-2">Annuler</button>
+      </div>
     </div>
-    <div class="price">12€</div>
   </div>
 
-  <h2>Plats</h2>
-  <div class="item">
-    <div>
-      <strong>Pâtes truffe</strong><br>
-      Sauce crémeuse, parmesan
-    </div>
-    <div class="price">18€</div>
-  </div>
+  <!-- ============================================= -->
+  <!-- JAVASCRIPT                                    -->
+  <!-- ============================================= -->
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
 
-  <div class="item">
-    <div>
-      <strong>Pizza Diavola</strong><br>
-      Salami piquant, mozzarella
-    </div>
-    <div class="price">16€</div>
-  </div>
+    // --- User greeting ---
+    const firstName = tg?.initDataUnsafe?.user?.first_name || 'Partenaire';
+    document.getElementById('welcome-text').textContent = `Bienvenue, ${firstName}`;
 
-  <h2>Desserts</h2>
-  <div class="item">
-    <div>
-      <strong>Tiramisu</strong><br>
-      Recette maison
-    </div>
-    <div class="price">8€</div>
-  </div>
+    // --- Product Data ---
+    // 🔧 IMAGES : Remplace les valeurs de `image` par l'URL de tes propres photos.
+    //    Taille recommandée : 80×80px minimum, format carré, fond transparent ou blanc.
+    const products = [
+      {
+        id: 1,
+        name: 'Razz Bar 30K',
+        flavor: 'Blueberry Sour Raspberry',
+        // 🖼️ Remplace cette URL par l'image du Razz Bar
+        image: '',
+        price: 8.50,
+        qty: 0,
+      },
+      {
+        id: 2,
+        name: 'JNR',
+        flavor: 'Blue Razz Ice',
+        // 🖼️ Remplace cette URL par l'image du JNR
+        image: '',
+        price: 7.90,
+        qty: 0,
+      },
+      {
+        id: 3,
+        name: 'Crystal Pro Max',
+        flavor: 'Watermelon Ice',
+        // 🖼️ Remplace cette URL par ton image
+        image: '',
+        price: 9.20,
+        qty: 0,
+      },
+      {
+        id: 4,
+        name: 'Lost Mary BM600',
+        flavor: 'Grape Ice',
+        // 🖼️ Remplace cette URL par ton image
+        image: '',
+        price: 6.80,
+        qty: 0,
+      },
+      {
+        id: 5,
+        name: 'Elfbar BC5000',
+        flavor: 'Strawberry Mango',
+        // 🖼️ Remplace cette URL par ton image
+        image: '',
+        price: 10.50,
+        qty: 0,
+      },
+    ];
 
-  <h2>Boissons</h2>
-  <div class="item">
-    <div>
-      <strong>Coca-Cola</strong></div>
-    <div class="price">3€</div>
-  </div>
+    const DISCOUNT_THRESHOLD = 50;
+    const DISCOUNT_RATE = 0.10;
 
-  <div class="item">
-    <div>
-      <strong>Eau pétillante</strong></div>
-    <div class="price">3€</div>
-  </div>
+    // --- Render Products ---
+    function renderProducts() {
+      const container = document.getElementById('product-list');
+      container.innerHTML = products.map(p => `
+        <div class="bg-brand-card rounded-2xl shadow-sm border border-gray-100/80 p-3.5 flex items-center gap-3.5">
+          <!-- Product Image -->
+          <div class="w-16 h-16 rounded-xl bg-brand-bg flex-shrink-0 flex items-center justify-center overflow-hidden">
+            ${p.image
+              ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover rounded-xl">`
+              : `<svg class="w-7 h-7 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`
+            }
+          </div>
 
-  <a href="tel:+33123456789" class="btn">Appeler</a>
+          <!-- Info -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-sm font-bold text-brand-steel leading-tight truncate">${p.name}</h3>
+            <p class="text-[11px] text-gray-400 mt-0.5">${p.flavor}</p>
+            <p class="text-sm font-extrabold text-brand-deep mt-1">${formatPrice(p.price)}</p>
+          </div>
 
-</div>
+          <!-- Quantity Selector -->
+          <div class="flex items-center gap-1 flex-shrink-0">
+            <button onclick="changeQty(${p.id}, -1)" class="qty-btn w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-brand-ice hover:text-brand-ice ${p.qty === 0 ? 'opacity-30 pointer-events-none' : ''}">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
+            </button>
+            <span class="w-8 text-center text-sm font-bold text-brand-steel">${p.qty}</span>
+            <button onclick="changeQty(${p.id}, 1)" class="qty-btn w-8 h-8 rounded-full bg-brand-deep text-white flex items-center justify-center shadow-sm">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
 
-<footer>
-  Adresse du restaurant - Ouvert tous les jours
-</footer>
+    // --- Quantity Change ---
+    function changeQty(id, delta) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      product.qty = Math.max(0, product.qty + delta);
+      renderProducts();
+      updateCart();
+    }
+
+    // --- Cart Logic ---
+    function getCartItems() {
+      return products.filter(p => p.qty > 0);
+    }
+
+    function getTotalUnits() {
+      return products.reduce((sum, p) => sum + p.qty, 0);
+    }
+
+    function getSubtotal() {
+      return products.reduce((sum, p) => sum + p.price * p.qty, 0);
+    }
+
+    function isDiscountActive() {
+      return getTotalUnits() >= DISCOUNT_THRESHOLD;
+    }
+
+    function getFinalTotal() {
+      const sub = getSubtotal();
+      return isDiscountActive() ? sub * (1 - DISCOUNT_RATE) : sub;
+    }
+
+    function updateCart() {
+      const totalUnits = getTotalUnits();
+      const bar = document.getElementById('cart-bar');
+      const banner = document.getElementById('discount-banner');
+
+      document.getElementById('cart-count').textContent = totalUnits;
+      document.getElementById('cart-total').textContent = formatPrice(getFinalTotal());
+
+      if (totalUnits > 0) {
+        bar.classList.remove('hidden-bar');
+      } else {
+        bar.classList.add('hidden-bar');
+      }
+
+      if (isDiscountActive()) {
+        banner.classList.remove('hidden');
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    // --- Checkout Modal ---
+    function openCheckout() {
+      const modal = document.getElementById('checkout-modal');
+      const items = getCartItems();
+      const itemsContainer = document.getElementById('checkout-items');
+
+      itemsContainer.innerHTML = items.map(p => `
+        <div class="flex justify-between items-center text-sm py-1.5">
+          <span class="text-gray-600">${p.name} <span class="text-gray-400">×${p.qty}</span></span>
+          <span class="font-semibold text-brand-steel">${formatPrice(p.price * p.qty)}</span>
+        </div>
+      `).join('');
+
+      const discountEl = document.getElementById('checkout-discount');
+      if (isDiscountActive()) {
+        discountEl.classList.remove('hidden');
+      } else {
+        discountEl.classList.add('hidden');
+      }
+
+      document.getElementById('checkout-total').textContent = formatPrice(getFinalTotal());
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    // --- Confirm Order ---
+    function confirmOrder() {
+      const shopName = document.getElementById('shop-name').value.trim();
+      const shopAddress = document.getElementById('shop-address').value.trim();
+      const shopPhone = document.getElementById('shop-phone').value.trim();
+
+      if (!shopName || !shopAddress || !shopPhone) {
+        alert('Veuillez remplir tous les champs.');
+        return;
+      }
+
+      const order = {
+        shop: {
+          name: shopName,
+          address: shopAddress,
+          phone: shopPhone,
+        },
+        items: getCartItems().map(p => ({
+          id: p.id,
+          name: p.name,
+          flavor: p.flavor,
+          unit_price: p.price,
+          quantity: p.qty,
+          line_total: +(p.price * p.qty).toFixed(2),
+        })),
+        total_units: getTotalUnits(),
+        subtotal: +getSubtotal().toFixed(2),
+        discount_applied: isDiscountActive(),
+        discount_rate: isDiscountActive() ? DISCOUNT_RATE : 0,
+        total: +getFinalTotal().toFixed(2),
+        currency: 'EUR',
+        timestamp: new Date().toISOString(),
+      };
+
+      if (tg?.sendData) {
+        tg.sendData(JSON.stringify(order));
+      }
+
+      if (tg?.close) {
+        tg.close();
+      }
+    }
+
+    // --- Helpers ---
+    function formatPrice(amount) {
+      return amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+    }
+
+    // --- Init ---
+    renderProducts();
+    updateCart();
+  </script>
 
 </body>
 </html>

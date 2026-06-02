@@ -65,13 +65,6 @@
     .modal-overlay { transition: opacity 0.25s ease; }
     .modal-panel { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
 
-    /* Glow badge */
-    .glow-badge { animation: glow-pulse 2s infinite; }
-    @keyframes glow-pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
-
-    /* Focus */
-    input:focus, select:focus { outline: none; border-color: #00F5D4; box-shadow: 0 0 0 2px rgba(0,245,212,0.25); }
-
     /* Custom select */
     select { appearance: none; -webkit-appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -79,11 +72,30 @@
     }
 
     /* Tier pills */
-    .tier-pill { transition: all 0.15s ease; }
+    .tier-pill { transition: all 0.15s ease; cursor: pointer; }
     .tier-pill.active { background: rgba(0,245,212,0.15); border-color: #00F5D4; color: #00F5D4; }
+
+    /* Tab buttons */
+    .tab-btn { transition: all 0.15s ease; }
+    .tab-btn.active { background: #00F5D4; color: #0A0A0A; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+      opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 200;
+      pointer-events: none; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Focus */
+    input:focus, select:focus { outline: none; border-color: #00F5D4; box-shadow: 0 0 0 2px rgba(0,245,212,0.25); }
 
     /* Scrollbar */
     ::-webkit-scrollbar { width: 0; }
+
+    /* Delete button */
+    .delete-btn { transition: all 0.15s ease; }
+    .delete-btn:active { transform: scale(0.85); }
   </style>
 </head>
 <body class="min-h-screen">
@@ -98,6 +110,13 @@
     <h1 class="text-xl font-black tracking-[0.35em] uppercase mt-5">YUKO VAPE</h1>
     <p class="text-[11px] tracking-[0.3em] uppercase text-cyan-brand mt-1.5">Grossiste 2026</p>
     <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- TOAST CONTAINER                                          -->
+  <!-- ======================================================= -->
+  <div id="toast" class="toast bg-dark-700 border border-cyan-brand/30 text-cyan-brand text-sm font-semibold px-5 py-3 rounded-2xl shadow-[0_0_20px_rgba(0,245,212,0.15)]">
+    <span id="toast-text"></span>
   </div>
 
   <!-- ======================================================= -->
@@ -201,40 +220,105 @@
   <!-- ======================================================= -->
   <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
     <div class="modal-overlay absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeCheckout()"></div>
-    <div class="modal-panel absolute bottom-0 left-0 right-0 bg-dark-800 rounded-t-3xl max-h-[90vh] overflow-y-auto border-t border-dark-500">
+    <div class="modal-panel absolute bottom-0 left-0 right-0 bg-dark-800 rounded-t-3xl max-h-[92vh] overflow-y-auto border-t border-dark-500">
       <div class="p-5">
-        <div class="w-10 h-1 bg-dark-500 rounded-full mx-auto mb-5"></div>
-        <h3 class="text-lg font-black tracking-wide uppercase mb-1">Finaliser la commande</h3>
-        <p class="text-[11px] text-smoke-500 mb-5">Vérifiez votre panier puis remplissez vos informations.</p>
+        <div class="w-10 h-1 bg-dark-500 rounded-full mx-auto mb-4"></div>
 
-        <div id="checkout-items" class="space-y-2 mb-4"></div>
+        <!-- Back button -->
+        <button onclick="closeCheckout()" class="flex items-center gap-1.5 text-smoke-400 text-xs font-semibold mb-4 active:text-cyan-brand transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Retour au catalogue
+        </button>
 
-        <div class="flex justify-between items-center border-t border-dark-600 pt-3 mb-6">
+        <h3 class="text-lg font-black tracking-wide uppercase mb-1">Votre panier</h3>
+        <p class="text-[11px] text-smoke-500 mb-5">Vérifiez vos articles puis remplissez vos informations.</p>
+
+        <!-- Cart items -->
+        <div id="checkout-items" class="space-y-2.5 mb-5"></div>
+
+        <!-- Empty cart message -->
+        <div id="checkout-empty" class="hidden text-center py-6">
+          <p class="text-smoke-500 text-sm">Votre panier est vide</p>
+        </div>
+
+        <!-- Total -->
+        <div id="checkout-total-section" class="flex justify-between items-center border-t border-dark-600 pt-3 mb-6">
           <span class="text-sm font-semibold text-smoke-400">Total</span>
           <span class="text-xl font-black text-cyan-brand" id="checkout-total">0,00 €</span>
         </div>
 
         <div class="w-full h-px bg-dark-600 mb-5"></div>
 
-        <div class="space-y-3.5">
+        <!-- ===== B2C / B2B TABS ===== -->
+        <div class="flex gap-2 mb-5">
+          <button onclick="setClientType('b2c')" id="tab-b2c" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-dark-500 text-smoke-400 active">
+            Particulier
+          </button>
+          <button onclick="setClientType('b2b')" id="tab-b2b" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-dark-500 text-smoke-400">
+            Professionnel
+          </button>
+        </div>
+
+        <!-- B2C Form -->
+        <div id="form-b2c" class="space-y-3.5">
           <div>
-            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label>
-            <input id="shop-name" type="text" placeholder="Ex: Tabac du Centre" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label>
+            <input id="b2c-name" type="text" placeholder="Jean Dupont" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse de livraison</label>
-            <input id="shop-address" type="text" placeholder="12 Rue de Paris, 75001 Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2c-address" type="text" placeholder="12 Rue de Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+          </div>
+          <div class="flex gap-3">
+            <div class="w-1/3">
+              <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label>
+              <input id="b2c-zip" type="text" placeholder="75001" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            </div>
+            <div class="flex-1">
+              <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label>
+              <input id="b2c-city" type="text" placeholder="Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            </div>
           </div>
           <div>
-            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Numéro de téléphone</label>
-            <input id="shop-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label>
+            <input id="b2c-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
         </div>
 
-        <button onclick="confirmOrder()" class="w-full mt-6 mb-2 bg-cyan-brand text-dark-900 font-black py-4 rounded-2xl text-sm tracking-wider uppercase active:scale-[0.98] transition-transform shadow-[0_0_25px_rgba(0,245,212,0.2)]">
+        <!-- B2B Form -->
+        <div id="form-b2b" class="space-y-3.5 hidden">
+          <div>
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label>
+            <input id="b2b-shop" type="text" placeholder="Tabac du Centre" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label>
+            <input id="b2b-siret" type="text" placeholder="123 456 789 00012" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse de livraison</label>
+            <input id="b2b-address" type="text" placeholder="12 Rue de Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+          </div>
+          <div class="flex gap-3">
+            <div class="w-1/3">
+              <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label>
+              <input id="b2b-zip" type="text" placeholder="75001" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            </div>
+            <div class="flex-1">
+              <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label>
+              <input id="b2b-city" type="text" placeholder="Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            </div>
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label>
+            <input id="b2b-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+          </div>
+        </div>
+
+        <!-- Confirm Button -->
+        <button onclick="confirmOrder()" id="btn-confirm" class="w-full mt-6 mb-3 bg-cyan-brand text-dark-900 font-black py-4 rounded-2xl text-sm tracking-wider uppercase active:scale-[0.98] transition-transform shadow-[0_0_25px_rgba(0,245,212,0.2)]">
           Envoyer la commande
         </button>
-        <button onclick="closeCheckout()" class="w-full text-smoke-500 text-xs py-2 mb-2">Annuler</button>
       </div>
     </div>
   </div>
@@ -260,13 +344,14 @@
 
     // --- User greeting ---
     const firstName = tg?.initDataUnsafe?.user?.first_name || '';
+    const lastName = tg?.initDataUnsafe?.user?.last_name || '';
     const welcomeEl = document.getElementById('welcome-text');
     if (firstName) {
       welcomeEl.textContent = `👋 Bonjour ${firstName} — Bienvenue chez Yuko Vape !`;
     }
 
     // =========================================================
-    // PRODUCT DATA — Vrais articles B2B
+    // PRODUCT DATA
     // =========================================================
     const MIN_QTY = 30;
 
@@ -275,7 +360,7 @@
         id: 'razz-bar-30k',
         name: 'RAZZ BAR 30K',
         description: '30 000 PUFFS • MESH COIL',
-        image: 'razz-bar-30k.jpg',
+        image: 'razz-bar.jpg',
         flavors: [
           'Triple Melon', 'Strawberry Ice', 'Sour Apple', 'Mango Peach Watermelon',
           'Strawberry Banana', 'Blueberry Ice', 'Juicy Peach Ice', 'Strawberry Kiwi',
@@ -288,13 +373,13 @@
           { label: '70+ PCS', min: 70, price: 5.20 }
         ],
         selectedFlavor: 'Triple Melon',
-        qty: 0,
+        qty: 30,
       },
       {
         id: 'jnr-falcon-x-18k',
         name: 'JNR FALCON-X 18K',
         description: '18 000 PUFFS • ÉCRAN LED',
-        image: 'jnr-falcon-x-18k.jpg',
+        image: 'jnr-falcon.jpg',
         flavors: [
           'Cool Mint', 'Cherry Ice', 'Watermelon Ice', 'Peach Ice', 'Blue Razz Ice',
           'Black Ice', 'Grape Ice', 'Lemon & Lime', 'Sour Apple Ice', 'Strawberry Kiwi',
@@ -308,37 +393,97 @@
           { label: '70+ PCS', min: 70, price: 4.80 }
         ],
         selectedFlavor: 'Cool Mint',
-        qty: 0,
+        qty: 30,
       }
     ];
 
-    // --- Get applicable tier for a product ---
+    // =========================================================
+    // CART — independent array, each entry = one line
+    // =========================================================
+    let cart = [];
+    let cartIdCounter = 0;
+
+    function addToCart(productId) {
+      const p = products.find(x => x.id === productId);
+      if (!p || p.qty < MIN_QTY) {
+        showToast(`⚠️ Minimum ${MIN_QTY} pièces par ajout`);
+        return;
+      }
+
+      const tier = getActiveTier(p);
+      cart.push({
+        cartId: ++cartIdCounter,
+        productId: p.id,
+        name: p.name,
+        flavor: p.selectedFlavor,
+        qty: p.qty,
+        tierLabel: tier.label,
+        unitPrice: tier.price,
+        lineTotal: +(p.qty * tier.price).toFixed(2),
+      });
+
+      haptic();
+      showToast(`✅ ${p.qty}× ${p.name} — ${p.selectedFlavor}`);
+      p.qty = MIN_QTY;
+      p.selectedFlavor = p.flavors[0];
+      renderProducts();
+      updateCartBar();
+    }
+
+    function removeFromCart(cartId) {
+      cart = cart.filter(c => c.cartId !== cartId);
+      haptic();
+      renderCheckoutItems();
+      updateCartBar();
+      if (cart.length === 0) {
+        closeCheckout();
+        showToast('🗑️ Panier vidé');
+      }
+    }
+
+    function getCartTotal() { return cart.reduce((s, c) => s + c.lineTotal, 0); }
+    function getCartUnits() { return cart.reduce((s, c) => s + c.qty, 0); }
+
+    // =========================================================
+    // PRODUCT HELPERS
+    // =========================================================
     function getActiveTier(p) {
-      if (p.qty === 0) return p.tiers[0];
       for (let i = p.tiers.length - 1; i >= 0; i--) {
         if (p.qty >= p.tiers[i].min) return p.tiers[i];
       }
       return p.tiers[0];
     }
 
-    function getUnitPrice(p) {
-      return getActiveTier(p).price;
+    function changeQty(productId, delta) {
+      const p = products.find(x => x.id === productId);
+      if (!p) return;
+      const next = p.qty + delta;
+      if (next < MIN_QTY) {
+        p.qty = MIN_QTY;
+      } else {
+        p.qty = next;
+      }
+      renderProducts();
     }
 
-    // --- Render ---
+    function setFlavor(productId, flavor) {
+      const p = products.find(x => x.id === productId);
+      if (p) p.selectedFlavor = flavor;
+    }
+
+    // =========================================================
+    // RENDER PRODUCTS
+    // =========================================================
     function renderProducts() {
       const c = document.getElementById('product-list');
       c.innerHTML = products.map(p => {
         const activeTier = getActiveTier(p);
         return `
         <div class="bg-dark-700 rounded-2xl border border-dark-500 overflow-hidden">
-          <!-- Product Image -->
           <div class="w-full aspect-[16/10] bg-dark-600 overflow-hidden flex items-center justify-center">
             <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
           </div>
-
           <div class="p-4">
-            <!-- Name + Description -->
             <h4 class="text-base font-black tracking-wide uppercase">${p.name}</h4>
             <p class="text-[11px] text-smoke-400 mt-0.5 tracking-wider">${p.description}</p>
 
@@ -363,10 +508,10 @@
               </div>
             </div>
 
-            <!-- Quantity + Line total -->
+            <!-- Quantity + Add to Cart -->
             <div class="mt-4 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <button onclick="changeQty('${p.id}', -10)" class="qty-btn w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center text-smoke-400 ${p.qty === 0 ? 'opacity-20 pointer-events-none' : ''}">
+                <button onclick="changeQty('${p.id}', -10)" class="qty-btn w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center text-smoke-400">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
                 </button>
                 <span class="w-10 text-center text-base font-black">${p.qty}</span>
@@ -374,123 +519,150 @@
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
                 </button>
               </div>
-              ${p.qty > 0 ? `
-                <div class="text-right">
-                  <div class="text-[10px] text-smoke-500">${p.qty} × ${getUnitPrice(p).toFixed(2)}€</div>
-                  <div class="text-base font-extrabold text-cyan-brand">${formatPrice(p.qty * getUnitPrice(p))}</div>
-                </div>
-              ` : `
-                <div class="text-right">
-                  <div class="text-[10px] text-smoke-500">Min. ${MIN_QTY} pcs</div>
-                  <div class="text-sm font-bold text-smoke-400">dès ${p.tiers[0].price.toFixed(2)}€/u</div>
-                </div>
-              `}
+              <div class="text-right">
+                <div class="text-[10px] text-smoke-500">${p.qty} × ${activeTier.price.toFixed(2)}€</div>
+                <div class="text-base font-extrabold text-cyan-brand">${formatPrice(p.qty * activeTier.price)}</div>
+              </div>
             </div>
+
+            <!-- ADD TO CART BUTTON -->
+            <button onclick="addToCart('${p.id}')" class="w-full mt-3 bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand font-bold py-3 rounded-xl text-sm tracking-wider uppercase active:scale-[0.97] transition-transform">
+              + Ajouter au panier
+            </button>
           </div>
         </div>
       `}).join('');
     }
 
-    // --- Flavor ---
-    function setFlavor(id, flavor) {
-      const p = products.find(x => x.id === id);
-      if (p) p.selectedFlavor = flavor;
-    }
-
-    // --- Quantity ---
-    function changeQty(id, delta) {
-      const p = products.find(x => x.id === id);
-      if (!p) return;
-
-      if (p.qty === 0 && delta > 0) {
-        p.qty = MIN_QTY;
-      } else {
-        const next = p.qty + delta;
-        if (next < MIN_QTY) {
-          p.qty = 0;
-        } else {
-          p.qty = next;
-        }
-      }
-      renderProducts();
-      updateCart();
-    }
-
-    // --- Cart ---
-    function getCartItems() { return products.filter(p => p.qty > 0); }
-
-    function getTotalUnits() { return products.reduce((s, p) => s + p.qty, 0); }
-
-    function getFinalTotal() {
-      return products.reduce((s, p) => s + p.qty * getUnitPrice(p), 0);
-    }
-
-    function updateCart() {
-      const units = getTotalUnits();
+    // =========================================================
+    // CART BAR
+    // =========================================================
+    function updateCartBar() {
       const bar = document.getElementById('cart-bar');
       const badge = document.getElementById('header-cart-badge');
+      const units = getCartUnits();
 
       document.getElementById('cart-count').textContent = units;
-      document.getElementById('cart-total').textContent = formatPrice(getFinalTotal());
+      document.getElementById('cart-total').textContent = formatPrice(getCartTotal());
 
-      if (units > 0) {
+      if (cart.length > 0) {
         bar.classList.remove('hidden-bar');
         badge.classList.remove('hidden');
-        badge.textContent = units > 99 ? '99+' : units;
+        badge.textContent = cart.length > 9 ? '9+' : cart.length;
       } else {
         bar.classList.add('hidden-bar');
         badge.classList.add('hidden');
       }
     }
 
-    // --- Checkout ---
+    // =========================================================
+    // CHECKOUT MODAL
+    // =========================================================
     function openCheckout() {
-      const modal = document.getElementById('checkout-modal');
-      const ic = document.getElementById('checkout-items');
-      ic.innerHTML = getCartItems().map(p => {
-        const tier = getActiveTier(p);
-        return `
-          <div class="bg-dark-700 rounded-xl p-3 border border-dark-600">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="font-bold text-sm">${p.name}</span>
-                <div class="text-[11px] text-smoke-400 mt-0.5">${p.selectedFlavor}</div>
-                <div class="text-[10px] text-smoke-500 mt-0.5">${p.qty} pcs × ${tier.price.toFixed(2)}€ <span class="text-cyan-brand">(${tier.label})</span></div>
-              </div>
-              <span class="font-extrabold text-cyan-brand">${formatPrice(p.qty * tier.price)}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      document.getElementById('checkout-total').textContent = formatPrice(getFinalTotal());
-      modal.classList.remove('hidden');
+      if (cart.length === 0) { showToast('⚠️ Votre panier est vide'); return; }
+      renderCheckoutItems();
+      document.getElementById('checkout-modal').classList.remove('hidden');
     }
 
-    function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
+    function closeCheckout() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
 
+    function renderCheckoutItems() {
+      const ic = document.getElementById('checkout-items');
+      const emptyEl = document.getElementById('checkout-empty');
+      const totalSection = document.getElementById('checkout-total-section');
+      const btnConfirm = document.getElementById('btn-confirm');
+
+      if (cart.length === 0) {
+        ic.innerHTML = '';
+        emptyEl.classList.remove('hidden');
+        totalSection.classList.add('hidden');
+        btnConfirm.classList.add('hidden');
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      totalSection.classList.remove('hidden');
+      btnConfirm.classList.remove('hidden');
+
+      ic.innerHTML = cart.map(c => `
+        <div class="bg-dark-700 rounded-xl p-3 border border-dark-600 flex items-start gap-3">
+          <div class="flex-1">
+            <div class="font-bold text-sm">${c.name}</div>
+            <div class="text-[11px] text-smoke-400 mt-0.5">${c.flavor}</div>
+            <div class="text-[10px] text-smoke-500 mt-0.5">${c.qty} pcs × ${c.unitPrice.toFixed(2)}€ <span class="text-cyan-brand">(${c.tierLabel})</span></div>
+          </div>
+          <div class="text-right flex-shrink-0 flex flex-col items-end gap-1.5">
+            <span class="font-extrabold text-cyan-brand">${formatPrice(c.lineTotal)}</span>
+            <button onclick="removeFromCart(${c.cartId})" class="delete-btn w-7 h-7 rounded-full bg-red-500/10 border border-red-500/25 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('checkout-total').textContent = formatPrice(getCartTotal());
+    }
+
+    // =========================================================
+    // B2C / B2B TABS
+    // =========================================================
+    let clientType = 'b2c';
+
+    function setClientType(type) {
+      clientType = type;
+      document.getElementById('tab-b2c').classList.toggle('active', type === 'b2c');
+      document.getElementById('tab-b2b').classList.toggle('active', type === 'b2b');
+      document.getElementById('form-b2c').classList.toggle('hidden', type !== 'b2c');
+      document.getElementById('form-b2b').classList.toggle('hidden', type !== 'b2b');
+    }
+
+    // =========================================================
+    // CONFIRM ORDER
+    // =========================================================
     function confirmOrder() {
-      const name = document.getElementById('shop-name').value.trim();
-      const addr = document.getElementById('shop-address').value.trim();
-      const phone = document.getElementById('shop-phone').value.trim();
-      if (!name || !addr || !phone) { alert('Veuillez remplir tous les champs.'); return; }
+      if (cart.length === 0) { showToast('⚠️ Votre panier est vide'); return; }
+
+      let customer;
+
+      if (clientType === 'b2c') {
+        const name = val('b2c-name');
+        const address = val('b2c-address');
+        const zip = val('b2c-zip');
+        const city = val('b2c-city');
+        const phone = val('b2c-phone');
+        if (!name || !address || !zip || !city || !phone) {
+          showToast('⚠️ Veuillez remplir tous les champs');
+          return;
+        }
+        customer = { type: 'particulier', name, address, zip, city, phone };
+      } else {
+        const shop = val('b2b-shop');
+        const siret = val('b2b-siret');
+        const address = val('b2b-address');
+        const zip = val('b2b-zip');
+        const city = val('b2b-city');
+        const phone = val('b2b-phone');
+        if (!shop || !address || !zip || !city || !phone) {
+          showToast('⚠️ Veuillez remplir tous les champs obligatoires');
+          return;
+        }
+        customer = { type: 'professionnel', shop, siret: siret || null, address, zip, city, phone };
+      }
 
       const order = {
-        shop: { name, address: addr, phone },
-        items: getCartItems().map(p => {
-          const tier = getActiveTier(p);
-          return {
-            id: p.id,
-            name: p.name,
-            flavor: p.selectedFlavor,
-            quantity: p.qty,
-            tier: tier.label,
-            unit_price: tier.price,
-            line_total: +(p.qty * tier.price).toFixed(2),
-          };
-        }),
-        total_units: getTotalUnits(),
-        total: +getFinalTotal().toFixed(2),
+        customer,
+        items: cart.map(c => ({
+          product: c.name,
+          flavor: c.flavor,
+          quantity: c.qty,
+          tier: c.tierLabel,
+          unit_price: c.unitPrice,
+          line_total: c.lineTotal,
+        })),
+        total_units: getCartUnits(),
+        total: +getCartTotal().toFixed(2),
         currency: 'EUR',
         timestamp: new Date().toISOString(),
       };
@@ -499,11 +671,48 @@
       if (tg?.close) tg.close();
     }
 
+    function val(id) { return document.getElementById(id).value.trim(); }
+
+    // =========================================================
+    // TOAST SYSTEM
+    // =========================================================
+    let toastTimer = null;
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    // =========================================================
+    // HAPTIC FEEDBACK
+    // =========================================================
+    function haptic() {
+      try { tg?.HapticFeedback?.impactOccurred('light'); } catch(e) {}
+    }
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
     function formatPrice(n) { return n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }); }
 
-    // --- Init ---
+    // =========================================================
+    // INIT
+    // =========================================================
+    // Pre-fill B2C name from Telegram
+    const tgFullName = [firstName, lastName].filter(Boolean).join(' ');
+    if (tgFullName) {
+      setTimeout(() => {
+        const el = document.getElementById('b2c-name');
+        if (el) el.value = tgFullName;
+      }, 100);
+    }
+
     renderProducts();
-    updateCart();
+    updateCartBar();
   </script>
 </body>
 </html>

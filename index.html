@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Yuko Vape — Grossiste</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,9 +11,9 @@
       theme: {
         extend: {
           colors: {
-            dark: { 900: '#0A0A0A', 800: '#111111', 700: '#1A1A1A', 600: '#222222', 500: '#2A2A2A' },
-            cyan: { brand: '#00F5D4', dim: '#00C4AA', glow: 'rgba(0,245,212,0.15)' },
-            smoke: { 400: '#888888', 500: '#666666', 600: '#444444' }
+            dark: { 900:'#0A0A0A', 800:'#111111', 700:'#1A1A1A', 600:'#222222', 500:'#2A2A2A' },
+            cyan: { brand:'#00F5D4', dim:'#00C4AA' },
+            smoke: { 400:'#888888', 500:'#666666', 600:'#444444' }
           }
         }
       }
@@ -22,209 +22,220 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: #0A0A0A; color: #fff; }
+    *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+    body{font-family:'Inter',system-ui,sans-serif;background:#0A0A0A;color:#fff;overscroll-behavior-y:contain}
+    ::-webkit-scrollbar{width:0}
 
-    /* Splash screen */
-    #splash {
-      position: fixed; inset: 0; z-index: 100; background: #0A0A0A;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      transition: opacity 0.5s ease;
-    }
-    #splash.fade-out { opacity: 0; pointer-events: none; }
-    .logo-ring {
-      width: 140px; height: 140px; border-radius: 50%;
-      border: 3px solid #00F5D4;
-      display: flex; align-items: center; justify-content: center;
-      animation: ring-pulse 2s ease-in-out infinite;
-    }
-    @keyframes ring-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,212,0.4); }
-      50% { box-shadow: 0 0 20px 8px rgba(0,245,212,0.15); }
-    }
-    .splash-bar { width: 60px; height: 3px; border-radius: 3px; background: #222; overflow: hidden; margin-top: 40px; }
-    .splash-bar-fill { height: 100%; width: 0%; background: #00F5D4; border-radius: 3px; animation: load-bar 1.8s ease forwards; }
-    @keyframes load-bar { to { width: 100%; } }
+    /* [A5] Splash */
+    #splash{position:fixed;inset:0;z-index:100;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
+    #splash.fade-out{opacity:0;pointer-events:none}
+    .logo-ring{width:130px;height:130px;border-radius:50%;border:3px solid #00F5D4;display:flex;align-items:center;justify-content:center;animation:ring-pulse 2s ease-in-out infinite}
+    @keyframes ring-pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,245,212,.4)}50%{box-shadow:0 0 20px 8px rgba(0,245,212,.15)}}
+    .splash-bar{width:60px;height:3px;border-radius:3px;background:#222;overflow:hidden;margin-top:36px}
+    .splash-bar-fill{height:100%;width:0;background:#00F5D4;border-radius:3px;animation:load-bar 1.6s ease forwards}
+    @keyframes load-bar{to{width:100%}}
 
-    /* Marquee */
-    .marquee-track {
-      display: flex; gap: 32px; width: max-content;
-      animation: marquee 18s linear infinite;
-    }
-    @keyframes marquee { to { transform: translateX(-50%); } }
+    /* [D4] Marquee */
+    .marquee-wrap{overflow:hidden}
+    .marquee-track{display:flex;gap:32px;width:max-content;animation:marquee 20s linear infinite}
+    @keyframes marquee{to{transform:translateX(-50%)}}
 
-    /* Qty buttons */
-    .qty-btn { transition: all 0.12s ease; }
-    .qty-btn:active { transform: scale(0.88); }
+    /* [A1] Compact header */
+    .app-header{transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .app-header.compact .hero-full{max-height:0;opacity:0;margin:0;padding:0;overflow:hidden}
+    .app-header.compact .hero-full *{margin:0;padding:0}
 
-    /* Cart bar */
-    .cart-bar { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
-    .cart-bar.hidden-bar { transform: translateY(120%); }
+    /* [B4] Skeleton */
+    .skeleton{background:linear-gradient(90deg,#1A1A1A 25%,#222 50%,#1A1A1A 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px}
+    @keyframes shimmer{to{background-position:-200% 0}}
+
+    /* Buttons */
+    .qty-btn{transition:all .12s ease}
+    .qty-btn:active{transform:scale(.88)}
+
+    /* Cart bar [C4] */
+    .cart-bar{transition:transform .3s cubic-bezier(.4,0,.2,1);padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+    .cart-bar.hidden-bar{transform:translateY(120%)}
 
     /* Modal */
-    .modal-overlay { transition: opacity 0.25s ease; }
-    .modal-panel { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    .modal-overlay{transition:opacity .25s ease}
+    .modal-panel{transition:transform .3s cubic-bezier(.4,0,.2,1)}
 
-    /* Custom select */
-    select { appearance: none; -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 12px center;
+    /* [C2] Desktop modal */
+    @media(min-width:640px){
+      .modal-panel{position:absolute!important;bottom:auto!important;top:50%!important;left:50%!important;right:auto!important;transform:translate(-50%,-50%)!important;max-width:440px;width:90%;border-radius:24px!important;max-height:85vh}
     }
+
+    /* Select */
+    select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
 
     /* Tier pills */
-    .tier-pill { transition: all 0.15s ease; cursor: pointer; }
-    .tier-pill.active { background: rgba(0,245,212,0.15); border-color: #00F5D4; color: #00F5D4; }
+    .tier-pill{transition:all .2s ease;cursor:pointer}
+    .tier-pill.active{background:rgba(0,245,212,.15);border-color:#00F5D4;color:#00F5D4}
+    /* [A3] Tier flash */
+    .tier-pill.flash{animation:tier-flash .5s ease}
+    @keyframes tier-flash{0%{box-shadow:0 0 0 0 rgba(0,245,212,.6)}50%{box-shadow:0 0 16px 4px rgba(0,245,212,.3)}100%{box-shadow:0 0 0 0 transparent}}
 
-    /* Tab buttons */
-    .tab-btn { transition: all 0.15s ease; }
-    .tab-btn.active { background: #00F5D4; color: #0A0A0A; }
+    /* Tabs */
+    .tab-btn{transition:all .15s ease}
+    .tab-btn.active{background:#00F5D4;color:#0A0A0A}
 
     /* Toast */
-    .toast {
-      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
-      opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 200;
-      pointer-events: none; white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);z-index:200;pointer-events:none;white-space:nowrap;padding-bottom:env(safe-area-inset-bottom,0px)}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    /* [B5] Undo toast */
+    .toast.show.has-action{pointer-events:auto}
 
     /* Focus */
-    input:focus, select:focus { outline: none; border-color: #00F5D4; box-shadow: 0 0 0 2px rgba(0,245,212,0.25); }
+    input:focus,select:focus{outline:none;border-color:#00F5D4;box-shadow:0 0 0 2px rgba(0,245,212,.25)}
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 0; }
+    /* [B8] Validation */
+    input.valid{border-color:#22c55e!important;box-shadow:0 0 0 2px rgba(34,197,94,.15)!important}
+    input.invalid{border-color:#ef4444!important;box-shadow:0 0 0 2px rgba(239,68,68,.15)!important}
 
-    /* Delete button */
-    .delete-btn { transition: all 0.15s ease; }
-    .delete-btn:active { transform: scale(0.85); }
+    /* Delete btn */
+    .delete-btn{transition:all .15s ease}
+    .delete-btn:active{transform:scale(.85)}
+
+    /* [A4] Add-to-cart button states */
+    .atc-btn{transition:all .3s ease;position:relative;overflow:hidden}
+    .atc-btn.success{background:rgba(34,197,94,.15)!important;border-color:rgba(34,197,94,.4)!important;color:#22c55e!important}
+
+    /* [A6] Image gradient overlay */
+    .img-wrap{position:relative}
+    .img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,#1A1A1A,transparent);pointer-events:none}
+
+    /* [A7] Product badge */
+    .product-badge{position:absolute;top:12px;left:12px;z-index:5}
+
+    /* [B1] Qty inline input */
+    .qty-display{cursor:pointer;min-width:44px;text-align:center;border-radius:8px;transition:background .15s}
+    .qty-display:active{background:rgba(0,245,212,.1)}
+    .qty-input{width:56px;text-align:center;background:#222;border:1.5px solid #00F5D4;border-radius:8px;color:#fff;font-weight:800;font-size:14px;padding:4px 0}
+
+    /* [C3] Fluid hero */
+    .hero-title{font-size:clamp(28px,9vw,40px)}
+
+    /* [A2] Parallax */
+    .parallax-img{transition:transform .1s linear;will-change:transform}
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- ======================================================= -->
-  <!-- SPLASH SCREEN                                            -->
-  <!-- ======================================================= -->
+  <!-- ============== SPLASH [A5] ============== -->
   <div id="splash">
-    <div class="logo-ring">
-      <span class="text-3xl">💨</span>
-    </div>
-    <h1 class="text-xl font-black tracking-[0.35em] uppercase mt-5">YUKO VAPE</h1>
-    <p class="text-[11px] tracking-[0.3em] uppercase text-cyan-brand mt-1.5">Grossiste 2026</p>
+    <div class="logo-ring"><span class="text-3xl">💨</span></div>
+    <h1 class="text-xl font-black tracking-[.35em] uppercase mt-5">YUKO VAPE</h1>
+    <p class="text-[11px] tracking-[.3em] uppercase text-cyan-brand mt-1.5">Grossiste 2026</p>
     <div class="splash-bar"><div class="splash-bar-fill"></div></div>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- TOAST CONTAINER                                          -->
-  <!-- ======================================================= -->
-  <div id="toast" class="toast bg-dark-700 border border-cyan-brand/30 text-cyan-brand text-sm font-semibold px-5 py-3 rounded-2xl shadow-[0_0_20px_rgba(0,245,212,0.15)]">
+  <!-- ============== TOAST ============== -->
+  <div id="toast" class="toast bg-dark-700 border border-cyan-brand/30 text-cyan-brand text-sm font-semibold px-5 py-3 rounded-2xl shadow-[0_0_20px_rgba(0,245,212,.15)]">
     <span id="toast-text"></span>
+    <button id="toast-action" class="hidden ml-3 underline font-bold text-white" onclick="undoDelete()">Annuler</button>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- MAIN APP                                                 -->
-  <!-- ======================================================= -->
-  <div id="app" class="opacity-0 transition-opacity duration-500 pb-28">
+  <!-- ============== MAIN APP ============== -->
+  <!-- [C1] max-w-[480px] container -->
+  <div id="app" class="opacity-0 transition-opacity duration-500 max-w-[480px] mx-auto" style="padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))">
 
-    <!-- ===== SCROLLING TICKER BAR ===== -->
-    <div class="bg-dark-700 py-2 overflow-hidden border-b border-dark-600">
-      <div class="marquee-track text-[10px] font-semibold tracking-[0.25em] uppercase text-smoke-400">
-        <span>✦ LIVRAISON EXPRESS</span><span>·</span><span>PRIX GROSSISTE</span><span>·</span>
-        <span>✦ PUFFS AUTHENTIQUES</span><span>·</span><span>STOCK PERMANENT</span><span>·</span>
-        <span>✦ LIVRAISON EXPRESS</span><span>·</span><span>PRIX GROSSISTE</span><span>·</span>
-        <span>✦ PUFFS AUTHENTIQUES</span><span>·</span><span>STOCK PERMANENT</span><span>·</span>
+    <!-- SCROLLING TICKER [D4] -->
+    <div class="marquee-wrap bg-dark-700 py-2 border-b border-dark-600">
+      <div class="marquee-track text-[10px] font-semibold tracking-[.25em] uppercase text-smoke-400" id="marquee-track">
+        <!-- Auto-duplicated by JS -->
       </div>
     </div>
 
-    <!-- ===== HEADER / NAV ===== -->
-    <header class="flex items-center justify-between px-5 py-3.5">
-      <div class="flex items-center gap-3">
+    <!-- HEADER / NAV -->
+    <div class="app-header" id="app-header">
+      <header class="flex items-center justify-between px-5 py-3">
         <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center">
-          <svg class="w-4.5 h-4.5 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          <svg class="w-[18px] h-[18px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </div>
-      </div>
-      <div class="flex flex-col items-center">
-        <span class="text-base font-black tracking-[0.3em] uppercase">YUKO</span>
-        <span class="text-[9px] tracking-[0.4em] uppercase text-cyan-brand -mt-0.5">VAPE</span>
-      </div>
-      <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center relative">
-        <svg class="w-4.5 h-4.5 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-        <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-      </div>
-    </header>
+        <div class="flex flex-col items-center">
+          <span class="text-base font-black tracking-[.3em] uppercase">YUKO</span>
+          <span class="text-[9px] tracking-[.4em] uppercase text-cyan-brand -mt-0.5">VAPE</span>
+        </div>
+        <div class="w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center relative" onclick="if(cart.length)openCheckout()">
+          <svg class="w-[18px] h-[18px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </div>
+      </header>
 
-    <!-- ===== HERO SECTION ===== -->
-    <section class="px-5 pt-2 pb-4">
-      <p class="text-[11px] tracking-[0.25em] uppercase text-cyan-brand font-semibold mb-2">💨 Catalogue Grossiste 2026</p>
-      <h2 class="text-[40px] font-black leading-[0.95] tracking-tight uppercase">YUKO<br>VAPE</h2>
-      <p class="text-sm font-semibold text-white/90 mt-3">Des puffs de qualité premium</p>
-      <p class="text-xs text-smoke-400">à prix grossiste — livraison express</p>
-      <div class="flex flex-wrap gap-2 mt-4">
-        <span class="bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🚚 Expédition 24h</span>
-        <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">⭐ 4.9/5</span>
-        <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🔒 Sécurisé</span>
-      </div>
-    </section>
+      <!-- [A1] HERO — collapses on scroll -->
+      <section class="hero-full px-5 pt-1 pb-4 transition-all duration-300 overflow-hidden" id="hero-section">
+        <p class="text-[11px] tracking-[.25em] uppercase text-cyan-brand font-semibold mb-2">💨 Catalogue Grossiste 2026</p>
+        <h2 class="hero-title font-black leading-[.95] tracking-tight uppercase">YUKO<br>VAPE</h2>
+        <p class="text-sm font-semibold text-white/90 mt-3">Des puffs de qualité premium</p>
+        <p class="text-xs text-smoke-400">à prix grossiste — livraison express</p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🚚 24h</span>
+          <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">⭐ 4.9/5</span>
+          <span class="bg-dark-600 border border-dark-500 text-smoke-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">🔒 Sécurisé</span>
+        </div>
+      </section>
+    </div>
 
-    <!-- ===== WELCOME BANNER ===== -->
+    <!-- WELCOME -->
     <div class="mx-5 mb-5 bg-dark-700 border border-dark-500 rounded-2xl px-4 py-3">
       <p class="text-sm" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
     </div>
 
-    <!-- ===== SECTION TITLE ===== -->
+    <!-- SECTION TITLE -->
     <div class="px-5 mb-4 flex items-center gap-3">
-      <h3 class="text-xs font-bold tracking-[0.25em] uppercase text-white">Nos Produits</h3>
+      <h3 class="text-xs font-bold tracking-[.25em] uppercase text-white">Nos Produits</h3>
       <div class="flex-1 h-px bg-dark-600"></div>
     </div>
 
-    <!-- ===== PRODUCT LIST ===== -->
-    <div id="product-list" class="px-5 space-y-5">
-      <!-- Rendered by JS -->
+    <!-- [B4] SKELETON LOADERS (visible initially) -->
+    <div id="skeletons" class="px-5 space-y-5">
+      <div class="bg-dark-700 rounded-2xl border border-dark-500 overflow-hidden">
+        <div class="skeleton w-full" style="aspect-ratio:4/3"></div>
+        <div class="p-4 space-y-3"><div class="skeleton h-5 w-2/3"></div><div class="skeleton h-3 w-1/2"></div><div class="skeleton h-10 w-full mt-2"></div><div class="flex gap-2 mt-2"><div class="skeleton h-14 flex-1"></div><div class="skeleton h-14 flex-1"></div><div class="skeleton h-14 flex-1"></div></div><div class="skeleton h-12 w-full mt-2"></div></div>
+      </div>
+      <div class="bg-dark-700 rounded-2xl border border-dark-500 overflow-hidden">
+        <div class="skeleton w-full" style="aspect-ratio:4/3"></div>
+        <div class="p-4 space-y-3"><div class="skeleton h-5 w-2/3"></div><div class="skeleton h-3 w-1/2"></div><div class="skeleton h-10 w-full mt-2"></div><div class="flex gap-2 mt-2"><div class="skeleton h-14 flex-1"></div><div class="skeleton h-14 flex-1"></div><div class="skeleton h-14 flex-1"></div></div><div class="skeleton h-12 w-full mt-2"></div></div>
+      </div>
     </div>
 
-    <!-- ===== WHY US SECTION ===== -->
+    <!-- PRODUCT LIST -->
+    <div id="product-list" class="px-5 space-y-5 hidden"></div>
+
+    <!-- WHY US -->
     <section class="mt-8 mx-5 bg-dark-700 rounded-2xl p-5 border border-dark-500">
-      <h3 class="text-xs font-bold tracking-[0.25em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
+      <h3 class="text-xs font-bold tracking-[.25em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
       <div class="grid grid-cols-3 gap-3 text-center">
-        <div>
-          <div class="text-2xl mb-1.5">🚚</div>
-          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p>
-        </div>
-        <div>
-          <div class="text-2xl mb-1.5">⭐</div>
-          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p>
-        </div>
-        <div>
-          <div class="text-2xl mb-1.5">🔒</div>
-          <p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p>
-        </div>
+        <div><div class="text-2xl mb-1.5">🚚</div><p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p></div>
+        <div><div class="text-2xl mb-1.5">⭐</div><p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p></div>
+        <div><div class="text-2xl mb-1.5">🔒</div><p class="text-[9px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p></div>
       </div>
     </section>
-
-    <div class="h-8"></div>
+    <div class="h-6"></div>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- STICKY CART BAR                                          -->
-  <!-- ======================================================= -->
-  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2">
-    <button onclick="openCheckout()" class="w-full bg-cyan-brand text-dark-900 rounded-2xl px-5 py-4 flex items-center justify-between shadow-[0_0_30px_rgba(0,245,212,0.2)] active:scale-[0.98] transition-transform">
-      <div class="flex items-center gap-3">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-        <span class="font-bold text-sm">Panier : <span id="cart-count">0</span> articles</span>
+  <!-- ============== STICKY CART BAR ============== -->
+  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pt-2 max-w-[480px] mx-auto inset-x-0">
+    <button onclick="openCheckout()" class="w-full bg-cyan-brand text-dark-900 rounded-2xl px-5 py-4 flex items-center justify-between shadow-[0_0_30px_rgba(0,245,212,.2)] active:scale-[0.98] transition-transform">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span class="font-bold text-sm">Panier : <span id="cart-count">0</span> articles</span>
+        </div>
+        <!-- [B6] Mini preview -->
+        <p class="text-[10px] text-dark-900/60 font-medium truncate mt-0.5 pl-8" id="cart-preview"></p>
       </div>
-      <span class="font-extrabold text-base" id="cart-total">0,00 €</span>
+      <span class="font-extrabold text-base flex-shrink-0 ml-3" id="cart-total">0,00 €</span>
     </button>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- CHECKOUT MODAL                                           -->
-  <!-- ======================================================= -->
+  <!-- ============== CHECKOUT MODAL ============== -->
   <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
     <div class="modal-overlay absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeCheckout()"></div>
     <div class="modal-panel absolute bottom-0 left-0 right-0 bg-dark-800 rounded-t-3xl max-h-[92vh] overflow-y-auto border-t border-dark-500">
-      <div class="p-5">
+      <div class="p-5" id="checkout-inner">
         <div class="w-10 h-1 bg-dark-500 rounded-full mx-auto mb-4"></div>
-
-        <!-- Back button -->
         <button onclick="closeCheckout()" class="flex items-center gap-1.5 text-smoke-400 text-xs font-semibold mb-4 active:text-cyan-brand transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
           Retour au catalogue
@@ -233,15 +244,14 @@
         <h3 class="text-lg font-black tracking-wide uppercase mb-1">Votre panier</h3>
         <p class="text-[11px] text-smoke-500 mb-5">Vérifiez vos articles puis remplissez vos informations.</p>
 
-        <!-- Cart items -->
         <div id="checkout-items" class="space-y-2.5 mb-5"></div>
+        <div id="checkout-empty" class="hidden text-center py-6"><p class="text-smoke-500 text-sm">Votre panier est vide</p></div>
 
-        <!-- Empty cart message -->
-        <div id="checkout-empty" class="hidden text-center py-6">
-          <p class="text-smoke-500 text-sm">Votre panier est vide</p>
-        </div>
+        <!-- Clear cart -->
+        <button id="btn-clear-cart" onclick="clearCart()" class="hidden w-full text-red-400/70 text-[11px] font-semibold py-2 mb-3 active:text-red-400 transition-colors">
+          🗑️ Vider tout le panier
+        </button>
 
-        <!-- Total -->
         <div id="checkout-total-section" class="flex justify-between items-center border-t border-dark-600 pt-3 mb-6">
           <span class="text-sm font-semibold text-smoke-400">Total</span>
           <span class="text-xl font-black text-cyan-brand" id="checkout-total">0,00 €</span>
@@ -249,344 +259,424 @@
 
         <div class="w-full h-px bg-dark-600 mb-5"></div>
 
-        <!-- ===== B2C / B2B TABS ===== -->
+        <!-- B2C / B2B TABS -->
         <div class="flex gap-2 mb-5">
-          <button onclick="setClientType('b2c')" id="tab-b2c" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-dark-500 text-smoke-400 active">
-            Particulier
-          </button>
-          <button onclick="setClientType('b2b')" id="tab-b2b" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-dark-500 text-smoke-400">
-            Professionnel
-          </button>
+          <button onclick="setClientType('b2c')" id="tab-b2c" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-dark-500 text-smoke-400 active">Particulier</button>
+          <button onclick="setClientType('b2b')" id="tab-b2b" class="tab-btn flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-dark-500 text-smoke-400">Professionnel</button>
         </div>
 
-        <!-- B2C Form -->
+        <!-- B2C -->
         <div id="form-b2c" class="space-y-3.5">
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label>
-            <input id="b2c-name" type="text" placeholder="Jean Dupont" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2c-name" type="text" placeholder="Jean Dupont" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse de livraison</label>
-            <input id="b2c-address" type="text" placeholder="12 Rue de Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2c-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div class="flex gap-3">
             <div class="w-1/3">
               <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label>
-              <input id="b2c-zip" type="text" placeholder="75001" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+              <input id="b2c-zip" type="text" placeholder="75001" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
             </div>
             <div class="flex-1">
               <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label>
-              <input id="b2c-city" type="text" placeholder="Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+              <input id="b2c-city" type="text" placeholder="Paris" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
             </div>
           </div>
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label>
-            <input id="b2c-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2c-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
         </div>
 
-        <!-- B2B Form -->
+        <!-- B2B -->
         <div id="form-b2b" class="space-y-3.5 hidden">
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label>
-            <input id="b2b-shop" type="text" placeholder="Tabac du Centre" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2b-shop" type="text" placeholder="Tabac du Centre" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label>
-            <input id="b2b-siret" type="text" placeholder="123 456 789 00012" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2b-siret" type="text" placeholder="123 456 789 00012" class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse de livraison</label>
-            <input id="b2b-address" type="text" placeholder="12 Rue de Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2b-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
           <div class="flex gap-3">
             <div class="w-1/3">
               <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label>
-              <input id="b2b-zip" type="text" placeholder="75001" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+              <input id="b2b-zip" type="text" placeholder="75001" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
             </div>
             <div class="flex-1">
               <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label>
-              <input id="b2b-city" type="text" placeholder="Paris" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+              <input id="b2b-city" type="text" placeholder="Paris" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
             </div>
           </div>
           <div>
             <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label>
-            <input id="b2b-phone" type="tel" placeholder="+33 6 12 34 56 78" class="w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
+            <input id="b2b-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600">
           </div>
         </div>
 
-        <!-- Confirm Button -->
-        <button onclick="confirmOrder()" id="btn-confirm" class="w-full mt-6 mb-3 bg-cyan-brand text-dark-900 font-black py-4 rounded-2xl text-sm tracking-wider uppercase active:scale-[0.98] transition-transform shadow-[0_0_25px_rgba(0,245,212,0.2)]">
+        <!-- [B7] Notes -->
+        <div class="mt-4">
+          <label class="block text-[10px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label>
+          <textarea id="order-notes" rows="2" placeholder="Instructions spéciales, mélange de parfums..." class="field w-full bg-dark-700 border border-dark-500 rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea>
+        </div>
+
+        <button onclick="confirmOrder()" id="btn-confirm" class="w-full mt-6 mb-3 bg-cyan-brand text-dark-900 font-black py-4 rounded-2xl text-sm tracking-wider uppercase active:scale-[0.98] transition-transform shadow-[0_0_25px_rgba(0,245,212,.2)]">
           Envoyer la commande
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- JAVASCRIPT                                               -->
-  <!-- ======================================================= -->
+  <!-- ============== JAVASCRIPT ============== -->
   <script>
     const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      tg.setHeaderColor('#0A0A0A');
-      tg.setBackgroundColor('#0A0A0A');
+    if(tg){tg.ready();tg.expand();tg.setHeaderColor('#0A0A0A');tg.setBackgroundColor('#0A0A0A')}
+
+    // =============================================
+    // [A5] CONDITIONAL SPLASH
+    // =============================================
+    const splashEl = document.getElementById('splash');
+    const appEl = document.getElementById('app');
+    const alreadyVisited = sessionStorage.getItem('yuko_visited');
+    if(alreadyVisited){
+      splashEl.remove();
+      appEl.style.opacity='1';
+    } else {
+      setTimeout(()=>{
+        splashEl.classList.add('fade-out');
+        appEl.style.opacity='1';
+        sessionStorage.setItem('yuko_visited','1');
+        setTimeout(()=>splashEl.remove(),600);
+      },1800);
     }
 
-    // --- Splash ---
-    setTimeout(() => {
-      document.getElementById('splash').classList.add('fade-out');
-      document.getElementById('app').style.opacity = '1';
-      setTimeout(() => { document.getElementById('splash').remove(); }, 600);
-    }, 2200);
+    // =============================================
+    // USER GREETING
+    // =============================================
+    const firstName = tg?.initDataUnsafe?.user?.first_name||'';
+    const lastName = tg?.initDataUnsafe?.user?.last_name||'';
+    if(firstName) document.getElementById('welcome-text').textContent=`👋 Bonjour ${firstName} — Bienvenue chez Yuko Vape !`;
 
-    // --- User greeting ---
-    const firstName = tg?.initDataUnsafe?.user?.first_name || '';
-    const lastName = tg?.initDataUnsafe?.user?.last_name || '';
-    const welcomeEl = document.getElementById('welcome-text');
-    if (firstName) {
-      welcomeEl.textContent = `👋 Bonjour ${firstName} — Bienvenue chez Yuko Vape !`;
-    }
+    // =============================================
+    // [D4] MARQUEE AUTO-DUPLICATE
+    // =============================================
+    (function(){
+      const items=['✦ LIVRAISON EXPRESS','·','PRIX GROSSISTE','·','✦ PUFFS AUTHENTIQUES','·','STOCK PERMANENT','·'];
+      const track=document.getElementById('marquee-track');
+      const html=items.map(t=>`<span>${t}</span>`).join('');
+      track.innerHTML=html+html;
+    })();
 
-    // =========================================================
+    // =============================================
     // PRODUCT DATA
-    // =========================================================
-    const MIN_QTY = 30;
-
-    const products = [
+    // =============================================
+    const MIN_QTY=30;
+    const products=[
       {
-        id: 'razz-bar-30k',
-        name: 'RAZZ BAR 30K',
-        description: '30 000 PUFFS • MESH COIL',
-        image: 'razz-bar.jpg',
-        flavors: [
-          'Triple Melon', 'Strawberry Ice', 'Sour Apple', 'Mango Peach Watermelon',
-          'Strawberry Banana', 'Blueberry Ice', 'Juicy Peach Ice', 'Strawberry Kiwi',
-          'Watermelon Ice', 'Summer Dream', 'Strawberry Watermelon', 'Mixed Berries',
-          'Blue Razz Ice', 'Lemon Lime', 'Cola Ice', 'Blackberry Ice'
-        ],
-        tiers: [
-          { label: '30+ PCS', min: 30, price: 6.70 },
-          { label: '50+ PCS', min: 50, price: 6.10 },
-          { label: '70+ PCS', min: 70, price: 5.20 }
-        ],
-        selectedFlavor: 'Triple Melon',
-        qty: 30,
+        id:'razz-bar-30k', name:'RAZZ BAR 30K', description:'30 000 PUFFS • MESH COIL',
+        image:'razz-bar.jpg', badge:'BEST-SELLER',
+        flavors:['Triple Melon','Strawberry Ice','Sour Apple','Mango Peach Watermelon','Strawberry Banana','Blueberry Ice','Juicy Peach Ice','Strawberry Kiwi','Watermelon Ice','Summer Dream','Strawberry Watermelon','Mixed Berries','Blue Razz Ice','Lemon Lime','Cola Ice','Blackberry Ice'],
+        tiers:[{label:'30+ PCS',min:30,price:6.70},{label:'50+ PCS',min:50,price:6.10},{label:'70+ PCS',min:70,price:5.20}],
+        selectedFlavor:'Triple Melon', qty:30
       },
       {
-        id: 'jnr-falcon-x-18k',
-        name: 'JNR FALCON-X 18K',
-        description: '18 000 PUFFS • ÉCRAN LED',
-        image: 'jnr-falcon.jpg',
-        flavors: [
-          'Cool Mint', 'Cherry Ice', 'Watermelon Ice', 'Peach Ice', 'Blue Razz Ice',
-          'Black Ice', 'Grape Ice', 'Lemon & Lime', 'Sour Apple Ice', 'Strawberry Kiwi',
-          'Blueberry Kiwi', 'Passion Fruit Kiwi', 'Mixed Berries', 'Cherry Berry',
-          'Berry Burst', 'White Peach Razz', 'Apple Pear', 'Blueberry Cherry Cranberry',
-          'Watermelon Lychee', 'Triple Melon'
-        ],
-        tiers: [
-          { label: '30+ PCS', min: 30, price: 6.20 },
-          { label: '50+ PCS', min: 50, price: 5.60 },
-          { label: '70+ PCS', min: 70, price: 4.80 }
-        ],
-        selectedFlavor: 'Cool Mint',
-        qty: 30,
+        id:'jnr-falcon-x-18k', name:'JNR FALCON-X 18K', description:'18 000 PUFFS • ÉCRAN LED',
+        image:'jnr-falcon.jpg', badge:'NOUVEAUTÉ',
+        flavors:['Cool Mint','Cherry Ice','Watermelon Ice','Peach Ice','Blue Razz Ice','Black Ice','Grape Ice','Lemon & Lime','Sour Apple Ice','Strawberry Kiwi','Blueberry Kiwi','Passion Fruit Kiwi','Mixed Berries','Cherry Berry','Berry Burst','White Peach Razz','Apple Pear','Blueberry Cherry Cranberry','Watermelon Lychee','Triple Melon'],
+        tiers:[{label:'30+ PCS',min:30,price:6.20},{label:'50+ PCS',min:50,price:5.60},{label:'70+ PCS',min:70,price:4.80}],
+        selectedFlavor:'Cool Mint', qty:30
       }
     ];
 
-    // =========================================================
-    // CART — independent array, each entry = one line
-    // =========================================================
-    let cart = [];
-    let cartIdCounter = 0;
+    // =============================================
+    // [B2] CART — with localStorage persistence
+    // =============================================
+    let cart=JSON.parse(localStorage.getItem('yuko_cart')||'[]');
+    let cartIdCounter=cart.length?Math.max(...cart.map(c=>c.cartId)):0;
+    let lastDeleted=null;
 
-    function addToCart(productId) {
-      const p = products.find(x => x.id === productId);
-      if (!p || p.qty < MIN_QTY) {
-        showToast(`⚠️ Minimum ${MIN_QTY} pièces par ajout`);
-        return;
-      }
+    function saveCart(){localStorage.setItem('yuko_cart',JSON.stringify(cart))}
 
-      const tier = getActiveTier(p);
+    // [D6] Debounce
+    let addLock=false;
+    function addToCart(productId){
+      if(addLock)return;
+      addLock=true;
+      setTimeout(()=>addLock=false,300);
+
+      const p=products.find(x=>x.id===productId);
+      if(!p||p.qty<MIN_QTY){showToast(`⚠️ Minimum ${MIN_QTY} pièces`);return}
+
+      const tier=getActiveTier(p);
       cart.push({
-        cartId: ++cartIdCounter,
-        productId: p.id,
-        name: p.name,
-        flavor: p.selectedFlavor,
-        qty: p.qty,
-        tierLabel: tier.label,
-        unitPrice: tier.price,
-        lineTotal: +(p.qty * tier.price).toFixed(2),
+        cartId:++cartIdCounter, productId:p.id, name:p.name,
+        flavor:p.selectedFlavor, qty:p.qty,
+        tierLabel:tier.label, unitPrice:tier.price,
+        lineTotal:+(p.qty*tier.price).toFixed(2)
       });
-
+      saveCart();
       haptic();
       showToast(`✅ ${p.qty}× ${p.name} — ${p.selectedFlavor}`);
-      p.qty = MIN_QTY;
-      p.selectedFlavor = p.flavors[0];
-      renderProducts();
+
+      // [A4] Button animation
+      const btn=document.getElementById('atc-'+p.id);
+      if(btn){
+        btn.classList.add('success');
+        btn.innerHTML='✓ Ajouté';
+        setTimeout(()=>{btn.classList.remove('success');btn.innerHTML='+ Ajouter au panier'},1200);
+      }
+
+      p.qty=MIN_QTY;
+      p.selectedFlavor=p.flavors[0];
+      updateProductCard(p);
       updateCartBar();
     }
 
-    function removeFromCart(cartId) {
-      cart = cart.filter(c => c.cartId !== cartId);
+    // [B5] Undo pattern
+    function removeFromCart(cartId){
+      const idx=cart.findIndex(c=>c.cartId===cartId);
+      if(idx===-1)return;
+      lastDeleted={item:cart[idx],index:idx};
+      cart.splice(idx,1);
+      saveCart();
       haptic();
       renderCheckoutItems();
       updateCartBar();
-      if (cart.length === 0) {
-        closeCheckout();
-        showToast('🗑️ Panier vidé');
-      }
+      if(cart.length===0){closeCheckout();showToast('🗑️ Panier vidé');return}
+      showToastWithUndo(`Article supprimé`);
     }
 
-    function getCartTotal() { return cart.reduce((s, c) => s + c.lineTotal, 0); }
-    function getCartUnits() { return cart.reduce((s, c) => s + c.qty, 0); }
+    function undoDelete(){
+      if(!lastDeleted)return;
+      cart.splice(lastDeleted.index,0,lastDeleted.item);
+      lastDeleted=null;
+      saveCart();
+      hideToast();
+      renderCheckoutItems();
+      updateCartBar();
+      haptic();
+    }
 
-    // =========================================================
+    function clearCart(){
+      cart=[];
+      saveCart();
+      haptic();
+      renderCheckoutItems();
+      updateCartBar();
+      closeCheckout();
+      showToast('🗑️ Panier vidé');
+    }
+
+    function getCartTotal(){return cart.reduce((s,c)=>s+c.lineTotal,0)}
+    function getCartUnits(){return cart.reduce((s,c)=>s+c.qty,0)}
+
+    // =============================================
     // PRODUCT HELPERS
-    // =========================================================
-    function getActiveTier(p) {
-      for (let i = p.tiers.length - 1; i >= 0; i--) {
-        if (p.qty >= p.tiers[i].min) return p.tiers[i];
-      }
+    // =============================================
+    function getActiveTier(p){
+      for(let i=p.tiers.length-1;i>=0;i--){if(p.qty>=p.tiers[i].min)return p.tiers[i]}
       return p.tiers[0];
     }
 
-    function changeQty(productId, delta) {
-      const p = products.find(x => x.id === productId);
-      if (!p) return;
-      const next = p.qty + delta;
-      if (next < MIN_QTY) {
-        p.qty = MIN_QTY;
-      } else {
-        p.qty = next;
+    // [B1] Direct quantity input
+    let editingQty=null;
+    function toggleQtyInput(productId){
+      if(editingQty===productId){editingQty=null}
+      else{editingQty=productId}
+      const p=products.find(x=>x.id===productId);
+      if(p)updateProductCard(p);
+      if(editingQty){
+        setTimeout(()=>{const inp=document.getElementById('qty-input-'+productId);if(inp){inp.focus();inp.select()}},50);
       }
-      renderProducts();
     }
 
-    function setFlavor(productId, flavor) {
-      const p = products.find(x => x.id === productId);
-      if (p) p.selectedFlavor = flavor;
+    function commitQtyInput(productId){
+      const inp=document.getElementById('qty-input-'+productId);
+      const p=products.find(x=>x.id===productId);
+      if(!inp||!p)return;
+      let v=parseInt(inp.value)||0;
+      if(v<MIN_QTY)v=MIN_QTY;
+      p.qty=v;
+      editingQty=null;
+      updateProductCard(p);
     }
 
-    // =========================================================
-    // RENDER PRODUCTS
-    // =========================================================
-    function renderProducts() {
-      const c = document.getElementById('product-list');
-      c.innerHTML = products.map(p => {
-        const activeTier = getActiveTier(p);
-        return `
-        <div class="bg-dark-700 rounded-2xl border border-dark-500 overflow-hidden">
-          <div class="w-full aspect-[16/10] bg-dark-600 overflow-hidden flex items-center justify-center">
-            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+    function changeQty(productId,delta){
+      const p=products.find(x=>x.id===productId);
+      if(!p)return;
+      const oldTier=getActiveTier(p);
+      const next=p.qty+delta;
+      p.qty=next<MIN_QTY?MIN_QTY:next;
+      const newTier=getActiveTier(p);
+
+      updateProductCard(p);
+
+      // [A3] Flash tier on change
+      if(oldTier.min!==newTier.min){
+        const pill=document.querySelector(`[data-tier="${productId}-${newTier.min}"]`);
+        if(pill){pill.classList.add('flash');setTimeout(()=>pill.classList.remove('flash'),500)}
+      }
+    }
+
+    function setFlavor(productId,flavor){
+      const p=products.find(x=>x.id===productId);
+      if(p)p.selectedFlavor=flavor;
+    }
+
+    // =============================================
+    // [D1] TARGETED RENDER — initial + updates
+    // =============================================
+    function renderProductsFull(){
+      const c=document.getElementById('product-list');
+      c.innerHTML=products.map(p=>{
+        const t=getActiveTier(p);
+        return`
+        <div class="bg-dark-700 rounded-2xl border border-dark-500 overflow-hidden" id="card-${p.id}">
+          <!-- [A6] Image with gradient overlay + [A7] badge + [A2] parallax + [D2][D3] lazy/fallback -->
+          <div class="img-wrap w-full overflow-hidden" style="aspect-ratio:4/3">
+            ${p.badge?`<span class="product-badge bg-cyan-brand text-dark-900 text-[9px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">${p.badge}</span>`:''}
+            <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" class="parallax-img w-full h-full object-cover" data-parallax>
           </div>
           <div class="p-4">
             <h4 class="text-base font-black tracking-wide uppercase">${p.name}</h4>
             <p class="text-[11px] text-smoke-400 mt-0.5 tracking-wider">${p.description}</p>
-
-            <!-- Flavor Select -->
             <div class="mt-3">
               <label class="block text-[9px] font-bold tracking-widest uppercase text-smoke-500 mb-1.5">Parfum</label>
-              <select onchange="setFlavor('${p.id}', this.value)" class="w-full bg-dark-600 border border-dark-500 rounded-xl px-3 py-2.5 text-sm text-white pr-8">
-                ${p.flavors.map(f => `<option value="${f}" ${f === p.selectedFlavor ? 'selected' : ''}>${f}</option>`).join('')}
+              <select onchange="setFlavor('${p.id}',this.value)" id="flavor-${p.id}" class="w-full bg-dark-600 border border-dark-500 rounded-xl px-3 py-2.5 text-sm text-white pr-8">
+                ${p.flavors.map(f=>`<option value="${f}"${f===p.selectedFlavor?' selected':''}>${f}</option>`).join('')}
               </select>
             </div>
-
-            <!-- Price Tiers -->
             <div class="mt-3">
               <label class="block text-[9px] font-bold tracking-widest uppercase text-smoke-500 mb-1.5">Prix dégressifs</label>
-              <div class="flex gap-2">
-                ${p.tiers.map(t => `
-                  <div class="tier-pill flex-1 text-center border rounded-xl py-2 px-1 ${t.min === activeTier.min ? 'active' : 'border-dark-500 text-smoke-500'}">
-                    <div class="text-[9px] font-bold tracking-wider uppercase">${t.label}</div>
-                    <div class="text-sm font-extrabold mt-0.5 ${t.min === activeTier.min ? 'text-cyan-brand' : ''}">${t.price.toFixed(2)}€</div>
-                  </div>
-                `).join('')}
+              <div class="flex gap-2" id="tiers-${p.id}">
+                ${renderTiers(p,t)}
               </div>
             </div>
-
-            <!-- Quantity + Add to Cart -->
-            <div class="mt-4 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <button onclick="changeQty('${p.id}', -10)" class="qty-btn w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center text-smoke-400">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
-                </button>
-                <span class="w-10 text-center text-base font-black">${p.qty}</span>
-                <button onclick="changeQty('${p.id}', 10)" class="qty-btn w-9 h-9 rounded-full bg-cyan-brand text-dark-900 flex items-center justify-center shadow-[0_0_12px_rgba(0,245,212,0.25)]">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
-                </button>
-              </div>
-              <div class="text-right">
-                <div class="text-[10px] text-smoke-500">${p.qty} × ${activeTier.price.toFixed(2)}€</div>
-                <div class="text-base font-extrabold text-cyan-brand">${formatPrice(p.qty * activeTier.price)}</div>
-              </div>
+            <div class="mt-4 flex items-center justify-between" id="qty-row-${p.id}">
+              ${renderQtyRow(p,t)}
             </div>
-
-            <!-- ADD TO CART BUTTON -->
-            <button onclick="addToCart('${p.id}')" class="w-full mt-3 bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand font-bold py-3 rounded-xl text-sm tracking-wider uppercase active:scale-[0.97] transition-transform">
+            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="atc-btn w-full mt-3 bg-cyan-brand/10 border border-cyan-brand/30 text-cyan-brand font-bold py-3 rounded-xl text-sm tracking-wider uppercase active:scale-[0.97]">
               + Ajouter au panier
             </button>
           </div>
-        </div>
-      `}).join('');
+        </div>`}).join('');
+      c.classList.remove('hidden');
     }
 
-    // =========================================================
+    function renderTiers(p,activeTier){
+      return p.tiers.map(t=>`
+        <div class="tier-pill flex-1 text-center border rounded-xl py-2 px-1 ${t.min===activeTier.min?'active':'border-dark-500 text-smoke-500'}" data-tier="${p.id}-${t.min}">
+          <div class="text-[9px] font-bold tracking-wider uppercase">${t.label}</div>
+          <div class="text-sm font-extrabold mt-0.5${t.min===activeTier.min?' text-cyan-brand':''}">${t.price.toFixed(2)}€</div>
+        </div>`).join('');
+    }
+
+    function renderQtyRow(p,t){
+      const isEditing=editingQty===p.id;
+      return`
+        <div class="flex items-center gap-2">
+          <button onclick="changeQty('${p.id}',-10)" class="qty-btn w-9 h-9 rounded-full border border-dark-500 flex items-center justify-center text-smoke-400">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
+          </button>
+          ${isEditing
+            ?`<input type="number" id="qty-input-${p.id}" class="qty-input" value="${p.qty}" min="${MIN_QTY}" onblur="commitQtyInput('${p.id}')" onkeydown="if(event.key==='Enter')this.blur()">`
+            :`<span class="qty-display text-base font-black py-1" onclick="toggleQtyInput('${p.id}')">${p.qty}</span>`
+          }
+          <button onclick="changeQty('${p.id}',10)" class="qty-btn w-9 h-9 rounded-full bg-cyan-brand text-dark-900 flex items-center justify-center shadow-[0_0_12px_rgba(0,245,212,.25)]">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <div class="text-right">
+          <div class="text-[10px] text-smoke-500">${p.qty} × ${t.price.toFixed(2)}€</div>
+          <div class="text-base font-extrabold text-cyan-brand">${formatPrice(p.qty*t.price)}</div>
+        </div>`;
+    }
+
+    // [D1] Update only changed parts
+    function updateProductCard(p){
+      const t=getActiveTier(p);
+      const tiersEl=document.getElementById('tiers-'+p.id);
+      const qtyRowEl=document.getElementById('qty-row-'+p.id);
+      const flavorEl=document.getElementById('flavor-'+p.id);
+      if(tiersEl)tiersEl.innerHTML=renderTiers(p,t);
+      if(qtyRowEl)qtyRowEl.innerHTML=renderQtyRow(p,t);
+      if(flavorEl&&flavorEl.value!==p.selectedFlavor)flavorEl.value=p.selectedFlavor;
+    }
+
+    // =============================================
     // CART BAR
-    // =========================================================
-    function updateCartBar() {
-      const bar = document.getElementById('cart-bar');
-      const badge = document.getElementById('header-cart-badge');
-      const units = getCartUnits();
+    // =============================================
+    function updateCartBar(){
+      const bar=document.getElementById('cart-bar');
+      const badge=document.getElementById('header-cart-badge');
+      const units=getCartUnits();
 
-      document.getElementById('cart-count').textContent = units;
-      document.getElementById('cart-total').textContent = formatPrice(getCartTotal());
+      document.getElementById('cart-count').textContent=units;
+      document.getElementById('cart-total').textContent=formatPrice(getCartTotal());
 
-      if (cart.length > 0) {
+      // [B6] Preview
+      const preview=document.getElementById('cart-preview');
+      if(cart.length>0){
+        const summary=cart.map(c=>`${c.qty}× ${c.name.split(' ')[0]}`).join(', ');
+        preview.textContent=summary;
+      } else {
+        preview.textContent='';
+      }
+
+      if(cart.length>0){
         bar.classList.remove('hidden-bar');
         badge.classList.remove('hidden');
-        badge.textContent = cart.length > 9 ? '9+' : cart.length;
+        badge.textContent=cart.length>9?'9+':cart.length;
       } else {
         bar.classList.add('hidden-bar');
         badge.classList.add('hidden');
       }
     }
 
-    // =========================================================
+    // =============================================
     // CHECKOUT MODAL
-    // =========================================================
-    function openCheckout() {
-      if (cart.length === 0) { showToast('⚠️ Votre panier est vide'); return; }
+    // =============================================
+    function openCheckout(){
+      if(cart.length===0){showToast('⚠️ Votre panier est vide');return}
       renderCheckoutItems();
       document.getElementById('checkout-modal').classList.remove('hidden');
+      // [B3] Scroll to form
+      setTimeout(()=>{
+        const inner=document.getElementById('checkout-inner');
+        if(inner)inner.scrollTop=0;
+      },100);
     }
 
-    function closeCheckout() {
-      document.getElementById('checkout-modal').classList.add('hidden');
-    }
+    function closeCheckout(){document.getElementById('checkout-modal').classList.add('hidden')}
 
-    function renderCheckoutItems() {
-      const ic = document.getElementById('checkout-items');
-      const emptyEl = document.getElementById('checkout-empty');
-      const totalSection = document.getElementById('checkout-total-section');
-      const btnConfirm = document.getElementById('btn-confirm');
+    function renderCheckoutItems(){
+      const ic=document.getElementById('checkout-items');
+      const emptyEl=document.getElementById('checkout-empty');
+      const totalSection=document.getElementById('checkout-total-section');
+      const btnConfirm=document.getElementById('btn-confirm');
+      const btnClear=document.getElementById('btn-clear-cart');
 
-      if (cart.length === 0) {
-        ic.innerHTML = '';
+      if(cart.length===0){
+        ic.innerHTML='';
         emptyEl.classList.remove('hidden');
         totalSection.classList.add('hidden');
         btnConfirm.classList.add('hidden');
+        btnClear.classList.add('hidden');
         return;
       }
-
       emptyEl.classList.add('hidden');
       totalSection.classList.remove('hidden');
       btnConfirm.classList.remove('hidden');
+      btnClear.classList.remove('hidden');
 
-      ic.innerHTML = cart.map(c => `
+      ic.innerHTML=cart.map(c=>`
         <div class="bg-dark-700 rounded-xl p-3 border border-dark-600 flex items-start gap-3">
           <div class="flex-1">
             <div class="font-bold text-sm">${c.name}</div>
@@ -599,119 +689,176 @@
               <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
           </div>
-        </div>
-      `).join('');
+        </div>`).join('');
 
-      document.getElementById('checkout-total').textContent = formatPrice(getCartTotal());
+      document.getElementById('checkout-total').textContent=formatPrice(getCartTotal());
     }
 
-    // =========================================================
+    // =============================================
     // B2C / B2B TABS
-    // =========================================================
-    let clientType = 'b2c';
-
-    function setClientType(type) {
-      clientType = type;
-      document.getElementById('tab-b2c').classList.toggle('active', type === 'b2c');
-      document.getElementById('tab-b2b').classList.toggle('active', type === 'b2b');
-      document.getElementById('form-b2c').classList.toggle('hidden', type !== 'b2c');
-      document.getElementById('form-b2b').classList.toggle('hidden', type !== 'b2b');
+    // =============================================
+    let clientType='b2c';
+    function setClientType(type){
+      clientType=type;
+      document.getElementById('tab-b2c').classList.toggle('active',type==='b2c');
+      document.getElementById('tab-b2b').classList.toggle('active',type==='b2b');
+      document.getElementById('form-b2c').classList.toggle('hidden',type!=='b2c');
+      document.getElementById('form-b2b').classList.toggle('hidden',type!=='b2b');
     }
 
-    // =========================================================
+    // =============================================
+    // [B8] REAL-TIME FIELD VALIDATION
+    // =============================================
+    document.addEventListener('blur',e=>{
+      if(!e.target.classList.contains('field'))return;
+      if(!e.target.hasAttribute('data-required'))return;
+      const v=e.target.value.trim();
+      e.target.classList.remove('valid','invalid');
+      if(v.length>0)e.target.classList.add('valid');
+      else e.target.classList.add('invalid');
+    },true);
+
+    document.addEventListener('input',e=>{
+      if(!e.target.classList.contains('field'))return;
+      e.target.classList.remove('valid','invalid');
+    },true);
+
+    // =============================================
     // CONFIRM ORDER
-    // =========================================================
-    function confirmOrder() {
-      if (cart.length === 0) { showToast('⚠️ Votre panier est vide'); return; }
+    // =============================================
+    function confirmOrder(){
+      if(cart.length===0){showToast('⚠️ Votre panier est vide');return}
 
       let customer;
+      const prefix=clientType==='b2c'?'b2c':'b2b';
+      const form=document.getElementById('form-'+prefix);
+      const required=form.querySelectorAll('[data-required]');
+      let valid=true;
 
-      if (clientType === 'b2c') {
-        const name = val('b2c-name');
-        const address = val('b2c-address');
-        const zip = val('b2c-zip');
-        const city = val('b2c-city');
-        const phone = val('b2c-phone');
-        if (!name || !address || !zip || !city || !phone) {
-          showToast('⚠️ Veuillez remplir tous les champs');
-          return;
-        }
-        customer = { type: 'particulier', name, address, zip, city, phone };
-      } else {
-        const shop = val('b2b-shop');
-        const siret = val('b2b-siret');
-        const address = val('b2b-address');
-        const zip = val('b2b-zip');
-        const city = val('b2b-city');
-        const phone = val('b2b-phone');
-        if (!shop || !address || !zip || !city || !phone) {
-          showToast('⚠️ Veuillez remplir tous les champs obligatoires');
-          return;
-        }
-        customer = { type: 'professionnel', shop, siret: siret || null, address, zip, city, phone };
+      required.forEach(inp=>{
+        const v=inp.value.trim();
+        inp.classList.remove('valid','invalid');
+        if(!v){inp.classList.add('invalid');valid=false}
+        else{inp.classList.add('valid')}
+      });
+
+      if(!valid){
+        showToast('⚠️ Veuillez remplir tous les champs obligatoires');
+        const firstInvalid=form.querySelector('.invalid');
+        if(firstInvalid)firstInvalid.focus();
+        return;
       }
 
-      const order = {
+      if(clientType==='b2c'){
+        customer={type:'particulier',name:val('b2c-name'),address:val('b2c-address'),zip:val('b2c-zip'),city:val('b2c-city'),phone:val('b2c-phone')};
+      } else {
+        customer={type:'professionnel',shop:val('b2b-shop'),siret:val('b2b-siret')||null,address:val('b2b-address'),zip:val('b2b-zip'),city:val('b2b-city'),phone:val('b2b-phone')};
+      }
+
+      const notes=document.getElementById('order-notes').value.trim();
+
+      const order={
         customer,
-        items: cart.map(c => ({
-          product: c.name,
-          flavor: c.flavor,
-          quantity: c.qty,
-          tier: c.tierLabel,
-          unit_price: c.unitPrice,
-          line_total: c.lineTotal,
-        })),
-        total_units: getCartUnits(),
-        total: +getCartTotal().toFixed(2),
-        currency: 'EUR',
-        timestamp: new Date().toISOString(),
+        items:cart.map(c=>({product:c.name,flavor:c.flavor,quantity:c.qty,tier:c.tierLabel,unit_price:c.unitPrice,line_total:c.lineTotal})),
+        total_units:getCartUnits(),
+        total:+getCartTotal().toFixed(2),
+        currency:'EUR',
+        notes:notes||null,
+        timestamp:new Date().toISOString()
       };
 
-      if (tg?.sendData) tg.sendData(JSON.stringify(order));
-      if (tg?.close) tg.close();
+      localStorage.removeItem('yuko_cart');
+
+      if(tg?.sendData)tg.sendData(JSON.stringify(order));
+      if(tg?.close)tg.close();
     }
 
-    function val(id) { return document.getElementById(id).value.trim(); }
+    function val(id){return document.getElementById(id).value.trim()}
 
-    // =========================================================
+    // =============================================
     // TOAST SYSTEM
-    // =========================================================
-    let toastTimer = null;
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const text = document.getElementById('toast-text');
-      text.textContent = message;
-      toast.classList.add('show');
+    // =============================================
+    let toastTimer=null;
+    function showToast(msg){
+      const t=document.getElementById('toast'),txt=document.getElementById('toast-text'),btn=document.getElementById('toast-action');
+      txt.textContent=msg;
+      btn.classList.add('hidden');
+      t.classList.remove('has-action');
+      t.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+      toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+    }
+    // [B5] Toast with undo
+    function showToastWithUndo(msg){
+      const t=document.getElementById('toast'),txt=document.getElementById('toast-text'),btn=document.getElementById('toast-action');
+      txt.textContent=msg;
+      btn.classList.remove('hidden');
+      t.classList.add('show','has-action');
+      clearTimeout(toastTimer);
+      toastTimer=setTimeout(()=>{t.classList.remove('show','has-action');lastDeleted=null},4000);
+    }
+    function hideToast(){
+      const t=document.getElementById('toast');
+      t.classList.remove('show','has-action');
+      clearTimeout(toastTimer);
     }
 
-    // =========================================================
-    // HAPTIC FEEDBACK
-    // =========================================================
-    function haptic() {
-      try { tg?.HapticFeedback?.impactOccurred('light'); } catch(e) {}
-    }
+    // =============================================
+    // HAPTIC
+    // =============================================
+    function haptic(){try{tg?.HapticFeedback?.impactOccurred('light')}catch(e){}}
 
-    // =========================================================
+    // =============================================
     // HELPERS
-    // =========================================================
-    function formatPrice(n) { return n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }); }
+    // =============================================
+    function formatPrice(n){return n.toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}
 
-    // =========================================================
-    // INIT
-    // =========================================================
-    // Pre-fill B2C name from Telegram
-    const tgFullName = [firstName, lastName].filter(Boolean).join(' ');
-    if (tgFullName) {
-      setTimeout(() => {
-        const el = document.getElementById('b2c-name');
-        if (el) el.value = tgFullName;
-      }, 100);
+    // =============================================
+    // [A1] COLLAPSIBLE HEADER
+    // =============================================
+    let lastScrollY=0;
+    const header=document.getElementById('app-header');
+    window.addEventListener('scroll',()=>{
+      const y=window.scrollY;
+      if(y>160&&!header.classList.contains('compact'))header.classList.add('compact');
+      else if(y<=100&&header.classList.contains('compact'))header.classList.remove('compact');
+      lastScrollY=y;
+    },{passive:true});
+
+    // =============================================
+    // [A2] PARALLAX on images
+    // =============================================
+    function updateParallax(){
+      document.querySelectorAll('[data-parallax]').forEach(img=>{
+        const rect=img.getBoundingClientRect();
+        const vh=window.innerHeight;
+        if(rect.bottom>0&&rect.top<vh){
+          const progress=(rect.top+rect.height/2)/vh;
+          const offset=(progress-0.5)*-20;
+          img.style.transform=`translateY(${offset}px) scale(1.05)`;
+        }
+      });
+    }
+    window.addEventListener('scroll',updateParallax,{passive:true});
+
+    // =============================================
+    // [B4] SKELETON → REVEAL
+    // =============================================
+    function revealProducts(){
+      renderProductsFull();
+      document.getElementById('skeletons').remove();
+      updateParallax();
     }
 
-    renderProducts();
+    // =============================================
+    // INIT
+    // =============================================
+    const tgFullName=[firstName,lastName].filter(Boolean).join(' ');
+    if(tgFullName)setTimeout(()=>{const el=document.getElementById('b2c-name');if(el)el.value=tgFullName},100);
+
+    // Show skeletons briefly then reveal
+    const revealDelay=alreadyVisited?300:2200;
+    setTimeout(revealProducts,revealDelay);
     updateCartBar();
   </script>
 </body>

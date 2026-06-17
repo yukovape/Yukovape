@@ -156,6 +156,22 @@
     /* ATC BUTTON STATES */
     .atc-btn.success{background:rgba(34,197,94,.1)!important;border-color:rgba(34,197,94,.3)!important;color:#22c55e!important}
 
+    /* PAYMENT SELECTOR */
+    .pay-option{position:relative;cursor:pointer;border:1.5px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+    .pay-option:active{transform:scale(.97)}
+    .pay-option.selected{border-color:rgba(0,245,212,.4);background:rgba(0,245,212,.04)}
+    .pay-option.crypto-selected{border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.04)}
+    .pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+    .pay-option.selected .pay-radio,.pay-option.crypto-selected .pay-radio{border-color:#00F5D4}
+    .pay-option.crypto-selected .pay-radio{border-color:#a855f7}
+    .pay-radio-dot{width:8px;height:8px;border-radius:50%;background:#00F5D4;transform:scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+    .pay-option.crypto-selected .pay-radio-dot{background:#a855f7}
+    .pay-option.selected .pay-radio-dot,.pay-option.crypto-selected .pay-radio-dot{transform:scale(1)}
+
+    /* CRYPTO HELP MODAL */
+    .crypto-help-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
+    .crypto-help-overlay.open{display:flex}
+
     /* [F5] VERTICAL TEXT */
     .vertical-text{writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.25em}
 
@@ -331,6 +347,48 @@
     </div>
   </div>
 
+  <!-- CRYPTO HELP POPUP -->
+  <div id="crypto-help" class="crypto-help-overlay" onclick="if(event.target===this)closeCryptoHelp()">
+    <div class="glass-strong rounded-2xl p-5 max-w-[380px] w-full" style="animation:ring-spin-in .4s cubic-bezier(.34,1.56,.64,1) both">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="font-display text-[14px] font-bold tracking-wider uppercase">Payer en Crypto</h4>
+        <button onclick="closeCryptoHelp()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center press">
+          <svg class="w-4 h-4 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <p class="text-[11px] text-smoke-400 mb-4 leading-relaxed">Pas besoin d'être expert ! Vous pouvez acheter de la crypto par carte bancaire en 5 minutes via :</p>
+      <div class="space-y-2 mb-4">
+        <div class="glass rounded-xl px-3.5 py-2.5 flex items-center gap-3">
+          <span class="text-lg">🏦</span>
+          <div>
+            <div class="text-[11px] font-bold">Revolut</div>
+            <div class="text-[9px] text-smoke-400">Achetez USDT directement depuis l'app Revolut</div>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-3.5 py-2.5 flex items-center gap-3">
+          <span class="text-lg">🔶</span>
+          <div>
+            <div class="text-[11px] font-bold">Binance</div>
+            <div class="text-[9px] text-smoke-400">La plus grande plateforme — achat par CB en 2 min</div>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-3.5 py-2.5 flex items-center gap-3">
+          <span class="text-lg">🔷</span>
+          <div>
+            <div class="text-[11px] font-bold">Kraken</div>
+            <div class="text-[9px] text-smoke-400">Plateforme européenne fiable et régulée</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass rounded-xl px-3.5 py-3 border border-purple-500/15 bg-purple-500/[.03] mb-4">
+        <p class="text-[10px] text-purple-300 leading-relaxed"><strong>Pourquoi cette réduction ?</strong> Les processeurs de carte classent la vape comme "High Risk" et appliquent des frais excessifs. La crypto nous libère de ces intermédiaires — on vous reverse l'économie sous forme de remise.</p>
+      </div>
+      <div class="text-[9px] text-smoke-500 text-center">
+        <p>Besoin d'aide ? Contactez-nous sur <a href="https://t.me/mvshakil" target="_blank" class="text-cyan-brand underline">@mvshakil</a></p>
+      </div>
+    </div>
+  </div>
+
   <!-- CHECKOUT MODAL -->
   <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
     <div class="modal-overlay absolute inset-0 bg-black/60 backdrop-blur-md" onclick="closeCheckout()"></div>
@@ -385,6 +443,58 @@
         </div>
 
         <div class="mt-4"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label><textarea id="order-notes" rows="2" placeholder="Instructions spéciales..." class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea></div>
+
+        <!-- PAYMENT METHOD SELECTOR -->
+        <div class="mt-5">
+          <div class="text-[9px] font-bold tracking-widest uppercase text-smoke-400 mb-3">Mode de paiement</div>
+          <div class="space-y-2.5">
+            <div class="pay-option selected" id="pay-classic" onclick="setPayment('classic')">
+              <div class="flex items-center gap-3">
+                <div class="pay-radio"><div class="pay-radio-dot"></div></div>
+                <div class="flex-1">
+                  <div class="text-[12px] font-bold text-white">Virement / Carte</div>
+                  <div class="text-[9px] text-smoke-400 mt-0.5">Paiement classique par virement bancaire ou CB</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-display text-[14px] font-bold text-white" id="pay-classic-price">0,00 €</div>
+                </div>
+              </div>
+            </div>
+            <div class="pay-option" id="pay-crypto" onclick="setPayment('crypto')">
+              <div class="flex items-center gap-3">
+                <div class="pay-radio"><div class="pay-radio-dot"></div></div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <div class="text-[12px] font-bold text-white">Éco-Crypto</div>
+                    <span class="text-[8px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-400">-8%</span>
+                  </div>
+                  <div class="text-[9px] text-smoke-400 mt-0.5">USDT, BTC, ETH — Réduction immédiate</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-display text-[14px] font-bold text-purple-400" id="pay-crypto-price">0,00 €</div>
+                  <div class="text-[8px] text-green-400 font-bold" id="pay-crypto-saved">Vous économisez 0€</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CRYPTO HELP LINK -->
+          <div class="mt-2.5 flex items-center justify-between">
+            <button onclick="openCryptoHelp()" class="text-[9px] text-purple-400/70 flex items-center gap-1 press">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Nouveau en crypto ? Guide rapide
+            </button>
+            <div id="pay-method-label" class="text-[9px] font-bold tracking-wider uppercase text-cyan-brand/60">Virement / Carte</div>
+          </div>
+        </div>
+
+        <!-- GUARANTEE BADGE -->
+        <div class="mt-4 glass rounded-xl px-4 py-3 border border-cyan-brand/10 flex items-start gap-3">
+          <span class="text-lg">🛡️</span>
+          <div>
+            <div class="text-[10px] font-bold text-white">Garantie Yuko Vape</div>
+            <div class="text-[9px] text-smoke-400 leading-relaxed mt-0.5">Expédition 100% assurée. En cas de perte du colis par le transporteur, la marchandise est renvoyée gratuitement à nos frais.</div>
+          </div>
+        </div>
 
         <div id="min-order-warn" class="hidden text-center text-[11px] text-amber-400 bg-amber-400/5 border border-amber-400/15 rounded-xl py-2.5 px-4 mt-4"></div>
 
@@ -621,7 +731,7 @@
     }
 
     // ============= CHECKOUT =============
-    function openCheckout(){if(!cart.length){showToast('⚠️ Panier vide');return}renderCheckoutItems();document.getElementById('checkout-modal').classList.remove('hidden');setTimeout(()=>{document.getElementById('checkout-inner').scrollTop=0},100)}
+    function openCheckout(){if(!cart.length){showToast('⚠️ Panier vide');return}setPayment('classic');renderCheckoutItems();document.getElementById('checkout-modal').classList.remove('hidden');setTimeout(()=>{document.getElementById('checkout-inner').scrollTop=0},100)}
     function closeCheckout(){document.getElementById('checkout-modal').classList.add('hidden')}
 
     function renderCheckoutItems(){
@@ -651,7 +761,7 @@
             <div class="text-[10px] text-smoke-500">${c.qty} × ${c.unitPrice.toFixed(2)}€ <span class="text-cyan-brand/70">(${c.tierLabel})</span></div>
           </div>
         </div>`).join('');
-      document.getElementById('checkout-total').textContent=formatPrice(getCartTotal());
+      updatePaymentPrices();
       const promo=document.getElementById('checkout-promo');
       if(promo){if(totalUnits>=70)promo.classList.remove('hidden');else promo.classList.add('hidden')}
     }
@@ -703,17 +813,27 @@
       });
       lines.push('─────────────────');
       lines.push('📊 Total unités : '+totalUnits);
-      lines.push('💰 TOTAL : '+formatPrice(+getCartTotal().toFixed(2)));
+      const rawTotal=+getCartTotal().toFixed(2);
+      const isCrypto=paymentMethod==='crypto';
+      const finalTotal=isCrypto?+(rawTotal*(1-CRYPTO_DISCOUNT)).toFixed(2):rawTotal;
+      lines.push('💰 Sous-total : '+formatPrice(rawTotal));
+      if(isCrypto){
+        lines.push('🟣 Paiement : Éco-Crypto (-8%)');
+        lines.push('💜 Remise crypto : -'+formatPrice(+(rawTotal-finalTotal).toFixed(2)));
+      }else{
+        lines.push('💳 Paiement : Virement / Carte');
+      }
+      lines.push('✅ TOTAL À PAYER : '+formatPrice(finalTotal));
       if(totalUnits>=70)lines.push('','🎁 PROMO : 10 puffs offertes (1 boîte bonus — parfum choisi par Yuko)');
       if(notes)lines.push('','📝 Notes : '+notes);
       lines.push('','🚚 Livraison estimée : '+getDeliveryEstimate());
       lines.push('⏱ '+new Date().toLocaleString('fr-FR'));
       const message=lines.join('\n');
-      const savedCart=[...cart];const savedTotal=getCartTotal();
+      const savedCart=[...cart];const savedTotal=finalTotal;
       saveOrderToHistory(orderId,savedCart,savedTotal,customer);
       localStorage.removeItem('yuko_cart');
       cart=[];saveCart();updateCartBar();
-      showConfirmationScreen(orderId,savedCart,savedTotal,customer,message);
+      showConfirmationScreen(orderId,savedCart,savedTotal,customer,message,isCrypto,isCrypto?rawTotal:null);
     }
     function getDeliveryEstimate(){
       const d=new Date();d.setDate(d.getDate()+2);const d2=new Date(d);d2.setDate(d2.getDate()+1);
@@ -721,7 +841,7 @@
       return fmt(d)+' – '+fmt(d2);
     }
 
-    function showConfirmationScreen(orderId,savedCart,savedTotal,customer,message){
+    function showConfirmationScreen(orderId,savedCart,savedTotal,customer,message,isCrypto,rawTotal){
       const ci=document.getElementById('checkout-inner');
       ci.innerHTML=`
         <div class="text-center py-6">
@@ -736,10 +856,12 @@
             <div class="text-[9px] font-bold tracking-widest uppercase text-smoke-500 mb-2">Récapitulatif</div>
             ${savedCart.map(c=>`<div class="flex justify-between items-center"><div><span class="text-[12px] font-semibold">${c.name}</span><span class="text-[10px] text-smoke-400 ml-2">${c.flavor}</span></div><div class="text-right"><span class="text-[10px] text-smoke-400">${c.qty}×</span> <span class="text-[12px] font-bold text-cyan-brand">${formatPrice(c.lineTotal)}</span></div></div>`).join('')}
             ${savedCart.reduce((s,c)=>s+c.qty,0)>=70?'<div class="flex items-center gap-2 pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,.04)"><span class="text-sm">🎁</span><span class="text-[10px] text-green-400 font-semibold">+10 puffs offertes — parfum choisi par Yuko</span></div>':''}
+            ${isCrypto?`<div class="flex justify-between items-center pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,.04)"><span class="text-[10px] text-smoke-400">Sous-total</span><span class="text-[10px] text-smoke-400 line-through">${formatPrice(rawTotal)}</span></div><div class="flex justify-between items-center"><span class="text-[10px] text-purple-400 font-semibold">Remise Éco-Crypto -8%</span><span class="text-[10px] text-green-400 font-bold">-${formatPrice(+(rawTotal-savedTotal).toFixed(2))}</span></div>`:''}
             <div class="pt-2 mt-2 flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,.06)">
-              <span class="text-[11px] font-semibold text-smoke-400">Total</span>
-              <span class="font-display text-lg font-bold text-cyan-brand">${formatPrice(savedTotal)}</span>
+              <span class="text-[11px] font-semibold text-smoke-400">Total à payer</span>
+              <span class="font-display text-lg font-bold ${isCrypto?'text-purple-400':'text-cyan-brand'}">${formatPrice(savedTotal)}</span>
             </div>
+            ${isCrypto?'<div class="text-[9px] text-purple-400/60 text-right mt-1">🟣 Paiement en crypto (USDT/BTC/ETH)</div>':''}
           </div>
           <p class="text-[11px] text-smoke-400 mb-4">Appuyez sur le bouton ci-dessous pour envoyer votre commande à <strong class="text-white">@mvshakil</strong> sur Telegram.</p>
           <a href="https://t.me/mvshakil?text=${encodeURIComponent(message)}" target="_blank" class="ripple block w-full btn-gradient text-dark-900 font-display font-bold py-4 rounded-2xl text-[13px] tracking-wider uppercase press shadow-[0_0_30px_rgba(0,245,212,.15)] text-center no-underline" style="text-decoration:none">
@@ -750,6 +872,33 @@
     }
 
     function val(id){return document.getElementById(id).value.trim()}
+
+    // ============= PAYMENT METHOD =============
+    const CRYPTO_DISCOUNT=0.08;
+    let paymentMethod='classic';
+    function setPayment(method){
+      paymentMethod=method;
+      const cl=document.getElementById('pay-classic'),cr=document.getElementById('pay-crypto');
+      cl.classList.toggle('selected',method==='classic');cr.classList.remove('selected');
+      cr.classList.toggle('crypto-selected',method==='crypto');
+      document.getElementById('pay-method-label').textContent=method==='crypto'?'Éco-Crypto -8%':'Virement / Carte';
+      document.getElementById('pay-method-label').style.color=method==='crypto'?'#a855f7':'';
+      updatePaymentPrices();
+      haptic();
+    }
+    function updatePaymentPrices(){
+      const total=getCartTotal();
+      const cryptoTotal=+(total*(1-CRYPTO_DISCOUNT)).toFixed(2);
+      const saved=+(total-cryptoTotal).toFixed(2);
+      document.getElementById('pay-classic-price').textContent=formatPrice(total);
+      document.getElementById('pay-crypto-price').textContent=formatPrice(cryptoTotal);
+      document.getElementById('pay-crypto-saved').textContent='Vous économisez '+formatPrice(saved);
+      const ct=document.getElementById('checkout-total');
+      if(paymentMethod==='crypto'){ct.textContent=formatPrice(cryptoTotal);ct.style.color='#a855f7'}
+      else{ct.textContent=formatPrice(total);ct.style.color=''}
+    }
+    function openCryptoHelp(){document.getElementById('crypto-help').classList.add('open')}
+    function closeCryptoHelp(){document.getElementById('crypto-help').classList.remove('open')}
 
     // ============= ORDER HISTORY =============
     function getOrderHistory(){return JSON.parse(localStorage.getItem('yuko_orders')||'[]')}

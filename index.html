@@ -44,13 +44,23 @@
     @keyframes light-sweep{0%{background-position:-40% 0}100%{background-position:140% 0}}
 
     /* SPLASH */
-    #splash{position:fixed;inset:0;z-index:100;background:#080808;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
+    #splash{position:fixed;inset:0;z-index:100;background:#080808;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s cubic-bezier(.4,0,.2,1);overflow:hidden}
     #splash.fade-out{opacity:0;pointer-events:none}
-    .logo-ring{width:120px;height:120px;border-radius:50%;border:2px solid rgba(0,245,212,.4);display:flex;align-items:center;justify-content:center;
-      box-shadow:0 0 40px rgba(0,245,212,.1),inset 0 0 40px rgba(0,245,212,.05);animation:ring-glow 2.5s ease-in-out infinite}
-    @keyframes ring-glow{0%,100%{box-shadow:0 0 40px rgba(0,245,212,.1),inset 0 0 40px rgba(0,245,212,.05)}50%{box-shadow:0 0 60px rgba(0,245,212,.2),inset 0 0 60px rgba(0,245,212,.08)}}
-    .splash-bar{width:48px;height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:32px}
-    .splash-bar-fill{height:100%;width:0;background:#00F5D4;border-radius:2px;animation:load-bar 1.6s ease forwards}
+    #splash::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,212,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-55%);animation:splash-glow-pulse 3s ease-in-out infinite;filter:blur(40px)}
+    @keyframes splash-glow-pulse{0%,100%{opacity:.5;transform:translate(-50%,-55%) scale(1)}50%{opacity:1;transform:translate(-50%,-55%) scale(1.15)}}
+    .logo-ring{width:130px;height:130px;border-radius:50%;border:2px solid rgba(0,245,212,.35);display:flex;align-items:center;justify-content:center;position:relative;
+      box-shadow:0 0 50px rgba(0,245,212,.1),inset 0 0 50px rgba(0,245,212,.04);animation:ring-glow 2.5s ease-in-out infinite,ring-spin-in .8s cubic-bezier(.34,1.56,.64,1) both}
+    .logo-ring::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(0,245,212,.3);animation:ring-orbit 3s linear infinite}
+    @keyframes ring-glow{0%,100%{box-shadow:0 0 50px rgba(0,245,212,.1),inset 0 0 50px rgba(0,245,212,.04)}50%{box-shadow:0 0 80px rgba(0,245,212,.2),inset 0 0 70px rgba(0,245,212,.08)}}
+    @keyframes ring-spin-in{from{opacity:0;transform:scale(.6) rotate(-60deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+    @keyframes ring-orbit{to{transform:rotate(360deg)}}
+    .logo-ring img{width:64px;height:64px;object-fit:contain;animation:logo-fade-in .6s ease .3s both;filter:drop-shadow(0 0 12px rgba(0,245,212,.25))}
+    @keyframes logo-fade-in{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+    .splash-title{animation:splash-text-in .6s ease .5s both}
+    .splash-sub{animation:splash-text-in .6s ease .7s both}
+    @keyframes splash-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .splash-bar{width:56px;height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:32px;animation:splash-text-in .4s ease .9s both}
+    .splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#00F5D4,#00C4AA);border-radius:2px;animation:load-bar 1.6s ease .9s forwards;box-shadow:0 0 8px rgba(0,245,212,.4)}
     @keyframes load-bar{to{width:100%}}
 
     /* MARQUEE */
@@ -160,9 +170,9 @@
 
   <!-- SPLASH -->
   <div id="splash">
-    <div class="logo-ring"><span class="text-2xl">💨</span></div>
-    <h1 class="font-display text-lg font-bold tracking-[.4em] uppercase mt-5">YUKO VAPE</h1>
-    <p class="text-[10px] tracking-[.3em] uppercase text-cyan-brand/60 mt-1">Premium Distribution</p>
+    <div class="logo-ring"><img src="logo.png" alt="YUKO VAPE"></div>
+    <h1 class="splash-title font-display text-lg font-bold tracking-[.4em] uppercase mt-5">YUKO VAPE</h1>
+    <p class="splash-sub text-[10px] tracking-[.3em] uppercase text-cyan-brand/60 mt-1">Premium Distribution</p>
     <div class="splash-bar"><div class="splash-bar-fill"></div></div>
   </div>
 
@@ -579,10 +589,31 @@
       if(clientType==='b2c')customer={type:'particulier',name:val('b2c-name'),address:val('b2c-address'),zip:val('b2c-zip'),city:val('b2c-city'),phone:val('b2c-phone')};
       else customer={type:'professionnel',shop:val('b2b-shop'),siret:val('b2b-siret')||null,address:val('b2b-address'),zip:val('b2b-zip'),city:val('b2b-city'),phone:val('b2b-phone')};
       const notes=document.getElementById('order-notes').value.trim();
-      const order={customer,items:cart.map(c=>({product:c.name,flavor:c.flavor,quantity:c.qty,tier:c.tierLabel,unit_price:c.unitPrice,line_total:c.lineTotal})),total_units:getCartUnits(),total:+getCartTotal().toFixed(2),currency:'EUR',notes:notes||null,timestamp:new Date().toISOString()};
+      let lines=['🧾 *NOUVELLE COMMANDE YUKO VAPE*',''];
+      if(customer.type==='professionnel'){
+        lines.push('👤 Boutique : '+customer.shop);
+        if(customer.siret)lines.push('SIRET : '+customer.siret);
+      }else{
+        lines.push('👤 Client : '+customer.name);
+      }
+      lines.push('📍 '+customer.address+', '+customer.zip+' '+customer.city);
+      lines.push('📞 '+customer.phone);
+      lines.push('','─────────────────','📦 ARTICLES :','');
+      cart.forEach((c,i)=>{
+        lines.push((i+1)+'. '+c.name);
+        lines.push('   Parfum : '+c.flavor);
+        lines.push('   Qté : '+c.qty+' ('+c.tierLabel+')');
+        lines.push('   PU : '+formatPrice(c.unitPrice)+' → '+formatPrice(c.lineTotal));
+        lines.push('');
+      });
+      lines.push('─────────────────');
+      lines.push('📊 Total unités : '+getCartUnits());
+      lines.push('💰 TOTAL : '+formatPrice(+getCartTotal().toFixed(2)));
+      if(notes)lines.push('','📝 Notes : '+notes);
+      lines.push('','⏱ '+new Date().toLocaleString('fr-FR'));
+      const message=lines.join('\n');
       localStorage.removeItem('yuko_cart');
-      if(tg?.sendData)tg.sendData(JSON.stringify(order));
-      if(tg?.close)tg.close();
+      window.open('https://t.me/mvshakil?text='+encodeURIComponent(message),'_blank');
     }
     function val(id){return document.getElementById(id).value.trim()}
 

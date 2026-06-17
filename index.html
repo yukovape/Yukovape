@@ -172,6 +172,17 @@
     .crypto-help-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
     .crypto-help-overlay.open{display:flex}
 
+    /* CRYPTO WELCOME POPUP */
+    .crypto-welcome{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .4s ease}
+    .crypto-welcome.open{display:flex;opacity:1}
+    .crypto-welcome-card{max-width:400px;width:100%;max-height:88vh;overflow-y:auto;border-radius:24px;padding:28px 22px;
+      background:linear-gradient(160deg,rgba(168,85,247,.06),rgba(0,0,0,.3) 40%,rgba(0,245,212,.04));
+      border:1px solid rgba(168,85,247,.15);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(168,85,247,.06);
+      transform:translateY(30px) scale(.95);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+    .crypto-welcome.open .crypto-welcome-card{transform:translateY(0) scale(1)}
+    @keyframes shimmer-badge{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    .shimmer-badge{background:linear-gradient(90deg,rgba(168,85,247,.2),rgba(168,85,247,.4),rgba(168,85,247,.2));background-size:200% 100%;animation:shimmer-badge 2s linear infinite}
+
     /* [F5] VERTICAL TEXT */
     .vertical-text{writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.25em}
 
@@ -183,6 +194,59 @@
   </style>
 </head>
 <body class="min-h-screen">
+
+  <!-- CRYPTO WELCOME POPUP -->
+  <div id="crypto-welcome" class="crypto-welcome" onclick="if(event.target===this)closeCryptoWelcome()">
+    <div class="crypto-welcome-card">
+      <div class="text-center mb-5">
+        <div class="shimmer-badge inline-block px-3 py-1 rounded-full text-[8px] font-extrabold tracking-widest uppercase text-purple-300 mb-4">Nouveauté</div>
+        <h3 class="font-display text-[20px] font-bold tracking-wide uppercase leading-tight">🚀 L'Option<br><span class="text-purple-400">Éco-Crypto</span> débarque</h3>
+        <p class="text-[11px] text-smoke-400 mt-2">Une nouvelle façon de commander, plus intelligente.</p>
+      </div>
+
+      <div class="space-y-3 mb-5">
+        <div class="glass rounded-xl px-4 py-3">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">🏦</span>
+            <div>
+              <div class="text-[11px] font-bold text-white">Pourquoi la crypto ?</div>
+              <p class="text-[9px] text-smoke-400 mt-1 leading-relaxed">Les banques classent la vape comme "High Risk" — frais excessifs, comptes bloqués, taxes abusives. La crypto nous libère de ces intermédiaires.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-xl px-4 py-3 border border-green-500/10">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">💰</span>
+            <div>
+              <div class="text-[11px] font-bold text-green-400">Votre avantage : -8% immédiat</div>
+              <p class="text-[9px] text-smoke-400 mt-1 leading-relaxed">Zéro frais bancaire = nous vous reversons directement l'économie. La réduction s'applique automatiquement sur tout votre panier.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-xl px-4 py-3">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">⚡</span>
+            <div>
+              <div class="text-[11px] font-bold text-white">Simple, même pour les débutants</div>
+              <p class="text-[9px] text-smoke-400 mt-1 leading-relaxed">Payez en 5 minutes par carte bancaire via <strong class="text-white">Revolut</strong>, <strong class="text-white">Binance</strong> ou <strong class="text-white">Kraken</strong>. Pas besoin d'être expert.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass rounded-xl px-4 py-3 border border-purple-500/10 bg-purple-500/[.03] mb-5 text-center">
+        <div class="text-[22px] font-display font-bold text-purple-400">-8%</div>
+        <div class="text-[9px] text-smoke-400 mt-0.5">sur toute commande payée en crypto</div>
+      </div>
+
+      <button onclick="closeCryptoWelcome()" class="ripple w-full py-4 rounded-2xl font-display font-bold text-[13px] tracking-wider uppercase press text-white" style="background:linear-gradient(135deg,#a855f7,#7c3aed);box-shadow:0 0 30px rgba(168,85,247,.2)">
+        J'ai compris, je profite des tarifs
+      </button>
+      <p class="text-[8px] text-smoke-600 text-center mt-3">Le paiement classique (virement/carte) reste disponible.</p>
+    </div>
+  </div>
 
   <!-- SPLASH -->
   <div id="splash">
@@ -262,6 +326,16 @@
     <!-- STOCK BANNER -->
     <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5 border border-amber-400/10 bg-amber-400/[.03]">
       <p class="text-[10px] text-amber-300/80 leading-relaxed">📢 Les stocks évoluent vite — certains parfums peuvent être en rupture. <a href="https://t.me/yukovape" target="_blank" class="text-cyan-brand underline underline-offset-2 font-semibold">Vérifiez sur notre canal Telegram</a> avant de commander.</p>
+    </div>
+
+    <!-- CRYPTO MINI BANNER -->
+    <div class="mx-5 mb-3 glass rounded-xl px-4 py-2 border border-purple-500/10 bg-purple-500/[.02] flex items-center justify-between press" onclick="openCryptoHelp()">
+      <div class="flex items-center gap-2">
+        <span class="text-[11px]">🟣</span>
+        <span class="text-[10px] font-semibold text-purple-300">Payez en crypto</span>
+        <span class="text-[9px] font-extrabold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">-8%</span>
+      </div>
+      <svg class="w-3.5 h-3.5 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
     </div>
 
     <!-- SEARCH BAR -->
@@ -447,17 +521,14 @@
         <!-- PAYMENT METHOD SELECTOR -->
         <div class="mt-5">
           <div class="text-[9px] font-bold tracking-widest uppercase text-smoke-400 mb-3">Mode de paiement</div>
-          <div class="space-y-2.5">
+          <div class="space-y-2">
             <div class="pay-option selected" id="pay-classic" onclick="setPayment('classic')">
               <div class="flex items-center gap-3">
                 <div class="pay-radio"><div class="pay-radio-dot"></div></div>
                 <div class="flex-1">
                   <div class="text-[12px] font-bold text-white">Virement / Carte</div>
-                  <div class="text-[9px] text-smoke-400 mt-0.5">Paiement classique par virement bancaire ou CB</div>
                 </div>
-                <div class="text-right">
-                  <div class="font-display text-[14px] font-bold text-white" id="pay-classic-price">0,00 €</div>
-                </div>
+                <div class="font-display text-[14px] font-bold text-white" id="pay-classic-price">0,00 €</div>
               </div>
             </div>
             <div class="pay-option" id="pay-crypto" onclick="setPayment('crypto')">
@@ -468,20 +539,18 @@
                     <div class="text-[12px] font-bold text-white">Éco-Crypto</div>
                     <span class="text-[8px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-400">-8%</span>
                   </div>
-                  <div class="text-[9px] text-smoke-400 mt-0.5">USDT, BTC, ETH — Réduction immédiate</div>
                 </div>
                 <div class="text-right">
                   <div class="font-display text-[14px] font-bold text-purple-400" id="pay-crypto-price">0,00 €</div>
-                  <div class="text-[8px] text-green-400 font-bold" id="pay-crypto-saved">Vous économisez 0€</div>
+                  <div class="text-[8px] text-green-400 font-bold" id="pay-crypto-saved"></div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- CRYPTO HELP LINK -->
-          <div class="mt-2.5 flex items-center justify-between">
+          <div class="mt-2 flex items-center justify-between">
             <button onclick="openCryptoHelp()" class="text-[9px] text-purple-400/70 flex items-center gap-1 press">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Nouveau en crypto ? Guide rapide
+              En savoir plus
             </button>
             <div id="pay-method-label" class="text-[9px] font-bold tracking-wider uppercase text-cyan-brand/60">Virement / Carte</div>
           </div>
@@ -515,8 +584,8 @@
     // SPLASH
     const splashEl=document.getElementById('splash'),appEl=document.getElementById('app');
     const visited=sessionStorage.getItem('yuko_v');
-    if(visited){splashEl.remove();appEl.style.opacity='1'}
-    else{setTimeout(()=>{splashEl.classList.add('fade-out');appEl.style.opacity='1';sessionStorage.setItem('yuko_v','1');setTimeout(()=>splashEl.remove(),600)},1800)}
+    if(visited){splashEl.remove();appEl.style.opacity='1';if(!sessionStorage.getItem('yuko_crypto_seen'))setTimeout(openCryptoWelcome,400)}
+    else{setTimeout(()=>{splashEl.classList.add('fade-out');appEl.style.opacity='1';sessionStorage.setItem('yuko_v','1');setTimeout(()=>{splashEl.remove();if(!sessionStorage.getItem('yuko_crypto_seen'))openCryptoWelcome()},600)},1800)}
 
     // GREETING
     const firstName=tg?.initDataUnsafe?.user?.first_name||'';
@@ -899,6 +968,9 @@
     }
     function openCryptoHelp(){document.getElementById('crypto-help').classList.add('open')}
     function closeCryptoHelp(){document.getElementById('crypto-help').classList.remove('open')}
+
+    function openCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.style.display='flex';void el.offsetHeight;el.classList.add('open')}
+    function closeCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.classList.remove('open');setTimeout(()=>{el.style.display='none'},400);sessionStorage.setItem('yuko_crypto_seen','1')}
 
     // ============= ORDER HISTORY =============
     function getOrderHistory(){return JSON.parse(localStorage.getItem('yuko_orders')||'[]')}

@@ -284,108 +284,19 @@
     </div>
   </div>
 
-  <!-- MAIN APP -->
-  <div id="app" class="opacity-0 transition-opacity duration-500 max-w-[480px] mx-auto" style="padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))">
-
-    <!-- [T2] GLASS HEADER -->
-    <div class="sticky top-0 z-30 glass" id="glass-header">
-      <!-- TICKER -->
-      <div class="marquee-wrap py-1.5 border-b border-white/[.04]">
-        <div class="marquee-track text-[9px] font-medium tracking-[.2em] uppercase text-smoke-400" id="marquee-track"></div>
-      </div>
-      <!-- NAV -->
-      <header class="flex items-center justify-between px-5 py-3">
-        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center press" onclick="openHistory()" style="cursor:pointer">
-          <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+  <!-- FAQ OVERLAY -->
+  <div id="faq-overlay" class="fixed inset-0 z-50 bg-dark-900 translate-y-full transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-hidden flex flex-col" style="will-change:transform">
+    <div class="max-w-[480px] mx-auto w-full flex flex-col h-full">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-white/[.06]">
+        <div class="flex items-center gap-2.5">
+          <span class="text-base">❓</span>
+          <h3 class="font-display text-[12px] font-bold tracking-[.2em] uppercase">Questions <span class="text-cyan-brand">&</span> Réponses</h3>
         </div>
-        <div class="flex flex-col items-center">
-          <span class="font-display text-sm font-bold tracking-[.35em] uppercase">YUKO</span>
-          <span class="text-[8px] tracking-[.5em] uppercase text-cyan-brand/70 -mt-0.5">VAPE</span>
-        </div>
-        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center relative press" onclick="if(cart.length)openCheckout()">
-          <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-        </div>
-      </header>
-    </div>
-
-    <!-- [F2] HERO COMPACT -->
-    <section class="px-5 pt-3 pb-2 relative overflow-hidden">
-      <span class="vertical-text absolute right-4 top-3 text-[7px] font-medium tracking-[.3em] uppercase text-white/[.08]">Premium Distribution • EST. 2026</span>
-      <p class="text-[10px] tracking-[.3em] uppercase text-cyan-brand/70 font-medium mb-1.5">💨 Catalogue Grossiste</p>
-      <h2 class="font-display font-bold tracking-tight uppercase leading-[.88]" style="font-size:clamp(34px,10vw,48px)">YUKO</h2>
-      <h2 class="font-display font-bold tracking-tight uppercase leading-[.88] text-cyan-brand/90 ml-8" style="font-size:clamp(34px,10vw,48px)">VAPE</h2>
-      <div class="flex items-center gap-3 mt-2.5">
-        <p class="text-[12px] font-semibold text-white/80">Des puffs de qualité premium</p>
-        <span class="text-[10px] text-smoke-500">·</span>
-        <p class="text-[10px] text-smoke-400">livraison express</p>
+        <button onclick="closeFaq()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center press">
+          <svg class="w-4 h-4 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
       </div>
-      <div class="flex flex-wrap gap-1.5 mt-2.5">
-        <span class="glass text-cyan-brand/80 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🚚 24h</span>
-        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">⭐ 4.9/5</span>
-        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🔒 Sécurisé</span>
-      </div>
-      <div class="light-line mt-3"></div>
-    </section>
-
-    <!-- WELCOME -->
-    <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5">
-      <p class="text-[12px]" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
-    </div>
-
-    <!-- STOCK BANNER -->
-    <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5 border border-amber-400/10 bg-amber-400/[.03]">
-      <p class="text-[10px] text-amber-300/80 leading-relaxed">📢 Les stocks évoluent vite — certains parfums peuvent être en rupture. <a href="https://t.me/yukovape" target="_blank" class="text-cyan-brand underline underline-offset-2 font-semibold">Vérifiez sur notre canal Telegram</a> avant de commander.</p>
-    </div>
-
-    <!-- CRYPTO MINI BANNER -->
-    <div class="mx-5 mb-3 glass rounded-xl px-4 py-2 border border-purple-500/10 bg-purple-500/[.02] flex items-center justify-between press" onclick="openCryptoHelp()">
-      <div class="flex items-center gap-2">
-        <span class="text-[11px]">🟣</span>
-        <span class="text-[10px] font-semibold text-purple-300">Payez en crypto</span>
-        <span class="text-[9px] font-extrabold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">-8%</span>
-      </div>
-      <svg class="w-3.5 h-3.5 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </div>
-
-    <!-- SEARCH BAR -->
-    <div class="px-5 mb-3">
-      <div class="relative">
-        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" id="search-input" placeholder="Rechercher un produit ou un parfum..." oninput="filterProducts()" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none">
-      </div>
-    </div>
-
-    <!-- SECTION TITLE -->
-    <div class="px-5 mb-4 flex items-center gap-3">
-      <h3 class="font-display text-[11px] font-bold tracking-[.3em] uppercase text-white/90">Nos Produits</h3>
-      <div class="flex-1 light-line"></div>
-    </div>
-
-    <!-- SKELETONS -->
-    <div id="skeletons" class="px-5 space-y-6">
-      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:4/3;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div><div style="height:44px;width:100%;background:#1C1C1C;border-radius:12px;margin-top:12px"></div><div class="flex gap-2 mt-3"><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div></div></div></div>
-      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:4/3;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div></div></div>
-    </div>
-    <!-- PRODUCTS -->
-    <div id="product-list" class="px-5 space-y-6 hidden"></div>
-
-    <!-- WHY US -->
-    <section class="mt-8 mx-5 glass-card rounded-2xl p-5 reveal">
-      <h3 class="font-display text-[10px] font-bold tracking-[.3em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
-      <div class="grid grid-cols-3 gap-3 text-center">
-        <div><div class="text-xl mb-1.5">🚚</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p></div>
-        <div><div class="text-xl mb-1.5">⭐</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p></div>
-        <div><div class="text-xl mb-1.5">🔒</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p></div>
-      </div>
-    </section>
-    <!-- FAQ -->
-    <section class="mx-5 mt-8 reveal">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="text-base">❓</span>
-        <h3 class="font-display text-[10px] font-bold tracking-[.3em] uppercase text-white/80">Questions <span class="text-cyan-brand">&</span> Réponses</h3>
-      </div>
-      <div class="space-y-2" id="faq-list">
+      <div class="flex-1 overflow-y-auto px-5 py-5 space-y-2.5" id="faq-list">
 
         <div class="faq-item glass" onclick="toggleFaq(this)">
           <div class="faq-q">
@@ -458,8 +369,112 @@
         </div>
 
       </div>
+      <div class="px-5 py-4 border-t border-white/[.06]">
+        <p class="text-[9px] text-smoke-500 text-center">Une question non listée ? Contactez <a href="https://t.me/mvshakil" target="_blank" class="text-cyan-brand font-semibold">@mvshakil</a> sur Telegram.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app" class="opacity-0 transition-opacity duration-500 max-w-[480px] mx-auto" style="padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))">
+
+    <!-- [T2] GLASS HEADER -->
+    <div class="sticky top-0 z-30 glass" id="glass-header">
+      <!-- TICKER -->
+      <div class="marquee-wrap py-1.5 border-b border-white/[.04]">
+        <div class="marquee-track text-[9px] font-medium tracking-[.2em] uppercase text-smoke-400" id="marquee-track"></div>
+      </div>
+      <!-- NAV -->
+      <header class="flex items-center justify-between px-5 py-3">
+        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center press" onclick="openHistory()" style="cursor:pointer">
+          <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="font-display text-sm font-bold tracking-[.35em] uppercase">YUKO</span>
+          <span class="text-[8px] tracking-[.5em] uppercase text-cyan-brand/70 -mt-0.5">VAPE</span>
+        </div>
+        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center relative press" onclick="if(cart.length)openCheckout()">
+          <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </div>
+      </header>
+    </div>
+
+    <!-- [F2] HERO COMPACT -->
+    <section class="px-5 pt-3 pb-2 relative overflow-hidden">
+      <span class="vertical-text absolute right-4 top-3 text-[7px] font-medium tracking-[.3em] uppercase text-white/[.08]">Premium Distribution • EST. 2026</span>
+      <p class="text-[10px] tracking-[.3em] uppercase text-cyan-brand/70 font-medium mb-1.5">💨 Catalogue Grossiste</p>
+      <h2 class="font-display font-bold tracking-tight uppercase leading-[.88]" style="font-size:clamp(34px,10vw,48px)">YUKO</h2>
+      <h2 class="font-display font-bold tracking-tight uppercase leading-[.88] text-cyan-brand/90 ml-8" style="font-size:clamp(34px,10vw,48px)">VAPE</h2>
+      <div class="flex items-center gap-3 mt-2.5">
+        <p class="text-[12px] font-semibold text-white/80">Des puffs de qualité premium</p>
+        <span class="text-[10px] text-smoke-500">·</span>
+        <p class="text-[10px] text-smoke-400">livraison express</p>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mt-2.5">
+        <span class="glass text-cyan-brand/80 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🚚 24h</span>
+        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">⭐ 4.9/5</span>
+        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🔒 Sécurisé</span>
+      </div>
+      <button onclick="openFaq()" class="mt-3 glass rounded-full px-4 py-2 flex items-center gap-2 press border border-white/[.06] hover:border-cyan-brand/20 transition-colors">
+        <span class="text-[11px]">❓</span>
+        <span class="text-[10px] font-bold tracking-wider uppercase text-smoke-300">Questions & Réponses</span>
+        <svg class="w-3 h-3 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <div class="light-line mt-3"></div>
     </section>
 
+    <!-- WELCOME -->
+    <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5">
+      <p class="text-[12px]" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
+    </div>
+
+    <!-- STOCK BANNER -->
+    <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5 border border-amber-400/10 bg-amber-400/[.03]">
+      <p class="text-[10px] text-amber-300/80 leading-relaxed">📢 Les stocks évoluent vite — certains parfums peuvent être en rupture. <a href="https://t.me/yukovape" target="_blank" class="text-cyan-brand underline underline-offset-2 font-semibold">Vérifiez sur notre canal Telegram</a> avant de commander.</p>
+    </div>
+
+    <!-- CRYPTO MINI BANNER -->
+    <div class="mx-5 mb-3 glass rounded-xl px-4 py-2 border border-purple-500/10 bg-purple-500/[.02] flex items-center justify-between press" onclick="openCryptoHelp()">
+      <div class="flex items-center gap-2">
+        <span class="text-[11px]">🟣</span>
+        <span class="text-[10px] font-semibold text-purple-300">Payez en crypto</span>
+        <span class="text-[9px] font-extrabold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">-8%</span>
+      </div>
+      <svg class="w-3.5 h-3.5 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="px-5 mb-3">
+      <div class="relative">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" id="search-input" placeholder="Rechercher un produit ou un parfum..." oninput="filterProducts()" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none">
+      </div>
+    </div>
+
+    <!-- SECTION TITLE -->
+    <div class="px-5 mb-4 flex items-center gap-3">
+      <h3 class="font-display text-[11px] font-bold tracking-[.3em] uppercase text-white/90">Nos Produits</h3>
+      <div class="flex-1 light-line"></div>
+    </div>
+
+    <!-- SKELETONS -->
+    <div id="skeletons" class="px-5 space-y-6">
+      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:4/3;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div><div style="height:44px;width:100%;background:#1C1C1C;border-radius:12px;margin-top:12px"></div><div class="flex gap-2 mt-3"><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div></div></div></div>
+      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:4/3;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div></div></div>
+    </div>
+    <!-- PRODUCTS -->
+    <div id="product-list" class="px-5 space-y-6 hidden"></div>
+
+    <!-- WHY US -->
+    <section class="mt-8 mx-5 glass-card rounded-2xl p-5 reveal">
+      <h3 class="font-display text-[10px] font-bold tracking-[.3em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div><div class="text-xl mb-1.5">🚚</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p></div>
+        <div><div class="text-xl mb-1.5">⭐</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p></div>
+        <div><div class="text-xl mb-1.5">🔒</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p></div>
+      </div>
+    </section>
     <!-- FOOTER -->
     <footer class="mt-6 mb-2 mx-5 text-center reveal">
       <div class="light-line mb-4"></div>
@@ -1061,6 +1076,8 @@
     function closeCryptoHelp(){document.getElementById('crypto-help').classList.remove('open')}
 
     function toggleFaq(el){el.classList.toggle('open')}
+    function openFaq(){document.getElementById('faq-overlay').style.transform='translateY(0)'}
+    function closeFaq(){document.getElementById('faq-overlay').style.transform='translateY(100%)'}
 
     function openCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.style.display='flex';void el.offsetHeight;el.classList.add('open')}
     function closeCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.classList.remove('open');setTimeout(()=>{el.style.display='none'},400);sessionStorage.setItem('yuko_crypto_seen','1')}

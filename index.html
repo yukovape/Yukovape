@@ -46,21 +46,17 @@
     /* SPLASH */
     #splash{position:fixed;inset:0;z-index:100;background:#080808;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s cubic-bezier(.4,0,.2,1);overflow:hidden}
     #splash.fade-out{opacity:0;pointer-events:none}
-    #splash::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,212,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-55%);animation:splash-glow-pulse 3s ease-in-out infinite;filter:blur(40px)}
-    @keyframes splash-glow-pulse{0%,100%{opacity:.5;transform:translate(-50%,-55%) scale(1)}50%{opacity:1;transform:translate(-50%,-55%) scale(1.15)}}
-    .logo-ring{width:130px;height:130px;border-radius:50%;border:2px solid rgba(0,245,212,.35);display:flex;align-items:center;justify-content:center;position:relative;
-      box-shadow:0 0 50px rgba(0,245,212,.1),inset 0 0 50px rgba(0,245,212,.04);animation:ring-glow 2.5s ease-in-out infinite,ring-spin-in .8s cubic-bezier(.34,1.56,.64,1) both}
-    .logo-ring::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(0,245,212,.3);animation:ring-orbit 3s linear infinite}
-    @keyframes ring-glow{0%,100%{box-shadow:0 0 50px rgba(0,245,212,.1),inset 0 0 50px rgba(0,245,212,.04)}50%{box-shadow:0 0 80px rgba(0,245,212,.2),inset 0 0 70px rgba(0,245,212,.08)}}
-    @keyframes ring-spin-in{from{opacity:0;transform:scale(.6) rotate(-60deg)}to{opacity:1;transform:scale(1) rotate(0)}}
-    @keyframes ring-orbit{to{transform:rotate(360deg)}}
-    .logo-ring img{width:64px;height:64px;object-fit:contain;animation:logo-fade-in .6s ease .3s both;filter:drop-shadow(0 0 12px rgba(0,245,212,.25))}
-    @keyframes logo-fade-in{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-    .splash-title{animation:splash-text-in .6s ease .5s both}
-    .splash-sub{animation:splash-text-in .6s ease .7s both}
+    #splash::before{content:'';position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,212,.08) 0%,rgba(0,245,212,.03) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-52%);animation:splash-glow-pulse 3s ease-in-out infinite;filter:blur(60px)}
+    #splash::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.06) 0%,transparent 70%);top:44%;left:55%;transform:translate(-50%,-50%);filter:blur(50px);animation:splash-glow-2 4s ease-in-out infinite}
+    @keyframes splash-glow-pulse{0%,100%{opacity:.6;transform:translate(-50%,-52%) scale(1)}50%{opacity:1;transform:translate(-50%,-52%) scale(1.1)}}
+    @keyframes splash-glow-2{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1)}50%{opacity:.7;transform:translate(-50%,-50%) scale(1.15)}}
+    .splash-logo{width:100px;height:100px;object-fit:contain;border-radius:22px;animation:splash-logo-in .7s cubic-bezier(.34,1.56,.64,1) both;filter:drop-shadow(0 0 40px rgba(0,245,212,.15))}
+    @keyframes splash-logo-in{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    .splash-title{animation:splash-text-in .6s ease .4s both}
+    .splash-sub{animation:splash-text-in .6s ease .55s both}
     @keyframes splash-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .splash-bar{width:56px;height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:32px;animation:splash-text-in .4s ease .9s both}
-    .splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#00F5D4,#00C4AA);border-radius:2px;animation:load-bar 1.6s ease .9s forwards;box-shadow:0 0 8px rgba(0,245,212,.4)}
+    .splash-bar{width:48px;height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:28px;animation:splash-text-in .4s ease .7s both}
+    .splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#00F5D4,#00C4AA);border-radius:2px;animation:load-bar 1.4s ease .8s forwards;box-shadow:0 0 8px rgba(0,245,212,.4)}
     @keyframes load-bar{to{width:100%}}
 
     /* MARQUEE */
@@ -260,9 +256,9 @@
 
   <!-- SPLASH -->
   <div id="splash">
-    <div class="logo-ring"><img src="logo.png" alt="YUKO VAPE"></div>
-    <h1 class="splash-title font-display text-lg font-bold tracking-[.4em] uppercase mt-5">YUKO VAPE</h1>
-    <p class="splash-sub text-[10px] tracking-[.3em] uppercase text-cyan-brand/60 mt-1">Premium Distribution</p>
+    <img src="logo.png" alt="YUKO VAPE" class="splash-logo">
+    <h1 class="splash-title font-display text-[18px] font-bold tracking-[.45em] uppercase mt-5">YUKO VAPE</h1>
+    <p class="splash-sub text-[9px] tracking-[.35em] uppercase text-smoke-400 mt-1.5 font-medium">Premium Distribution Europe</p>
     <div class="splash-bar"><div class="splash-bar-fill"></div></div>
   </div>
 
@@ -401,51 +397,19 @@
     </div>
 
     <!-- [F2] HERO COMPACT -->
-    <section class="px-5 pt-3 pb-2 relative overflow-hidden">
-      <span class="vertical-text absolute right-4 top-3 text-[7px] font-medium tracking-[.3em] uppercase text-white/[.08]">Premium Distribution • EST. 2026</span>
-      <p class="text-[10px] tracking-[.3em] uppercase text-cyan-brand/70 font-medium mb-1.5">💨 Catalogue Grossiste</p>
-      <h2 class="font-display font-bold tracking-tight uppercase leading-[.88]" style="font-size:clamp(34px,10vw,48px)">YUKO</h2>
-      <h2 class="font-display font-bold tracking-tight uppercase leading-[.88] text-cyan-brand/90 ml-8" style="font-size:clamp(34px,10vw,48px)">VAPE</h2>
-      <div class="flex items-center gap-3 mt-2.5">
-        <p class="text-[12px] font-semibold text-white/80">Des puffs de qualité premium</p>
-        <span class="text-[10px] text-smoke-500">·</span>
-        <p class="text-[10px] text-smoke-400">livraison express</p>
+    <section class="px-5 pt-3 pb-1">
+      <p class="text-[12px] font-semibold text-white/80 mb-1" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
+      <p class="text-[10px] text-smoke-400 leading-relaxed">Grossiste puffs premium · <a href="https://t.me/yukovape" target="_blank" class="text-cyan-brand underline-offset-2 font-semibold">Vérifiez les stocks sur Telegram</a></p>
+      <div class="flex flex-wrap items-center gap-1.5 mt-2.5">
+        <span class="glass text-cyan-brand/80 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🚚 Expédition 24h</span>
+        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🔒 100% Garanti</span>
+        <button onclick="openFaq()" class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full press">❓ FAQ</button>
       </div>
-      <div class="flex flex-wrap gap-1.5 mt-2.5">
-        <span class="glass text-cyan-brand/80 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🚚 24h</span>
-        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">⭐ 4.9/5</span>
-        <span class="glass text-smoke-400 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">🔒 Sécurisé</span>
-      </div>
-      <button onclick="openFaq()" class="mt-3 glass rounded-full px-4 py-2 flex items-center gap-2 press border border-white/[.06] hover:border-cyan-brand/20 transition-colors">
-        <span class="text-[11px]">❓</span>
-        <span class="text-[10px] font-bold tracking-wider uppercase text-smoke-300">Questions & Réponses</span>
-        <svg class="w-3 h-3 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </button>
       <div class="light-line mt-3"></div>
     </section>
 
-    <!-- WELCOME -->
-    <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5">
-      <p class="text-[12px]" id="welcome-text">👋 Bienvenue — Yuko Vape !</p>
-    </div>
-
-    <!-- STOCK BANNER -->
-    <div class="mx-5 mb-3 glass rounded-2xl px-4 py-2.5 border border-amber-400/10 bg-amber-400/[.03]">
-      <p class="text-[10px] text-amber-300/80 leading-relaxed">📢 Les stocks évoluent vite — certains parfums peuvent être en rupture. <a href="https://t.me/yukovape" target="_blank" class="text-cyan-brand underline underline-offset-2 font-semibold">Vérifiez sur notre canal Telegram</a> avant de commander.</p>
-    </div>
-
-    <!-- CRYPTO MINI BANNER -->
-    <div class="mx-5 mb-3 glass rounded-xl px-4 py-2 border border-purple-500/10 bg-purple-500/[.02] flex items-center justify-between press" onclick="openCryptoHelp()">
-      <div class="flex items-center gap-2">
-        <span class="text-[11px]">🟣</span>
-        <span class="text-[10px] font-semibold text-purple-300">Payez en crypto</span>
-        <span class="text-[9px] font-extrabold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">-8%</span>
-      </div>
-      <svg class="w-3.5 h-3.5 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    </div>
-
     <!-- SEARCH BAR -->
-    <div class="px-5 mb-3">
+    <div class="px-5 py-2">
       <div class="relative">
         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         <input type="text" id="search-input" placeholder="Rechercher un produit ou un parfum..." oninput="filterProducts()" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none">
@@ -467,12 +431,30 @@
     <div id="product-list" class="px-5 space-y-6 hidden"></div>
 
     <!-- WHY US -->
-    <section class="mt-8 mx-5 glass-card rounded-2xl p-5 reveal">
-      <h3 class="font-display text-[10px] font-bold tracking-[.3em] uppercase text-center mb-5">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
-      <div class="grid grid-cols-3 gap-3 text-center">
-        <div><div class="text-xl mb-1.5">🚚</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Expédition<br>24h</p></div>
-        <div><div class="text-xl mb-1.5">⭐</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Qualité<br>Premium</p></div>
-        <div><div class="text-xl mb-1.5">🔒</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p></div>
+    <section class="mt-8 mx-5 reveal">
+      <h3 class="font-display text-[10px] font-bold tracking-[.3em] uppercase text-center mb-4">Pourquoi nous <span class="text-cyan-brand">choisir</span> ?</h3>
+      <div class="grid grid-cols-3 gap-2.5">
+        <div class="glass-card rounded-2xl p-3 text-center">
+          <div class="w-9 h-9 mx-auto mb-2 rounded-xl bg-cyan-brand/[.08] flex items-center justify-center" style="box-shadow:0 0 20px rgba(0,245,212,.08)">
+            <svg class="w-4 h-4 text-cyan-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+          </div>
+          <p class="text-[8px] font-bold tracking-wider uppercase text-white/70">Expédition</p>
+          <p class="text-[8px] font-bold tracking-wider uppercase text-cyan-brand/60">24-48h</p>
+        </div>
+        <div class="glass-card rounded-2xl p-3 text-center">
+          <div class="w-9 h-9 mx-auto mb-2 rounded-xl bg-purple-500/[.08] flex items-center justify-center" style="box-shadow:0 0 20px rgba(168,85,247,.08)">
+            <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <p class="text-[8px] font-bold tracking-wider uppercase text-white/70">Garantie</p>
+          <p class="text-[8px] font-bold tracking-wider uppercase text-purple-400/60">100%</p>
+        </div>
+        <div class="glass-card rounded-2xl p-3 text-center">
+          <div class="w-9 h-9 mx-auto mb-2 rounded-xl bg-green-500/[.08] flex items-center justify-center" style="box-shadow:0 0 20px rgba(34,197,94,.08)">
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <p class="text-[8px] font-bold tracking-wider uppercase text-white/70">Prix</p>
+          <p class="text-[8px] font-bold tracking-wider uppercase text-green-400/60">Usine</p>
+        </div>
       </div>
     </section>
     <!-- FOOTER -->
@@ -875,9 +857,9 @@
           </button>
         </div>
         <!-- [F4] PRICE TAG -->
-        <div class="glass px-4 py-2 rounded-xl rounded-tl-none text-right">
+        <div class="glass px-4 py-2 rounded-xl rounded-tl-none text-right min-w-[120px]">
           <div class="text-[9px] text-smoke-500">${p.qty} × ${t.price.toFixed(2)}€</div>
-          <div class="font-display text-[17px] font-bold text-cyan-brand">${formatPrice(p.qty*t.price)}</div>
+          <div class="font-display font-bold text-cyan-brand whitespace-nowrap">${formatPriceBig(p.qty*t.price)}</div>
         </div>`;
     }
 
@@ -1115,6 +1097,7 @@
 
     function haptic(){try{tg?.HapticFeedback?.impactOccurred('light')}catch(e){}}
     function formatPrice(n){return n.toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}
+    function formatPriceBig(n,colorClass='text-cyan-brand'){const s=n.toFixed(2).replace('.',',');const[main,dec]=s.split(',');return`<span class="text-[20px]">${main}</span><span class="text-[12px] ${colorClass}/60">,${dec} €</span>`}
 
     // ============= [J4] RIPPLE =============
     document.addEventListener('pointerdown',e=>{

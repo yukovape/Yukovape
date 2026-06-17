@@ -183,6 +183,16 @@
     @keyframes shimmer-badge{0%{background-position:-200% 0}100%{background-position:200% 0}}
     .shimmer-badge{background:linear-gradient(90deg,rgba(168,85,247,.2),rgba(168,85,247,.4),rgba(168,85,247,.2));background-size:200% 100%;animation:shimmer-badge 2s linear infinite}
 
+    /* FAQ ACCORDION */
+    .faq-item{border:1px solid rgba(255,255,255,.04);border-radius:16px;overflow:hidden;transition:border-color .3s ease}
+    .faq-item.open{border-color:rgba(0,245,212,.12)}
+    .faq-q{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .faq-q:active{background:rgba(255,255,255,.02)}
+    .faq-arrow{width:20px;height:20px;flex-shrink:0;transition:transform .35s cubic-bezier(.4,.0,.2,1);color:rgba(255,255,255,.25)}
+    .faq-item.open .faq-arrow{transform:rotate(180deg);color:#00f5d4}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,.0,.2,1),padding .3s ease}
+    .faq-item.open .faq-a{max-height:500px}
+
     /* [F5] VERTICAL TEXT */
     .vertical-text{writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.25em}
 
@@ -369,6 +379,87 @@
         <div><div class="text-xl mb-1.5">🔒</div><p class="text-[8px] font-bold tracking-wider uppercase text-smoke-400">Paiement<br>Sécurisé</p></div>
       </div>
     </section>
+    <!-- FAQ -->
+    <section class="mx-5 mt-8 reveal">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-base">❓</span>
+        <h3 class="font-display text-[10px] font-bold tracking-[.3em] uppercase text-white/80">Questions <span class="text-cyan-brand">&</span> Réponses</h3>
+      </div>
+      <div class="space-y-2" id="faq-list">
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">🚚</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Quels sont vos délais et frais de livraison ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Nos commandes sont préparées sous <strong class="text-white">24h à 48h</strong>. Le délai de livraison est de <strong class="text-white">7 à 10 jours ouvrés</strong>. Afin de vous garantir l'authenticité des produits (zéro contrefaçon) et des prix d'usine imbattables, nos stocks proviennent de centres de transit internationaux.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">La livraison est entièrement sécurisée, <strong class="text-white">sans frais de douane surprise</strong> à l'arrivée. Le numéro de suivi (tracking) vous est envoyé automatiquement dès que le colis est pris en charge par le transporteur.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">✏️</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Puis-je modifier ou annuler ma commande après avoir payé ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Vous pouvez modifier ou annuler votre commande tant que son statut est <strong class="text-white">"En préparation"</strong>. En revanche, dès que votre colis est remis au transporteur et que le statut passe en <strong class="text-white">"Expédié"</strong>, aucune annulation, aucun remboursement et aucune modification (parfums, quantités, adresse) n'est possible.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Pensez à bien vérifier vos informations sur votre Bon de Commande avant de régler.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">🛡️</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Que se passe-t-il si mon colis est bloqué, perdu ou saisi ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Yuko Vape assume <strong class="text-green-400">100 % du risque de transport</strong>. Nous utilisons des lignes logistiques privées ultra-sécurisées. Dans le cas exceptionnel où votre colis serait intercepté ou déclaré officiellement "perdu" (suivi bloqué pendant plus de 10 jours ouvrés), nous <strong class="text-white">réexpédions gratuitement l'intégralité de votre commande sous 48h</strong>.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Aucun remboursement n'est effectué — la garantie s'applique par le renvoi automatique d'un nouveau colis identique.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">🔧</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Que faire si je reçois des produits défectueux ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">S'agissant de vente en gros, nous n'acceptons aucun retour pour "changement d'avis". En revanche, si une puff présente un défaut de fabrication flagrant dès l'ouverture :</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Vous disposez de <strong class="text-white">72 heures</strong> après la livraison pour nous envoyer une courte <strong class="text-white">vidéo de preuve</strong> sur <strong class="text-cyan-brand">@mvshakil</strong>. Après validation, la valeur des produits défectueux sera déduite (avoir) ou ajoutée en bonus lors de votre prochaine commande.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">⏳</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Combien de temps ai-je pour payer mon Bon de Commande ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Lorsque vous validez votre panier, un Bon de Commande est généré et bloque vos stocks pendant une durée maximale de <strong class="text-white">2 heures</strong>. Si vous n'avez pas envoyé votre preuve de transfert (virement ou hash crypto) à <strong class="text-cyan-brand">@mvshakil</strong> dans ce délai, la commande est annulée et les produits sont remis en vente.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Les frais de réseau (frais de virement ou frais de gaz Blockchain) sont à la charge du client.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="mt-6 mb-2 mx-5 text-center reveal">
       <div class="light-line mb-4"></div>
@@ -968,6 +1059,8 @@
     }
     function openCryptoHelp(){document.getElementById('crypto-help').classList.add('open')}
     function closeCryptoHelp(){document.getElementById('crypto-help').classList.remove('open')}
+
+    function toggleFaq(el){el.classList.toggle('open')}
 
     function openCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.style.display='flex';void el.offsetHeight;el.classList.add('open')}
     function closeCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.classList.remove('open');setTimeout(()=>{el.style.display='none'},400);sessionStorage.setItem('yuko_crypto_seen','1')}

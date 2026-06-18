@@ -171,6 +171,12 @@
     .recap-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .35s ease}
     .recap-overlay.open{display:flex;opacity:1}
 
+    /* INVOICE LOADER */
+    .invoice-loader{position:fixed;inset:0;z-index:115;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;opacity:0;transition:opacity .3s ease}
+    .invoice-loader.open{display:flex;opacity:1}
+    @keyframes inv-spin{to{transform:rotate(360deg)}}
+    .inv-spinner{width:48px;height:48px;border:3px solid rgba(0,245,212,.15);border-top-color:#00F5D4;border-radius:50%;animation:inv-spin .8s linear infinite}
+
     /* INVOICE OVERLAY */
     .invoice-overlay{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:flex-start;justify-content:center;padding:0;opacity:0;transition:opacity .35s ease;overflow-y:auto}
     .invoice-overlay.open{display:flex;opacity:1}
@@ -539,6 +545,12 @@
   <!-- RECAP OVERLAY -->
   <div id="recap-overlay" class="recap-overlay">
     <div class="glass-strong rounded-2xl p-5 w-full max-w-[400px] max-h-[85vh] overflow-y-auto" id="recap-content"></div>
+  </div>
+
+  <!-- INVOICE LOADER -->
+  <div id="invoice-loader" class="invoice-loader">
+    <div class="inv-spinner"></div>
+    <p class="text-[13px] text-white/80 font-semibold tracking-wide text-center px-8">⏳ Génération de votre facture proforma sécurisée...</p>
   </div>
 
   <!-- INVOICE OVERLAY -->
@@ -1049,16 +1061,18 @@
       else customer={type:'professionnel',shop:val('b2b-shop'),siret:val('b2b-siret')||null,address:val('b2b-address'),zip:val('b2b-zip'),city:val('b2b-city'),phone:val('b2b-phone')};
       const notes=document.getElementById('order-notes').value.trim();
       const orderId=generateOrderId();
-      let lines=['🧾 *NOUVELLE COMMANDE YUKO VAPE*','','🆔 Commande : '+orderId,''];
-      if(customer.type==='professionnel'){
-        lines.push('👤 Boutique : '+customer.shop);
-        if(customer.siret)lines.push('SIRET : '+customer.siret);
-      }else{
-        lines.push('👤 Client : '+customer.name);
-      }
-      lines.push('📍 '+customer.address+', '+customer.zip+' '+customer.city);
-      lines.push('📞 '+customer.phone);
-      lines.push('','─────────────────','📦 ARTICLES :','');
+      const rawTotal=+getCartTotal().toFixed(2);
+      const isCrypto=paymentMethod==='crypto';
+      const finalTotal=isCrypto?+(rawTotal*(1-CRYPTO_DISCOUNT)).toFixed(2):rawTotal;
+      const clientName=customer.type==='professionnel'?customer.shop:customer.name;
+      let lines=['🚀 BON DE COMMANDE INTERNE — YUKO VAPE','',
+        'Bonjour l\'équipe Yuko Vape, je viens de valider ma commande depuis la Mini App. Voici mes informations pour l\'expédition :','',
+        '🆔 Commande : '+orderId,
+        '👤 Client : '+clientName,
+        '📍 Adresse : '+customer.address+', '+customer.zip+' '+customer.city,
+        '📞 Tél : '+customer.phone];
+      if(customer.type==='professionnel'&&customer.siret)lines.push('SIRET : '+customer.siret);
+      lines.push('','─────────────────','📦 DÉTAIL DES ARTICLES :','');
       cart.forEach((c,i)=>{
         lines.push((i+1)+'. '+c.name);
         lines.push('   Parfum : '+c.flavor);
@@ -1066,31 +1080,27 @@
         lines.push('   PU : '+formatPrice(c.unitPrice)+' → '+formatPrice(c.lineTotal));
         lines.push('');
       });
-      lines.push('─────────────────');
-      lines.push('📊 Total unités : '+totalUnits);
-      const rawTotal=+getCartTotal().toFixed(2);
-      const isCrypto=paymentMethod==='crypto';
-      const finalTotal=isCrypto?+(rawTotal*(1-CRYPTO_DISCOUNT)).toFixed(2):rawTotal;
-      lines.push('💰 Sous-total : '+formatPrice(rawTotal));
+      lines.push('─────────────────','📊 RÉCAPITULATIF FINANCIER :');
+      lines.push('Total unités : '+totalUnits);
+      lines.push('Sous-total : '+formatPrice(rawTotal));
       if(isCrypto){
-        lines.push('🟣 Paiement : Éco-Crypto (-8%)');
-        lines.push('💜 Remise crypto : -'+formatPrice(+(rawTotal-finalTotal).toFixed(2)));
+        lines.push('Mode de Paiement : Éco-Crypto (-8%)');
+        lines.push('Remise appliquée : -'+formatPrice(+(rawTotal-finalTotal).toFixed(2)));
       }else{
-        lines.push('💳 Paiement : Virement / Carte');
+        lines.push('Mode de Paiement : Virement / Carte');
       }
-      lines.push('✅ TOTAL À PAYER : '+formatPrice(finalTotal));
+      lines.push('','🔗 TOTAL NET À RÉGLER : '+formatPrice(finalTotal));
       if(totalUnits>=70)lines.push('','🎁 PROMO : 10 puffs offertes (1 boîte bonus — parfum choisi par Yuko)');
       if(notes)lines.push('','📝 Notes : '+notes);
-      lines.push('','🚚 Livraison estimée : '+getDeliveryEstimate());
-      lines.push('⏱ '+new Date().toLocaleString('fr-FR'));
+      lines.push('','🚚 Logistique : Transit International Sécurisé (7-10 jours ouvrés)');
+      lines.push('⏱ Date : '+new Date().toLocaleString('fr-FR'));
+      lines.push('','Merci de me transmettre les coordonnées de règlement pour bloquer mon colis à l\'entrepôt.');
       const message=lines.join('\n');
       const savedCart=[...cart];const savedTotal=finalTotal;
       showRecapBeforeSend(orderId,savedCart,savedTotal,customer,message,isCrypto,isCrypto?rawTotal:null);
     }
     function getDeliveryEstimate(){
-      const d=new Date();d.setDate(d.getDate()+2);const d2=new Date(d);d2.setDate(d2.getDate()+1);
-      const fmt=dt=>dt.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
-      return fmt(d)+' – '+fmt(d2);
+      return '7 à 10 jours ouvrés';
     }
 
     function showRecapBeforeSend(orderId,savedCart,savedTotal,customer,message,isCrypto,rawTotal){
@@ -1126,8 +1136,14 @@
     function confirmRecapSend(){
       const d=window._recapData;if(!d)return;
       closeRecap();
-      showInvoiceScreen(d.orderId,d.savedCart,d.savedTotal,d.customer,d.message,d.isCrypto,d.rawTotal);
       haptic();
+      const loader=document.getElementById('invoice-loader');
+      loader.style.display='flex';void loader.offsetHeight;loader.classList.add('open');
+      setTimeout(()=>{
+        loader.classList.remove('open');
+        setTimeout(()=>{loader.style.display='none'},300);
+        showInvoiceScreen(d.orderId,d.savedCart,d.savedTotal,d.customer,d.message,d.isCrypto,d.rawTotal);
+      },1500);
     }
 
     function generateInvoiceNumber(){
@@ -1235,8 +1251,9 @@
             <div style="font-size:11px;font-weight:600">${isCrypto?'Crypto (USDT/BTC/ETH)':'Virement / Carte bancaire'}</div>
           </div>
           <div style="flex:1;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px">
-            <div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:3px">Livraison estimée</div>
-            <div style="font-size:11px;font-weight:600">${getDeliveryEstimate()}</div>
+            <div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:3px">Logistique</div>
+            <div style="font-size:11px;font-weight:600">Transit sécurisé</div>
+            <div style="font-size:9px;color:#888;margin-top:2px">${getDeliveryEstimate()}</div>
           </div>
         </div>
 
@@ -1266,7 +1283,23 @@
     function closeInvoice(){const el=document.getElementById('invoice-overlay');el.classList.remove('open');setTimeout(()=>el.style.display='none',350)}
 
     function downloadInvoicePDF(){
-      window.print();
+      const content=document.getElementById('invoice-paper').innerHTML;
+      const w=window.open('','_blank');
+      if(!w){showToast('⚠️ Autorisez les pop-ups pour télécharger');return}
+      w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Facture Proforma — YUKO VAPE</title><style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#1a1a1a;padding:24px 16px;max-width:480px;margin:0 auto}
+        body *{color:#1a1a1a}
+        table{width:100%;border-collapse:collapse;font-size:11px}
+        th{background:#e8e8e8;text-align:left;padding:8px 10px;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid #ccc}
+        th:last-child,td:last-child{text-align:right}
+        td{padding:8px 10px;border-bottom:1px solid #e0e0e0;vertical-align:top}
+        tr:last-child td{border-bottom:none}
+        .invoice-total-row td{font-weight:800;font-size:13px;border-top:2px solid #333;padding-top:10px}
+        .invoice-btn,.invoice-btn-pdf,.invoice-btn-send{display:none!important}
+        @media print{body{padding:12px}}
+      </style></head><body>${content}<script>setTimeout(function(){window.print()},300)<\/script></body></html>`);
+      w.document.close();
     }
 
     function validateAndSendTelegram(){

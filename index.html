@@ -171,6 +171,28 @@
     .recap-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .35s ease}
     .recap-overlay.open{display:flex;opacity:1}
 
+    /* INVOICE OVERLAY */
+    .invoice-overlay{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:flex-start;justify-content:center;padding:0;opacity:0;transition:opacity .35s ease;overflow-y:auto}
+    .invoice-overlay.open{display:flex;opacity:1}
+    .invoice-paper{width:100%;max-width:440px;background:linear-gradient(180deg,#fafafa,#f1f1f1);color:#1a1a1a;padding:28px 20px 24px;position:relative}
+    .invoice-paper *{color:#1a1a1a}
+    .invoice-table{width:100%;border-collapse:collapse;font-size:11px}
+    .invoice-table th{background:#e8e8e8;text-align:left;padding:8px 10px;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid #ccc}
+    .invoice-table th:last-child,.invoice-table td:last-child{text-align:right}
+    .invoice-table td{padding:8px 10px;border-bottom:1px solid #e0e0e0;vertical-align:top}
+    .invoice-table tr:last-child td{border-bottom:none}
+    .invoice-total-row td{font-weight:800;font-size:13px;border-top:2px solid #333;padding-top:10px}
+    .invoice-btn{flex:1;padding:14px 10px;border-radius:14px;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s ease;border:none;text-align:center}
+    .invoice-btn:active{transform:scale(.96)}
+    .invoice-btn-pdf{background:#fff;color:#1a1a1a;border:1.5px solid #d0d0d0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .invoice-btn-send{background:linear-gradient(135deg,#00F5D4,#00C4AA);color:#080808;box-shadow:0 4px 16px rgba(0,245,212,.25)}
+    @media print{
+      body>*:not(.invoice-overlay){display:none!important}
+      .invoice-overlay{position:static!important;display:block!important;opacity:1!important;background:#fff!important;backdrop-filter:none!important;overflow:visible!important}
+      .invoice-paper{min-height:auto!important;padding-bottom:20px!important;box-shadow:none!important}
+      .invoice-actions{display:none!important}
+    }
+
     /* PAYMENT SELECTOR */
     .pay-option{position:relative;cursor:pointer;border:1.5px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
     .pay-option:active{transform:scale(.97)}
@@ -517,6 +539,11 @@
   <!-- RECAP OVERLAY -->
   <div id="recap-overlay" class="recap-overlay">
     <div class="glass-strong rounded-2xl p-5 w-full max-w-[400px] max-h-[85vh] overflow-y-auto" id="recap-content"></div>
+  </div>
+
+  <!-- INVOICE OVERLAY -->
+  <div id="invoice-overlay" class="invoice-overlay">
+    <div class="invoice-paper" id="invoice-paper"></div>
   </div>
 
   <!-- ORDER HISTORY MODAL -->
@@ -1099,6 +1126,152 @@
     function confirmRecapSend(){
       const d=window._recapData;if(!d)return;
       closeRecap();
+      showInvoiceScreen(d.orderId,d.savedCart,d.savedTotal,d.customer,d.message,d.isCrypto,d.rawTotal);
+      haptic();
+    }
+
+    function generateInvoiceNumber(){
+      const d=new Date();const y=d.getFullYear();
+      const hex=Math.random().toString(36).substring(2,7).toUpperCase();
+      return '#YV-'+y+'-'+hex;
+    }
+
+    function showInvoiceScreen(orderId,savedCart,savedTotal,customer,message,isCrypto,rawTotal){
+      window._invoiceData={orderId,savedCart,savedTotal,customer,message,isCrypto,rawTotal};
+      const invoiceNum=generateInvoiceNumber();
+      const totalUnits=savedCart.reduce((s,c)=>s+c.qty,0);
+      const now=new Date();
+      const dateFr=now.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+      const subtotal=savedCart.reduce((s,c)=>s+c.lineTotal,0);
+
+      let customerBlock='';
+      if(customer.type==='professionnel'){
+        customerBlock=`<div style="font-weight:700;font-size:13px;margin-bottom:2px">${customer.shop}</div>
+          ${customer.siret?`<div style="font-size:10px;color:#666">SIRET : ${customer.siret}</div>`:''}
+          <div style="font-size:11px;color:#444">${customer.address}</div>
+          <div style="font-size:11px;color:#444">${customer.zip} ${customer.city}</div>
+          <div style="font-size:11px;color:#444">Tél : ${customer.phone}</div>`;
+      }else{
+        customerBlock=`<div style="font-weight:700;font-size:13px;margin-bottom:2px">${customer.name}</div>
+          <div style="font-size:11px;color:#444">${customer.address}</div>
+          <div style="font-size:11px;color:#444">${customer.zip} ${customer.city}</div>
+          <div style="font-size:11px;color:#444">Tél : ${customer.phone}</div>`;
+      }
+
+      const fp=(n)=>n.toFixed(2).replace('.',',')+' €';
+
+      let tableRows=savedCart.map((c,i)=>`<tr>
+        <td>${i+1}</td>
+        <td><strong>${c.name}</strong><br><span style="font-size:9px;color:#888">${c.flavor}</span></td>
+        <td style="text-align:center">${c.qty}</td>
+        <td style="text-align:center"><span style="font-size:9px;padding:2px 6px;background:#e8e8e8;border-radius:4px;font-weight:600">${c.tierLabel}</span></td>
+        <td style="text-align:right">${fp(c.unitPrice)}</td>
+        <td style="text-align:right;font-weight:700">${fp(c.lineTotal)}</td>
+      </tr>`).join('');
+
+      let adjustmentsHtml='';
+      if(isCrypto){
+        adjustmentsHtml+=`<tr><td colspan="5" style="text-align:right;font-size:10px;color:#888;padding-top:6px">Sous-total HT</td><td style="text-align:right;font-size:11px;padding-top:6px">${fp(rawTotal)}</td></tr>`;
+        adjustmentsHtml+=`<tr><td colspan="5" style="text-align:right;font-size:10px;color:#7c3aed;font-weight:600">Remise Éco-Crypto (−8%)</td><td style="text-align:right;font-size:11px;color:#16a34a;font-weight:700">−${fp(+(rawTotal-savedTotal).toFixed(2))}</td></tr>`;
+      }
+      adjustmentsHtml+=`<tr class="invoice-total-row"><td colspan="5" style="text-align:right">TOTAL NET À PAYER</td><td style="text-align:right;font-size:15px">${fp(savedTotal)}</td></tr>`;
+
+      document.getElementById('invoice-paper').innerHTML=`
+        <!-- HEADER -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #ddd">
+          <div>
+            <div style="font-size:22px;font-weight:900;letter-spacing:.15em;color:#111">YUKO VAPE</div>
+            <div style="font-size:9px;letter-spacing:.2em;color:#888;text-transform:uppercase;margin-top:2px">Premium Distribution Europe</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#00C4AA;background:#e6faf6;padding:4px 10px;border-radius:6px;display:inline-block">Bon de commande</div>
+          </div>
+        </div>
+
+        <!-- INVOICE META -->
+        <div style="display:flex;justify-content:space-between;margin-bottom:20px">
+          <div>
+            <div style="font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#999;margin-bottom:4px">Facture Proforma</div>
+            <div style="font-size:14px;font-weight:800;font-family:monospace;color:#111">${invoiceNum}</div>
+            <div style="font-size:10px;color:#888;margin-top:2px">Réf : ${orderId}</div>
+            <div style="font-size:10px;color:#888">Date : ${dateFr}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#999;margin-bottom:4px">Émetteur</div>
+            <div style="font-size:11px;font-weight:600;color:#333">YUKO VAPE DISTRIBUTION</div>
+            <div style="font-size:10px;color:#666">Grossiste Puffs Premium</div>
+            <div style="font-size:10px;color:#666">Europe — @yukovape</div>
+          </div>
+        </div>
+
+        <!-- CLIENT -->
+        <div style="background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:14px 16px;margin-bottom:20px">
+          <div style="font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#999;margin-bottom:6px">Client ${customer.type==='professionnel'?'Professionnel':'Particulier'}</div>
+          ${customerBlock}
+        </div>
+
+        <!-- TABLE -->
+        <table class="invoice-table" style="margin-bottom:4px">
+          <thead>
+            <tr>
+              <th style="width:24px">#</th>
+              <th>Article</th>
+              <th style="text-align:center">Qté</th>
+              <th style="text-align:center">Palier</th>
+              <th style="text-align:right">P.U.</th>
+              <th style="text-align:right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+            ${adjustmentsHtml}
+          </tbody>
+        </table>
+
+        <!-- PAYMENT INFO -->
+        <div style="margin-top:16px;display:flex;gap:10px">
+          <div style="flex:1;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px">
+            <div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:3px">Mode de paiement</div>
+            <div style="font-size:11px;font-weight:600">${isCrypto?'Crypto (USDT/BTC/ETH)':'Virement / Carte bancaire'}</div>
+          </div>
+          <div style="flex:1;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:10px 12px">
+            <div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:3px">Livraison estimée</div>
+            <div style="font-size:11px;font-weight:600">${getDeliveryEstimate()}</div>
+          </div>
+        </div>
+
+        <!-- WARNING -->
+        <div style="margin-top:16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:12px 14px;text-align:center">
+          <div style="font-size:11px;font-weight:700;color:#dc2626">⚠️ Ce bon de commande bloque vos stocks pendant une durée maximale de 2 heures.</div>
+          <div style="font-size:9px;color:#999;margin-top:4px">Passé ce délai, les quantités réservées seront automatiquement relâchées.</div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="margin-top:20px;text-align:center;padding-top:14px;border-top:1px solid #e0e0e0">
+          <div style="font-size:9px;color:#aaa;letter-spacing:.06em">YUKO VAPE DISTRIBUTION — Grossiste puffs premium Europe</div>
+          <div style="font-size:8px;color:#ccc;margin-top:3px">Document généré automatiquement · ${now.toLocaleString('fr-FR')}</div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div style="display:flex;gap:10px;margin-top:24px;padding-top:16px;border-top:1px solid #e0e0e0">
+          <button class="invoice-btn invoice-btn-pdf" onclick="downloadInvoicePDF()">📥 Télécharger PDF</button>
+          <button class="invoice-btn invoice-btn-send" onclick="validateAndSendTelegram()">💬 Valider & Envoyer</button>
+        </div>`;
+
+      const el=document.getElementById('invoice-overlay');
+      el.style.display='flex';void el.offsetHeight;el.classList.add('open');
+      el.scrollTop=0;
+    }
+
+    function closeInvoice(){const el=document.getElementById('invoice-overlay');el.classList.remove('open');setTimeout(()=>el.style.display='none',350)}
+
+    function downloadInvoicePDF(){
+      window.print();
+    }
+
+    function validateAndSendTelegram(){
+      const d=window._invoiceData;if(!d)return;
+      closeInvoice();
       saveOrderToHistory(d.orderId,d.savedCart,d.savedTotal,d.customer);
       localStorage.removeItem('yuko_cart');
       cart=[];saveCart();updateCartBar();

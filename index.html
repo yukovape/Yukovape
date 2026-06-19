@@ -84,9 +84,36 @@
     @keyframes cart-pulse{0%{box-shadow:0 0 0 0 rgba(0,245,212,.4)}100%{box-shadow:0 0 0 20px rgba(0,245,212,0)}}
     .cart-pulse{animation:cart-pulse .6s ease-out}
 
-    /* CART BAR */
-    .cart-bar{transition:transform .35s cubic-bezier(.34,1.56,.64,1);padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-    .cart-bar.hidden-bar{transform:translateY(120%)}
+    /* BOTTOM NAV */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;max-width:480px;margin:0 auto;
+      background:rgba(12,12,12,.92);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
+      border-top:1px solid rgba(255,255,255,.06);padding-bottom:env(safe-area-inset-bottom,0px)}
+    .bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;padding:6px 0 4px}
+    .nav-tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;cursor:pointer;
+      -webkit-tap-highlight-color:transparent;transition:all .25s ease;position:relative;border:none;background:none}
+    .nav-tab svg,.nav-tab .nav-icon{width:22px;height:22px;color:rgba(255,255,255,.35);transition:color .25s ease}
+    .nav-tab span{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .25s ease}
+    .nav-tab.active svg,.nav-tab.active .nav-icon{color:#00F5D4}
+    .nav-tab.active span{color:#00F5D4}
+    .nav-tab .nav-badge{position:absolute;top:2px;right:6px;min-width:16px;height:16px;border-radius:8px;
+      background:#00F5D4;color:#080808;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;
+      transform:scale(0);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .nav-tab .nav-badge.visible{transform:scale(1)}
+    .page-container{display:none}
+    .page-container.active{display:block}
+
+    /* SUIVI TIMELINE */
+    .timeline-step{display:flex;gap:14px;position:relative;padding-bottom:28px}
+    .timeline-step:last-child{padding-bottom:0}
+    .timeline-step:last-child .timeline-line{display:none}
+    .timeline-dot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.1);transition:all .4s ease;position:relative;z-index:1}
+    .timeline-step.done .timeline-dot{background:rgba(0,245,212,.12);border-color:#00F5D4}
+    .timeline-step.current .timeline-dot{background:rgba(0,245,212,.08);border-color:#00F5D4;box-shadow:0 0 16px rgba(0,245,212,.25);animation:pulse-dot 2s infinite}
+    @keyframes pulse-dot{0%,100%{box-shadow:0 0 16px rgba(0,245,212,.25)}50%{box-shadow:0 0 24px rgba(0,245,212,.4)}}
+    .timeline-line{position:absolute;left:15px;top:32px;bottom:0;width:2px;background:rgba(255,255,255,.06)}
+    .timeline-step.done .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(0,245,212,.3))}
+    .timeline-step.current .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(255,255,255,.06))}
 
     /* MODAL */
     .modal-overlay{transition:opacity .3s ease}
@@ -327,8 +354,8 @@
     </div>
   </div>
 
-  <!-- FAQ OVERLAY -->
-  <div id="faq-overlay" class="fixed inset-0 z-50 bg-dark-900 translate-y-full transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-hidden flex flex-col" style="will-change:transform">
+  <!-- FAQ OVERLAY (legacy, now hidden - content moved to page-faq) -->
+  <div id="faq-overlay" class="fixed inset-0 z-50 bg-dark-900 translate-y-full transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-hidden flex flex-col" style="will-change:transform;display:none">
     <div class="max-w-[480px] mx-auto w-full flex flex-col h-full">
       <div class="flex items-center justify-between px-5 py-4 border-b border-white/[.06]">
         <div class="flex items-center gap-2.5">
@@ -419,7 +446,7 @@
   </div>
 
   <!-- MAIN APP -->
-  <div id="app" class="opacity-0 transition-opacity duration-500 max-w-[480px] mx-auto" style="padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))">
+  <div id="app" class="opacity-0 transition-opacity duration-500 max-w-[480px] mx-auto" style="padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))">
 
     <!-- [T2] GLASS HEADER -->
     <div class="sticky top-0 z-30 glass" id="glass-header">
@@ -436,12 +463,15 @@
           <span class="font-display text-sm font-bold tracking-[.35em] uppercase">YUKO</span>
           <span class="text-[8px] tracking-[.5em] uppercase text-cyan-brand/70 -mt-0.5">VAPE</span>
         </div>
-        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center relative press" onclick="if(cart.length)openCheckout()">
+        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center relative press" onclick="if(cart.length)switchTab('panier')">
           <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </div>
       </header>
     </div>
+
+    <!-- ====== PAGE: CATALOGUE ====== -->
+    <div id="page-catalogue" class="page-container active">
 
     <!-- [F2] HERO COMPACT -->
     <section class="px-5 pt-3 pb-1">
@@ -455,16 +485,12 @@
       <div class="light-line mt-3"></div>
     </section>
 
-    <!-- SEARCH + FAQ -->
-    <div class="px-5 py-2 flex items-center gap-2">
-      <div class="relative flex-1">
+    <!-- SEARCH -->
+    <div class="px-5 py-2">
+      <div class="relative">
         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         <input type="text" id="search-input" placeholder="Rechercher un produit ou un parfum..." oninput="filterProducts()" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none">
       </div>
-      <button onclick="openFaq();haptic()" class="flex-shrink-0 rounded-xl border border-cyan-brand/30 bg-cyan-brand/[.08] flex items-center gap-1.5 px-3 py-2.5 press" style="box-shadow:0 0 16px rgba(0,245,212,.08)">
-        <svg class="w-4 h-4 text-cyan-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span class="text-[10px] font-bold text-cyan-brand uppercase tracking-wider">FAQ</span>
-      </button>
     </div>
 
     <!-- SECTION TITLE -->
@@ -526,21 +552,307 @@
       <p class="text-[8px] text-smoke-600/50 mt-3">© 2026 Yuko Vape — Tous droits réservés</p>
     </footer>
     <div class="h-6"></div>
+
+    </div><!-- /page-catalogue -->
+
+    <!-- ====== PAGE: PANIER ====== -->
+    <div id="page-panier" class="page-container">
+      <div class="px-5 pt-4 pb-2">
+        <h2 class="font-display text-lg font-bold tracking-wider uppercase mb-1">Votre panier</h2>
+        <p class="text-[11px] text-smoke-500">Vérifiez vos articles puis remplissez vos informations.</p>
+      </div>
+      <div class="px-5">
+        <div id="panier-items" class="space-y-2.5 mb-4"></div>
+        <div id="panier-empty" class="text-center py-12">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[.03] border border-white/[.06] flex items-center justify-center">
+            <svg class="w-7 h-7 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
+          <p class="text-smoke-500 text-sm font-semibold">Panier vide</p>
+          <p class="text-[10px] text-smoke-600 mt-1">Ajoutez des produits depuis le catalogue</p>
+          <button onclick="switchTab('catalogue')" class="mt-4 text-[11px] font-bold text-cyan-brand uppercase tracking-wider press">← Voir le catalogue</button>
+        </div>
+        <button id="btn-clear-cart-page" onclick="clearCart()" class="hidden w-full text-red-400/50 text-[10px] font-semibold py-2 mb-3 press">🗑️ Vider tout le panier</button>
+        <div id="panier-promo" class="hidden mb-3 glass rounded-xl px-4 py-3 border border-green-500/15 bg-green-500/[.03]">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">🎁</span>
+            <div>
+              <div class="text-[11px] font-bold text-green-400">10 puffs offertes !</div>
+              <div class="text-[9px] text-smoke-400">1 boîte bonus — parfum choisi par Yuko</div>
+            </div>
+          </div>
+        </div>
+        <div id="panier-total-section" class="hidden">
+          <div class="flex justify-between items-center pt-3 mb-6" style="border-top:1px solid rgba(255,255,255,.06)">
+            <span class="text-sm font-semibold text-smoke-400">Total</span>
+            <span class="font-display text-xl font-bold text-cyan-brand" id="panier-total">0,00 €</span>
+          </div>
+          <div class="light-line mb-5"></div>
+
+          <!-- CLIENT TYPE TABS -->
+          <div class="flex gap-2 mb-5">
+            <button onclick="setClientType('b2c')" id="ptab-b2c" class="tab-btn flex-1 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider border border-white/[.06] text-smoke-400 active">Particulier</button>
+            <button onclick="setClientType('b2b')" id="ptab-b2b" class="tab-btn flex-1 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider border border-white/[.06] text-smoke-400">Professionnel</button>
+          </div>
+
+          <!-- B2C FORM -->
+          <div id="pform-b2c" class="space-y-3">
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label><input id="pb2c-name" type="text" placeholder="Jean Dupont" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2c-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2c-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2c-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2c-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+          </div>
+
+          <!-- B2B FORM -->
+          <div id="pform-b2b" class="space-y-3 hidden">
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label><input id="pb2b-shop" type="text" placeholder="Tabac du Centre" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label><input id="pb2b-siret" type="text" placeholder="123 456 789 00012" class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2b-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2b-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2b-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2b-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+          </div>
+
+          <div class="mt-4"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label><textarea id="porder-notes" rows="2" placeholder="Instructions spéciales..." class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea></div>
+
+          <!-- PAYMENT METHOD -->
+          <div class="mt-5">
+            <div class="text-[9px] font-bold tracking-widest uppercase text-smoke-400 mb-3">Mode de paiement</div>
+            <div class="space-y-2.5">
+              <div class="pay-option selected" id="ppay-classic" onclick="setPayment('classic')">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-white/[.06] flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-[12px] font-bold text-white">Virement / Carte</div>
+                    <div class="text-[9px] text-smoke-500 mt-0.5">Paiement classique</div>
+                  </div>
+                  <div class="font-display text-[15px] font-bold text-white" id="ppay-classic-price">0,00 €</div>
+                </div>
+              </div>
+              <div class="pay-option" id="ppay-crypto" onclick="setPayment('crypto')">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-purple-500/[.08] flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                      <div class="text-[12px] font-bold text-white">Éco-Crypto</div>
+                      <span class="text-[8px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-400">-8%</span>
+                    </div>
+                    <div class="text-[9px] text-smoke-500 mt-0.5">USDT · BTC · ETH</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="font-display text-[15px] font-bold text-purple-400" id="ppay-crypto-price">0,00 €</div>
+                    <div class="text-[8px] text-green-400 font-bold" id="ppay-crypto-saved"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2.5 flex items-center justify-between">
+              <button onclick="openCryptoHelp()" class="text-[9px] text-purple-400/70 flex items-center gap-1 press">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                En savoir plus
+              </button>
+              <div id="ppay-method-label" class="text-[9px] font-bold tracking-wider uppercase text-cyan-brand/60">Virement / Carte</div>
+            </div>
+          </div>
+
+          <!-- GUARANTEE -->
+          <div class="mt-4 glass rounded-xl px-4 py-3 border border-cyan-brand/10 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-cyan-brand/[.08] flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-cyan-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-white">Garantie Yuko Vape</div>
+              <div class="text-[9px] text-smoke-400 leading-relaxed mt-0.5">Expédition 100% assurée. En cas de perte du colis par le transporteur, la marchandise est renvoyée gratuitement à nos frais.</div>
+            </div>
+          </div>
+
+          <div id="pmin-order-warn" class="hidden text-center text-[11px] text-amber-400 bg-amber-400/5 border border-amber-400/15 rounded-xl py-2.5 px-4 mt-4"></div>
+
+          <button onclick="confirmOrder()" id="pbtn-confirm" class="ripple w-full mt-6 mb-3 btn-gradient text-dark-900 font-display font-bold py-4 rounded-2xl text-[13px] tracking-wider uppercase press shadow-[0_0_30px_rgba(0,245,212,.15)] transition-opacity">
+            Envoyer la commande
+          </button>
+        </div>
+      </div>
+      <div class="h-6"></div>
+    </div><!-- /page-panier -->
+
+    <!-- ====== PAGE: SUIVI ====== -->
+    <div id="page-suivi" class="page-container">
+      <div class="px-5 pt-4 pb-2">
+        <h2 class="font-display text-lg font-bold tracking-wider uppercase mb-1">Suivi commande</h2>
+        <p class="text-[11px] text-smoke-500">Suivez l'avancement de votre dernière commande.</p>
+      </div>
+      <div class="px-5 mt-3">
+        <div class="relative mb-5">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="suivi-search" placeholder="Entrez votre n° de commande (ex: YK-XXXXX)" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none" oninput="searchOrder()">
+        </div>
+
+        <div id="suivi-no-order" class="text-center py-10">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[.03] border border-white/[.06] flex items-center justify-center">
+            <svg class="w-7 h-7 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <p class="text-smoke-500 text-sm font-semibold">Aucune commande trouvée</p>
+          <p class="text-[10px] text-smoke-600 mt-1">Entrez votre numéro de commande ci-dessus</p>
+        </div>
+
+        <div id="suivi-result" class="hidden">
+          <div class="glass-card rounded-2xl p-5 mb-5">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-[9px] text-smoke-500 uppercase tracking-wider">Commande</div>
+                <div class="font-display text-[15px] font-bold text-white" id="suivi-order-id"></div>
+              </div>
+              <div class="text-right">
+                <div class="text-[9px] text-smoke-500 uppercase tracking-wider">Date</div>
+                <div class="text-[12px] font-semibold text-white" id="suivi-order-date"></div>
+              </div>
+            </div>
+            <div class="light-line mb-4"></div>
+            <div id="suivi-timeline"></div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-5">
+            <h4 class="font-display text-[12px] font-bold tracking-wider uppercase mb-3">Détail commande</h4>
+            <div id="suivi-order-items" class="space-y-2"></div>
+            <div class="light-line my-3"></div>
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] text-smoke-400 font-semibold">Total</span>
+              <span class="font-display text-[16px] font-bold text-cyan-brand" id="suivi-order-total"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="h-6"></div>
+    </div><!-- /page-suivi -->
+
+    <!-- ====== PAGE: FAQ ====== -->
+    <div id="page-faq" class="page-container">
+      <div class="px-5 pt-4 pb-2">
+        <div class="flex items-center gap-2.5 mb-1">
+          <span class="text-base">❓</span>
+          <h2 class="font-display text-lg font-bold tracking-wider uppercase">Questions <span class="text-cyan-brand">&</span> Réponses</h2>
+        </div>
+        <p class="text-[11px] text-smoke-500">Tout ce que vous devez savoir avant de commander.</p>
+      </div>
+
+      <div class="px-5 mt-3 space-y-2.5">
+        <!-- Category: Livraison -->
+        <div class="text-[9px] font-bold tracking-[.2em] uppercase text-cyan-brand/60 mb-1 mt-2">🚚 Livraison & Logistique</div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">🚚</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Quels sont vos délais et frais de livraison ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Nos commandes sont préparées sous <strong class="text-white">24h à 48h</strong>. Le délai de livraison est de <strong class="text-white">7 à 10 jours ouvrés</strong>. Afin de vous garantir l'authenticité des produits (zéro contrefaçon) et des prix d'usine imbattables, nos stocks proviennent de centres de transit internationaux.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">La livraison est entièrement sécurisée, <strong class="text-white">sans frais de douane surprise</strong> à l'arrivée. Le numéro de suivi (tracking) vous est envoyé automatiquement dès que le colis est pris en charge par le transporteur.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">🛡️</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Que se passe-t-il si mon colis est bloqué, perdu ou saisi ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Yuko Vape assume <strong class="text-green-400">100 % du risque de transport</strong>. Nous utilisons des lignes logistiques privées ultra-sécurisées. Dans le cas exceptionnel où votre colis serait intercepté ou déclaré officiellement "perdu" (suivi bloqué pendant plus de 10 jours ouvrés), nous <strong class="text-white">réexpédions gratuitement l'intégralité de votre commande sous 48h</strong>.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Aucun remboursement n'est effectué — la garantie s'applique par le renvoi automatique d'un nouveau colis identique.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category: Commande -->
+        <div class="text-[9px] font-bold tracking-[.2em] uppercase text-cyan-brand/60 mb-1 mt-4">📦 Commande & Paiement</div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">✏️</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Puis-je modifier ou annuler ma commande après avoir payé ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Vous pouvez modifier ou annuler votre commande tant que son statut est <strong class="text-white">"En préparation"</strong>. En revanche, dès que votre colis est remis au transporteur et que le statut passe en <strong class="text-white">"Expédié"</strong>, aucune annulation, aucun remboursement et aucune modification (parfums, quantités, adresse) n'est possible.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Pensez à bien vérifier vos informations sur votre Bon de Commande avant de régler.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">⏳</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Combien de temps ai-je pour payer mon Bon de Commande ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">Lorsque vous validez votre panier, un Bon de Commande est généré et bloque vos stocks pendant une durée maximale de <strong class="text-white">2 heures</strong>. Si vous n'avez pas envoyé votre preuve de transfert (virement ou hash crypto) à <strong class="text-cyan-brand">@mvshakil</strong> dans ce délai, la commande est annulée et les produits sont remis en vente.</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Les frais de réseau (frais de virement ou frais de gaz Blockchain) sont à la charge du client.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category: SAV -->
+        <div class="text-[9px] font-bold tracking-[.2em] uppercase text-cyan-brand/60 mb-1 mt-4">🔧 Service Après-Vente</div>
+
+        <div class="faq-item glass" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="text-sm">🔧</span>
+            <span class="flex-1 text-[11px] font-bold text-white leading-snug">Que faire si je reçois des produits défectueux ?</span>
+            <svg class="faq-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="faq-a">
+            <div class="px-4 pb-4 pt-0">
+              <p class="text-[10px] text-smoke-400 leading-relaxed">S'agissant de vente en gros, nous n'acceptons aucun retour pour "changement d'avis". En revanche, si une puff présente un défaut de fabrication flagrant dès l'ouverture :</p>
+              <p class="text-[10px] text-smoke-400 leading-relaxed mt-2">Vous disposez de <strong class="text-white">72 heures</strong> après la livraison pour nous envoyer une courte <strong class="text-white">vidéo de preuve</strong> sur <strong class="text-cyan-brand">@mvshakil</strong>. Après validation, la valeur des produits défectueux sera déduite (avoir) ou ajoutée en bonus lors de votre prochaine commande.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 py-6">
+        <div class="glass rounded-xl px-4 py-3 border border-cyan-brand/10 text-center">
+          <p class="text-[10px] text-smoke-400">Une question non listée ? Contactez <a href="https://t.me/mvshakil" target="_blank" class="text-cyan-brand font-semibold">@mvshakil</a> sur Telegram.</p>
+        </div>
+      </div>
+      <div class="h-6"></div>
+    </div><!-- /page-faq -->
+
   </div>
 
-  <!-- [T2] GLASS CART BAR -->
-  <div id="cart-bar" class="cart-bar hidden-bar fixed bottom-0 left-0 right-0 z-40 px-4 pt-2 max-w-[480px] mx-auto inset-x-0">
-    <button onclick="openCheckout()" id="cart-bar-btn" class="ripple w-full btn-gradient text-dark-900 rounded-2xl px-5 py-4 flex items-center justify-between shadow-[0_0_40px_rgba(0,245,212,.15)] press">
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2.5">
-          <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          <span class="font-bold text-[13px]">Panier · <span id="cart-count">0</span> articles</span>
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="nav-tab active" onclick="switchTab('catalogue')" data-tab="catalogue">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span>Catalogue</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('panier')" data-tab="panier">
+        <div style="position:relative;display:inline-flex">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="nav-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span class="nav-badge" id="nav-cart-badge">0</span>
         </div>
-        <p class="text-[10px] text-dark-900/50 font-medium truncate mt-0.5 pl-[30px]" id="cart-preview"></p>
-      </div>
-      <span class="font-display font-bold text-base flex-shrink-0 ml-3" id="cart-total">0,00 €</span>
-    </button>
-  </div>
+        <span>Panier</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('suivi')" data-tab="suivi">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span>Suivi</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('faq')" data-tab="faq">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>FAQ</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- RECAP OVERLAY -->
   <div id="recap-overlay" class="recap-overlay">
@@ -816,11 +1128,11 @@
     function removeFromCart(cid){
       const idx=cart.findIndex(c=>c.cartId===cid);if(idx===-1)return;
       lastDeleted={item:cart[idx],index:idx};cart.splice(idx,1);saveCart();haptic();
-      renderCheckoutItems();updateCartBar();
-      if(cart.length===0){closeCheckout();showToast('🗑️ Panier vidé');return}
+      renderPanierPage();updateCartBar();
+      if(cart.length===0){showToast('🗑️ Panier vidé');return}
       showToastWithUndo('Article supprimé');
     }
-    function undoDelete(){if(!lastDeleted)return;cart.splice(lastDeleted.index,0,lastDeleted.item);lastDeleted=null;saveCart();hideToast();renderCheckoutItems();updateCartBar();haptic()}
+    function undoDelete(){if(!lastDeleted)return;cart.splice(lastDeleted.index,0,lastDeleted.item);lastDeleted=null;saveCart();hideToast();renderPanierPage();updateCartBar();haptic()}
     function changeCartQty(cid,delta){
       const item=cart.find(c=>c.cartId===cid);if(!item)return;
       const newQty=item.qty+delta;
@@ -829,9 +1141,9 @@
       const p=products.find(x=>x.id===item.productId);
       if(p){const t=p.tiers.slice().reverse().find(t=>newQty>=t.min)||p.tiers[0];item.unitPrice=t.price;item.tierLabel=t.label;item.lineTotal=+(newQty*t.price).toFixed(2)}
       else{item.lineTotal=+(newQty*item.unitPrice).toFixed(2)}
-      saveCart();haptic();renderCheckoutItems();updateCartBar();
+      saveCart();haptic();renderPanierPage();updateCartBar();
     }
-    function clearCart(){cart=[];saveCart();haptic();renderCheckoutItems();updateCartBar();closeCheckout();showToast('🗑️ Panier vidé')}
+    function clearCart(){cart=[];saveCart();haptic();updateCartBar();renderPanierPage();showToast('🗑️ Panier vidé')}
     function getCartTotal(){return cart.reduce((s,c)=>s+c.lineTotal,0)}
     function getCartUnits(){return cart.reduce((s,c)=>s+c.qty,0)}
 
@@ -998,20 +1310,24 @@
 
     // ============= CART BAR =============
     function updateCartBar(){
-      const bar=document.getElementById('cart-bar'),badge=document.getElementById('header-cart-badge'),units=getCartUnits();
-      document.getElementById('cart-count').textContent=units;
-      document.getElementById('cart-total').textContent=formatPrice(getCartTotal());
-      const preview=document.getElementById('cart-preview');
-      if(cart.length>0){preview.textContent=cart.map(c=>`${c.qty}× ${c.name.split(' ')[0]}`).join(', ')}else{preview.textContent=''}
-      if(cart.length>0){bar.classList.remove('hidden-bar');badge.classList.remove('hidden');badge.textContent=cart.length>9?'9+':cart.length}
-      else{bar.classList.add('hidden-bar');badge.classList.add('hidden')}
+      const badge=document.getElementById('header-cart-badge');
+      const navBadge=document.getElementById('nav-cart-badge');
+      const count=cart.length;
+      if(count>0){
+        badge.classList.remove('hidden');badge.textContent=count>9?'9+':count;
+        navBadge.classList.add('visible');navBadge.textContent=count>9?'9+':count;
+      }else{
+        badge.classList.add('hidden');
+        navBadge.classList.remove('visible');
+      }
+      if(currentTab==='panier')renderPanierPage();
     }
 
     // ============= CHECKOUT =============
-    function openCheckout(){if(!cart.length){showToast('⚠️ Panier vide');return}setPayment('classic');renderCheckoutItems();document.getElementById('checkout-modal').classList.remove('hidden');setTimeout(()=>{document.getElementById('checkout-inner').scrollTop=0},100)}
-    function closeCheckout(){document.getElementById('checkout-modal').classList.add('hidden')}
+    function openCheckout(){if(!cart.length){showToast('⚠️ Panier vide');return}switchTab('panier')}
+    function closeCheckout(){switchTab('catalogue')}
 
-    function renderCheckoutItems(){
+    function renderPanierPage(){
       const ic=document.getElementById('checkout-items'),empty=document.getElementById('checkout-empty'),ts=document.getElementById('checkout-total-section'),bc=document.getElementById('btn-confirm'),bcl=document.getElementById('btn-clear-cart');
       if(!cart.length){ic.innerHTML='';empty.classList.remove('hidden');ts.classList.add('hidden');bc.classList.add('hidden');bcl.classList.add('hidden');return}
       empty.classList.add('hidden');ts.classList.remove('hidden');bc.classList.remove('hidden');bcl.classList.remove('hidden');
@@ -1045,7 +1361,10 @@
 
     // ============= TABS =============
     let clientType='b2c';
-    function setClientType(t){clientType=t;document.getElementById('tab-b2c').classList.toggle('active',t==='b2c');document.getElementById('tab-b2b').classList.toggle('active',t==='b2b');document.getElementById('form-b2c').classList.toggle('hidden',t!=='b2c');document.getElementById('form-b2b').classList.toggle('hidden',t!=='b2b')}
+    function setClientType(t){clientType=t;
+      document.getElementById('ptab-b2c').classList.toggle('active',t==='b2c');document.getElementById('ptab-b2b').classList.toggle('active',t==='b2b');
+      document.getElementById('pform-b2c').classList.toggle('hidden',t!=='b2c');document.getElementById('pform-b2b').classList.toggle('hidden',t!=='b2b');
+    }
 
     // ============= VALIDATION =============
     document.addEventListener('blur',e=>{if(!e.target.classList.contains('field')||!e.target.hasAttribute('data-required'))return;e.target.classList.remove('valid','invalid');e.target.classList.add(e.target.value.trim()?'valid':'invalid')},true);
@@ -1063,13 +1382,13 @@
       const totalUnits=getCartUnits();
       if(totalUnits<MIN_ORDER){showToast(`⚠️ Minimum ${MIN_ORDER} puffs pour commander (${totalUnits}/${MIN_ORDER})`);return}
       const prefix=clientType==='b2c'?'b2c':'b2b';
-      const form=document.getElementById('form-'+prefix);const req=form.querySelectorAll('[data-required]');let valid=true;
+      const form=document.getElementById('pform-'+prefix);const req=form.querySelectorAll('[data-required]');let valid=true;
       req.forEach(inp=>{inp.classList.remove('valid','invalid');if(!inp.value.trim()){inp.classList.add('invalid');valid=false}else inp.classList.add('valid')});
       if(!valid){showToast('⚠️ Champs obligatoires manquants');const fi=form.querySelector('.invalid');if(fi)fi.focus();return}
       let customer;
-      if(clientType==='b2c')customer={type:'particulier',name:val('b2c-name'),address:val('b2c-address'),zip:val('b2c-zip'),city:val('b2c-city'),phone:val('b2c-phone')};
-      else customer={type:'professionnel',shop:val('b2b-shop'),siret:val('b2b-siret')||null,address:val('b2b-address'),zip:val('b2b-zip'),city:val('b2b-city'),phone:val('b2b-phone')};
-      const notes=document.getElementById('order-notes').value.trim();
+      if(clientType==='b2c')customer={type:'particulier',name:val('pb2c-name'),address:val('pb2c-address'),zip:val('pb2c-zip'),city:val('pb2c-city'),phone:val('pb2c-phone')};
+      else customer={type:'professionnel',shop:val('pb2b-shop'),siret:val('pb2b-siret')||null,address:val('pb2b-address'),zip:val('pb2b-zip'),city:val('pb2b-city'),phone:val('pb2b-phone')};
+      const notes=document.getElementById('porder-notes').value.trim();
       const orderId=generateOrderId();
       const rawTotal=+getCartTotal().toFixed(2);
       const isCrypto=paymentMethod==='crypto';
@@ -1323,6 +1642,7 @@
     }
 
     function showConfirmationScreen(orderId,savedCart,savedTotal,customer,message,isCrypto,rawTotal){
+      document.getElementById('checkout-modal').classList.remove('hidden');
       const ci=document.getElementById('checkout-inner');
       ci.innerHTML=`
         <div class="text-center py-6">
@@ -1348,7 +1668,7 @@
           <a href="https://t.me/mvshakil?text=${encodeURIComponent(message)}" target="_blank" class="ripple block w-full btn-gradient text-dark-900 font-display font-bold py-4 rounded-2xl text-[13px] tracking-wider uppercase press shadow-[0_0_30px_rgba(0,245,212,.15)] text-center no-underline" style="text-decoration:none">
             Ouvrir Telegram pour envoyer
           </a>
-          <button onclick="closeCheckout()" class="w-full mt-3 text-smoke-400 text-[11px] font-semibold py-3 press">Retour au catalogue</button>
+          <button onclick="document.getElementById('checkout-modal').classList.add('hidden');switchTab('catalogue')" class="w-full mt-3 text-smoke-400 text-[11px] font-semibold py-3 press">Retour au catalogue</button>
         </div>`;
     }
 
@@ -1359,31 +1679,20 @@
     let paymentMethod='classic';
     function setPayment(method){
       paymentMethod=method;
-      const cl=document.getElementById('pay-classic'),cr=document.getElementById('pay-crypto');
-      cl.classList.toggle('selected',method==='classic');cr.classList.remove('selected');
-      cr.classList.toggle('crypto-selected',method==='crypto');
-      document.getElementById('pay-method-label').textContent=method==='crypto'?'Éco-Crypto -8%':'Virement / Carte';
-      document.getElementById('pay-method-label').style.color=method==='crypto'?'#a855f7':'';
-      updatePaymentPrices();
+      const cl=document.getElementById('ppay-classic'),cr=document.getElementById('ppay-crypto');
+      if(cl)cl.classList.toggle('selected',method==='classic');
+      if(cr){cr.classList.remove('selected');cr.classList.toggle('crypto-selected',method==='crypto')}
+      const ml=document.getElementById('ppay-method-label');
+      if(ml){ml.textContent=method==='crypto'?'Éco-Crypto -8%':'Virement / Carte';ml.style.color=method==='crypto'?'#a855f7':''}
+      updatePanierPrices();
       haptic();
-    }
-    function updatePaymentPrices(){
-      const total=getCartTotal();
-      const cryptoTotal=+(total*(1-CRYPTO_DISCOUNT)).toFixed(2);
-      const saved=+(total-cryptoTotal).toFixed(2);
-      document.getElementById('pay-classic-price').textContent=formatPrice(total);
-      document.getElementById('pay-crypto-price').textContent=formatPrice(cryptoTotal);
-      document.getElementById('pay-crypto-saved').textContent='Vous économisez '+formatPrice(saved);
-      const ct=document.getElementById('checkout-total');
-      if(paymentMethod==='crypto'){ct.textContent=formatPrice(cryptoTotal);ct.style.color='#a855f7'}
-      else{ct.textContent=formatPrice(total);ct.style.color=''}
     }
     function openCryptoHelp(){document.getElementById('crypto-help').classList.add('open')}
     function closeCryptoHelp(){document.getElementById('crypto-help').classList.remove('open')}
 
     function toggleFaq(el){el.classList.toggle('open')}
-    function openFaq(){document.getElementById('faq-overlay').style.transform='translateY(0)';haptic()}
-    function closeFaq(){document.getElementById('faq-overlay').style.transform='translateY(100%)'}
+    function openFaq(){switchTab('faq');haptic()}
+    function closeFaq(){switchTab('catalogue')}
 
     function openCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.style.display='flex';void el.offsetHeight;el.classList.add('open')}
     function closeCryptoWelcome(){const el=document.getElementById('crypto-welcome');el.classList.remove('open');setTimeout(()=>{el.style.display='none'},400);sessionStorage.setItem('yuko_crypto_seen','1')}
@@ -1392,7 +1701,8 @@
     function getOrderHistory(){return JSON.parse(localStorage.getItem('yuko_orders')||'[]')}
     function saveOrderToHistory(orderId,items,total,customer){
       const history=getOrderHistory();
-      history.unshift({id:orderId,items:items.map(c=>({name:c.name,flavor:c.flavor,qty:c.qty,lineTotal:c.lineTotal})),total,customerName:customer.type==='professionnel'?customer.shop:customer.name,date:new Date().toISOString()});
+      const d=new Date();
+      history.unshift({id:orderId,items:items.map(c=>({name:c.name,flavor:c.flavor||c.selectedFlavor,qty:c.qty,lineTotal:c.lineTotal})),total:formatPrice(total),totalRaw:total,customerName:customer.type==='professionnel'?customer.shop:customer.name,date:d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),step:1});
       if(history.length>20)history.length=20;
       localStorage.setItem('yuko_orders',JSON.stringify(history));
     }
@@ -1454,9 +1764,109 @@
       });
     }
 
+    // ============= TAB NAVIGATION =============
+    let currentTab='catalogue';
+    function switchTab(tab){
+      if(currentTab===tab)return;
+      currentTab=tab;
+      document.querySelectorAll('.page-container').forEach(p=>p.classList.remove('active'));
+      document.getElementById('page-'+tab).classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelector(`.nav-tab[data-tab="${tab}"]`).classList.add('active');
+      window.scrollTo({top:0,behavior:'instant'});
+      haptic();
+      if(tab==='panier')renderPanierPage();
+      if(tab==='suivi')loadSuiviFromHistory();
+    }
+
+    // ============= PANIER PAGE =============
+    function renderPanierPage(){
+      const itemsEl=document.getElementById('panier-items');
+      const emptyEl=document.getElementById('panier-empty');
+      const totalSection=document.getElementById('panier-total-section');
+      const clearBtn=document.getElementById('btn-clear-cart-page');
+      const promoEl=document.getElementById('panier-promo');
+      if(!cart.length){
+        itemsEl.innerHTML='';emptyEl.classList.remove('hidden');totalSection.classList.add('hidden');clearBtn.classList.add('hidden');promoEl.classList.add('hidden');return;
+      }
+      emptyEl.classList.add('hidden');totalSection.classList.remove('hidden');clearBtn.classList.remove('hidden');
+      let totalUnits=cart.reduce((s,c)=>s+c.qty,0);
+      promoEl.classList.toggle('hidden',totalUnits<100);
+      const bc=document.getElementById('pbtn-confirm');
+      const minWarn=document.getElementById('pmin-order-warn');
+      if(totalUnits<MIN_ORDER){bc.disabled=true;bc.style.opacity='.4';bc.style.cursor='not-allowed';if(minWarn){minWarn.innerHTML=`⚠️ Minimum ${MIN_ORDER} puffs pour commander — il vous en manque <strong>${MIN_ORDER-totalUnits}</strong>`;minWarn.classList.remove('hidden')}}
+      else{bc.disabled=false;bc.style.opacity='1';bc.style.cursor='pointer';if(minWarn)minWarn.classList.add('hidden')}
+      itemsEl.innerHTML=cart.map(c=>{
+        return`<div class="glass rounded-xl px-4 py-3 flex items-center gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="text-[12px] font-bold text-white truncate">${c.name}</div>
+            <div class="text-[9px] text-smoke-400 truncate">${c.flavor||c.selectedFlavor||''} · ${c.qty} × ${c.unitPrice.toFixed(2)}€</div>
+          </div>
+          <div class="font-display text-[14px] font-bold text-cyan-brand whitespace-nowrap">${formatPrice(c.lineTotal)}</div>
+          <button onclick="removeFromCart(${c.cartId});renderPanierPage()" class="w-7 h-7 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0 press">
+            <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </button>
+        </div>`}).join('');
+      updatePanierPrices();
+    }
+    function updatePanierPrices(){
+      const raw=getCartTotal();
+      const crypto=+(raw*(1-CRYPTO_DISCOUNT)).toFixed(2);
+      document.getElementById('panier-total').textContent=formatPrice(paymentMethod==='crypto'?crypto:raw);
+      const cp=document.getElementById('ppay-classic-price'),crp=document.getElementById('ppay-crypto-price'),crs=document.getElementById('ppay-crypto-saved');
+      if(cp)cp.textContent=formatPrice(raw);
+      if(crp)crp.textContent=formatPrice(crypto);
+      if(crs)crs.textContent=raw>0?`Économie : ${formatPrice(raw-crypto)}`:'';
+    }
+
+    // ============= SUIVI PAGE =============
+    const SUIVI_STEPS=[
+      {icon:'✓',label:'Commande confirmée',desc:'Votre commande a bien été reçue'},
+      {icon:'📦',label:'En préparation',desc:'Nous préparons votre colis'},
+      {icon:'✈️',label:'Expédiée',desc:'Votre colis est en transit international'},
+      {icon:'🏠',label:'Livrée',desc:'Colis remis au destinataire'}
+    ];
+    function loadSuiviFromHistory(){
+      const orders=JSON.parse(localStorage.getItem('yuko_orders')||'[]');
+      if(!orders.length){document.getElementById('suivi-result').classList.add('hidden');document.getElementById('suivi-no-order').classList.remove('hidden');return}
+      const last=orders[orders.length-1];
+      showSuiviOrder(last);
+    }
+    function searchOrder(){
+      const q=(document.getElementById('suivi-search').value||'').trim().toUpperCase();
+      if(!q){loadSuiviFromHistory();return}
+      const orders=JSON.parse(localStorage.getItem('yuko_orders')||'[]');
+      const found=orders.find(o=>o.id.toUpperCase().includes(q));
+      if(found){showSuiviOrder(found)}
+      else{document.getElementById('suivi-result').classList.add('hidden');document.getElementById('suivi-no-order').classList.remove('hidden')}
+    }
+    function showSuiviOrder(order){
+      document.getElementById('suivi-no-order').classList.add('hidden');
+      document.getElementById('suivi-result').classList.remove('hidden');
+      document.getElementById('suivi-order-id').textContent=order.id;
+      document.getElementById('suivi-order-date').textContent=order.date||'—';
+      document.getElementById('suivi-order-total').textContent=order.total||'—';
+      const step=order.step||1;
+      document.getElementById('suivi-timeline').innerHTML=SUIVI_STEPS.map((s,i)=>{
+        const state=i<step?'done':i===step?'current':'';
+        return`<div class="timeline-step ${state}">
+          <div class="timeline-dot"><span class="text-[12px]">${i<step?'✓':s.icon}</span></div>
+          <div class="timeline-line"></div>
+          <div class="flex-1 pt-1">
+            <div class="text-[12px] font-bold ${state?'text-white':'text-smoke-500'}">${s.label}</div>
+            <div class="text-[10px] ${state==='done'?'text-cyan-brand/70':state==='current'?'text-cyan-brand':'text-smoke-600'}">${s.desc}</div>
+          </div>
+        </div>`}).join('');
+      const items=order.items||[];
+      document.getElementById('suivi-order-items').innerHTML=items.map(it=>`<div class="flex items-center justify-between py-1">
+        <div class="text-[11px] text-white font-medium">${it.qty||'?'}× ${it.name||'Produit'}</div>
+        <div class="text-[10px] text-smoke-400">${it.flavor||''}</div>
+      </div>`).join('')||'<div class="text-[10px] text-smoke-500">Détail non disponible</div>';
+    }
+
     // ============= INIT =============
     const tgName=[firstName,lastName].filter(Boolean).join(' ');
-    if(tgName)setTimeout(()=>{const el=document.getElementById('b2c-name');if(el)el.value=tgName},100);
+    if(tgName)setTimeout(()=>{const el=document.getElementById('pb2c-name');if(el)el.value=tgName},100);
 
     const revealDelay=visited?250:2000;
     setTimeout(()=>{

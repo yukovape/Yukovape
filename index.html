@@ -197,23 +197,25 @@
     .nic-chip:active{transform:scale(.92)}
     .nic-chip.active{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.4);color:#a855f7}
 
-    /* PROGRESS BAR */
-    .tier-progress{height:4px;border-radius:2px;background:rgba(255,255,255,.06);margin-top:12px;position:relative;overflow:hidden}
-    .tier-progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,rgba(0,245,212,.4),#00F5D4);transition:width .5s cubic-bezier(.34,1.56,.64,1);position:relative}
-    .tier-progress-fill.next-tier{background:linear-gradient(90deg,#00F5D4,#22c55e);box-shadow:0 0 8px rgba(0,245,212,.5)}
-    .tier-progress-marker{position:absolute;top:-3px;width:2px;height:10px;background:rgba(255,255,255,.2);border-radius:1px}
+    /* PROGRESS BAR (integrated into seg-control bottom) */
+    .tier-progress{height:3px;border-radius:0 0 12px 12px;background:rgba(255,255,255,.04);position:relative;overflow:hidden;margin-top:0}
+    .tier-progress-fill{height:100%;border-radius:0 0 12px 12px;background:linear-gradient(90deg,rgba(0,245,212,.3),#00F5D4);transition:width .5s cubic-bezier(.34,1.56,.64,1);position:relative}
+    .tier-progress-fill.next-tier{background:linear-gradient(90deg,#00F5D4,#22c55e);box-shadow:0 0 6px rgba(0,245,212,.4)}
+    .tier-progress-marker{position:absolute;top:0;width:1px;height:3px;background:rgba(255,255,255,.15);border-radius:0}
 
     /* MARGIN SIMULATOR */
-    .margin-sim{margin-top:16px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}
-    .margin-sim-label{font-size:7px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
-    .resale-input{width:60px;text-align:center;background:rgba(0,255,204,.06);border:1px solid rgba(0,255,204,.2);border-radius:8px;color:#00ffcc;font-weight:800;font-size:15px;font-family:'Space Grotesk',sans-serif;padding:6px 0;outline:none;transition:border-color .2s}
-    .resale-input:focus{border-color:rgba(0,255,204,.5)}
-    .resale-chip{display:inline-flex;align-items:center;justify-content:center;min-width:38px;padding:5px 10px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s ease;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:rgba(255,255,255,.4)}
-    .resale-chip:active{transform:scale(.93)}
-    .resale-chip.active{background:rgba(0,255,204,.08);border-color:rgba(0,255,204,.25);color:#00ffcc}
-    .benefit-neon{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#00ffcc;text-shadow:0 0 20px rgba(0,255,204,.35),0 0 40px rgba(0,255,204,.15);transition:all .3s ease}
-    @keyframes odometer-in{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
-    .odo-digit{display:inline-block;animation:odometer-in .4s cubic-bezier(.34,1.56,.64,1) both}
+    .margin-sim{margin-top:16px;padding:14px 0 0;border-radius:0;background:transparent;border:none}
+    .margin-sim-label{font-size:7px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px}
+    .resale-value{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#fff}
+    .resale-value span{color:rgba(255,255,255,.4);font-weight:500}
+    .resale-slider-wrap{position:relative;width:100%;height:32px;display:flex;align-items:center}
+    .resale-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.08);outline:none;cursor:pointer}
+    .resale-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35),0 2px 8px rgba(0,0,0,.3);transition:transform .15s ease,box-shadow .15s ease}
+    .resale-slider::-webkit-slider-thumb:active{transform:scale(1.15);box-shadow:0 0 20px rgba(0,245,212,.5),0 2px 12px rgba(0,0,0,.4)}
+    .resale-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35)}
+    .resale-slider-labels{display:flex;justify-content:space-between;margin-top:2px}
+    .resale-slider-labels span{font-size:8px;color:rgba(255,255,255,.2);font-weight:600}
+    .benefit-neon{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#00ffcc;text-shadow:0 0 15px rgba(0,255,204,.25),0 0 30px rgba(0,255,204,.1);line-height:1.3}
 
     /* TOP RENTABILITÉ BADGE */
     .tier-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:6px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;z-index:2;line-height:1.2}
@@ -1281,19 +1283,21 @@
               <svg class="w-4 h-4 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
 
-            <!-- [C3] SEGMENTED TIER CONTROL + PRIX BARRÉS -->
+            <!-- [C3] SEGMENTED TIER CONTROL + PRIX BARRÉS + INTEGRATED PROGRESS -->
             <div class="mt-5">
               <div class="text-[8px] font-bold tracking-widest uppercase text-smoke-500 mb-2">Prix dégressifs</div>
-              <div class="seg-control rounded-[12px]" id="seg-${p.id}" style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)">
-                <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
-                ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">Top rentabilité</div>':''}<div class="text-[10px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[10px] mt-0.5" style="text-decoration:line-through;color:rgba(255,255,255,.28)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[15px] font-bold mt-0.5">${tier.price.toFixed(2)}€</div></div>`).join('')}
-              </div>
-              <div class="tier-progress" id="progress-${p.id}">
-                ${renderTierProgress(p)}
+              <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.025)">
+                <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
+                  <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
+                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">Top rentabilité</div>':''}<div class="text-[10px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[10px] mt-0.5" style="text-decoration:line-through;color:rgba(255,255,255,.28)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[15px] font-bold mt-0.5">${tier.price.toFixed(2)}€</div></div>`).join('')}
+                </div>
+                <div class="tier-progress" id="progress-${p.id}">
+                  ${renderTierProgress(p)}
+                </div>
               </div>
             </div>
 
-            <!-- [C2] STEPPER + PRICE (single line) -->
+            <!-- [C2] STEPPER + PRICE (aéré, transparent) -->
             <div class="mt-4" id="qty-row-${p.id}">
               ${renderQtyRow(p,t)}
             </div>
@@ -1301,22 +1305,18 @@
             <!-- SAVINGS HINT -->
             <div id="savings-${p.id}">${getSavingsHint(p,t)}</div>
 
-            <!-- MARGIN SIMULATOR -->
+            <!-- MARGIN SIMULATOR (Slider Premium) -->
             <div class="margin-sim" id="margin-${p.id}">
               <div class="margin-sim-label">Simulateur de marge grossiste</div>
-              <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[9px] text-smoke-500 font-semibold">Revente :</span>
-                  <input type="number" class="resale-input" id="resale-${p.id}" value="${p.resalePrice||20}" min="1" oninput="updateResale('${p.id}',this.value)">
-                  <span class="text-[9px] text-smoke-500">€</span>
-                </div>
-                <div class="flex gap-1">
-                  <button class="resale-chip ${(p.resalePrice||20)===15?'active':''}" onclick="setResale('${p.id}',15)">15€</button>
-                  <button class="resale-chip ${(p.resalePrice||20)===20?'active':''}" onclick="setResale('${p.id}',20)">20€</button>
-                  <button class="resale-chip ${(p.resalePrice||20)===25?'active':''}" onclick="setResale('${p.id}',25)">25€</button>
-                </div>
+              <div class="text-center mb-3">
+                <div class="text-[9px] text-smoke-500 font-semibold tracking-wide uppercase mb-1">Prix de revente ciblé</div>
+                <div class="resale-value" id="resale-label-${p.id}">${p.resalePrice||20} <span>€</span></div>
               </div>
-              <div class="mt-3 text-center" id="benefit-display-${p.id}">
+              <div class="resale-slider-wrap">
+                <input type="range" class="resale-slider" id="resale-${p.id}" min="10" max="30" step="1" value="${p.resalePrice||20}" oninput="updateResaleSlider('${p.id}',this.value)">
+              </div>
+              <div class="resale-slider-labels"><span>10€</span><span>30€</span></div>
+              <div class="mt-4 text-center" id="benefit-display-${p.id}">
                 ${renderBenefitDisplay(p)}
               </div>
             </div>
@@ -1331,6 +1331,7 @@
       c.classList.remove('hidden');
       // [J5] Trigger scroll reveals
       setTimeout(initRevealObserver,50);
+      setTimeout(()=>{document.querySelectorAll('.resale-slider').forEach(styleSliderTrack)},60);
     }
 
     function renderTierProgress(p){
@@ -1344,36 +1345,24 @@
     function renderBenefitDisplay(p){
       const t=getActiveTier(p);
       const resale=p.resalePrice||20;
-      const benefit=(p.qty*resale)-(p.qty*t.price);
-      return`<div class="benefit-neon" id="benefit-amount-${p.id}">+${Math.round(benefit).toLocaleString('fr-FR')}€</div>
+      const benefit=Math.round((p.qty*resale)-(p.qty*t.price));
+      return`<div class="benefit-neon" id="benefit-amount-${p.id}">${formatBenefit(benefit)}</div>
         <div class="text-[8px] text-smoke-500 mt-1 font-semibold tracking-wider uppercase">Bénéfice net estimé</div>`;
     }
 
-    function updateResale(pid,val){
+    function updateResaleSlider(pid,val){
       const p=products.find(x=>x.id===pid);if(!p)return;
-      const v=parseFloat(val)||0;
+      const v=parseInt(val)||20;
       p.resalePrice=v;
-      updateResaleChips(pid,v);
+      const label=document.getElementById('resale-label-'+pid);
+      if(label)label.innerHTML=v+' <span>€</span>';
+      const slider=document.getElementById('resale-'+pid);
+      if(slider)styleSliderTrack(slider);
       animateBenefit(pid);
     }
-
-    function setResale(pid,val){
-      const p=products.find(x=>x.id===pid);if(!p)return;
-      p.resalePrice=val;
-      const input=document.getElementById('resale-'+pid);
-      if(input)input.value=val;
-      haptic();
-      updateResaleChips(pid,val);
-      animateBenefit(pid);
-    }
-
-    function updateResaleChips(pid,val){
-      const sim=document.getElementById('margin-'+pid);
-      if(!sim)return;
-      sim.querySelectorAll('.resale-chip').forEach(c=>{
-        const cv=parseInt(c.textContent);
-        c.classList.toggle('active',cv===val);
-      });
+    function styleSliderTrack(el){
+      const pct=((el.value-el.min)/(el.max-el.min))*100;
+      el.style.background=`linear-gradient(90deg,rgba(0,245,212,.35) ${pct}%,rgba(255,255,255,.08) ${pct}%)`;
     }
 
     function animateBenefit(pid){
@@ -1383,23 +1372,22 @@
       const target=Math.round((p.qty*resale)-(p.qty*t.price));
       const el=document.getElementById('benefit-amount-'+pid);
       if(!el)return;
-      const duration=800;
+      const duration=600;
       const startVal=parseInt(el.textContent.replace(/[^0-9-]/g,''))||0;
       const startTime=performance.now();
       function step(now){
         const progress=Math.min((now-startTime)/duration,1);
         const eased=1-Math.pow(1-progress,3);
         const current=Math.round(startVal+(target-startVal)*eased);
-        el.innerHTML=renderOdometer(current);
+        el.textContent=formatBenefit(current);
         if(progress<1)requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
 
-    function renderOdometer(val){
-      const str=Math.abs(val).toLocaleString('fr-FR');
-      const sign=val>=0?'+':'-';
-      return sign+str.split('').map((c,i)=>`<span class="odo-digit" style="animation-delay:${i*40}ms">${c}</span>`).join('')+'€';
+    function formatBenefit(val){
+      const sign=val>=0?'+':'−';
+      return sign+Math.abs(val).toLocaleString('fr-FR')+'€';
     }
 
     function updateBenefitIfOpen(p){
@@ -1409,19 +1397,19 @@
       const resale=p.resalePrice||20;
       const benefit=Math.round((p.qty*resale)-(p.qty*t.price));
       const amtEl=document.getElementById('benefit-amount-'+p.id);
-      if(amtEl)amtEl.innerHTML=renderOdometer(benefit);
+      if(amtEl)amtEl.textContent=formatBenefit(benefit);
     }
 
     function getSavingsHint(p,t){
       const ti=p.tiers.findIndex(x=>x.min===t.min);
-      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[9px] text-green-400/80 mt-3 glass rounded-lg px-3 py-2 border border-green-500/10">🔥 Plus que <strong class="text-white">${diff} pièces</strong> pour débloquer le tarif <strong class="text-white">${next.label}</strong> et économiser <strong class="text-green-400">${saved} €</strong> supplémentaires !</div>`}
+      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[9px] text-green-400/80 mt-3 px-1 py-2">🔥 Plus que <strong class="text-white">${diff} pièces</strong> pour débloquer le tarif <strong class="text-white">${next.label}</strong> et économiser <strong class="text-green-400">${saved} €</strong> supplémentaires !</div>`}
       return '';
     }
 
     function renderQtyRow(p,t){
       const isEditing=editingQty===p.id;
       return`
-        <div class="flex items-center justify-between" style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:4px">
+        <div class="flex items-center justify-between" style="padding:6px 0">
           <div class="stepper" style="flex-shrink:0">
             <button onclick="changeQty('${p.id}',-10)" class="stepper-btn text-smoke-400">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
@@ -1434,7 +1422,8 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
-          <div class="text-right pr-3">
+          <div style="width:1px;height:28px;background:rgba(255,255,255,.06);margin:0 8px"></div>
+          <div class="text-right">
             <div class="text-[8px] text-smoke-500">${p.qty} × ${t.price.toFixed(2)}€</div>
             <div class="font-display font-bold text-cyan-brand whitespace-nowrap text-[16px]">${formatPriceBig(p.qty*t.price)}</div>
           </div>

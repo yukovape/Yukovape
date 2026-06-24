@@ -36,7 +36,7 @@
     /* [T2] GLASS SURFACES */
     .glass{background:rgba(255,255,255,.03);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.06)}
     .glass-strong{background:rgba(255,255,255,.05);backdrop-filter:blur(32px) saturate(200%);-webkit-backdrop-filter:blur(32px) saturate(200%);border:1px solid rgba(255,255,255,.08)}
-    .glass-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 8px 32px rgba(0,0,0,.4)}
+    .glass-card{background:rgba(255,255,255,.035);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border:1px solid rgba(255,255,255,.05);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
 
     /* [T5] LIGHT LINE */
     .light-line{height:1px;background:linear-gradient(90deg,transparent,rgba(0,245,212,.08),transparent);position:relative;overflow:hidden}
@@ -134,7 +134,7 @@
     /* [C3] SEGMENTED CONTROL */
     .seg-control{position:relative;display:flex;border-radius:14px;padding:3px}
     .seg-indicator{position:absolute;top:3px;bottom:3px;border-radius:11px;background:rgba(0,245,212,.12);border:1px solid rgba(0,245,212,.3);transition:left .35s cubic-bezier(.34,1.56,.64,1),width .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
-    .seg-btn{position:relative;z-index:1;flex:1;text-align:center;padding:10px 4px;cursor:pointer;transition:color .2s}
+    .seg-btn{position:relative;z-index:1;flex:1;text-align:center;padding:7px 4px;cursor:pointer;transition:color .2s}
     .seg-btn.active{color:#00F5D4}
 
     /* [C4] ANGLED BADGE */
@@ -203,19 +203,30 @@
     .tier-progress-fill.next-tier{background:linear-gradient(90deg,#00F5D4,#22c55e);box-shadow:0 0 6px rgba(0,245,212,.4)}
     .tier-progress-marker{position:absolute;top:0;width:1px;height:3px;background:rgba(255,255,255,.15);border-radius:0}
 
-    /* MARGIN SIMULATOR */
-    .margin-sim{margin-top:16px;padding:14px 0 0;border-radius:0;background:transparent;border:none}
-    .margin-sim-label{font-size:7px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px}
-    .resale-value{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#fff}
-    .resale-value span{color:rgba(255,255,255,.4);font-weight:500}
-    .resale-slider-wrap{position:relative;width:100%;height:32px;display:flex;align-items:center}
+    /* MARGIN SIMULATOR BOTTOM SHEET */
+    .margin-sheet{position:fixed;inset:0;z-index:65;display:none;pointer-events:none}
+    .margin-sheet.open{display:block;pointer-events:auto}
+    .margin-sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .3s ease}
+    .margin-sheet.open .margin-sheet-overlay{opacity:1}
+    .margin-sheet-panel{position:absolute;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;border-radius:20px 20px 0 0;padding:20px 20px env(safe-area-inset-bottom,16px);
+      background:rgba(18,18,18,.92);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);
+      border:1px solid rgba(255,255,255,.06);border-bottom:none;
+      transform:translateY(100%);transition:transform .35s cubic-bezier(.22,.68,.36,1)}
+    .margin-sheet.open .margin-sheet-panel{transform:translateY(0)}
+    .margin-sheet-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:0 auto 16px}
+    .margin-sim-label{font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;text-align:center}
+    .resale-value{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#fff}
+    .resale-value span{color:rgba(255,255,255,.35);font-weight:500}
+    .resale-slider-wrap{position:relative;width:100%;height:36px;display:flex;align-items:center}
     .resale-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.08);outline:none;cursor:pointer}
-    .resale-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35),0 2px 8px rgba(0,0,0,.3);transition:transform .15s ease,box-shadow .15s ease}
-    .resale-slider::-webkit-slider-thumb:active{transform:scale(1.15);box-shadow:0 0 20px rgba(0,245,212,.5),0 2px 12px rgba(0,0,0,.4)}
-    .resale-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35)}
-    .resale-slider-labels{display:flex;justify-content:space-between;margin-top:2px}
+    .resale-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35),0 2px 8px rgba(0,0,0,.3);transition:transform .15s ease,box-shadow .15s ease}
+    .resale-slider::-webkit-slider-thumb:active{transform:scale(1.2);box-shadow:0 0 20px rgba(0,245,212,.5),0 2px 12px rgba(0,0,0,.4)}
+    .resale-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35)}
+    .resale-slider-labels{display:flex;justify-content:space-between;margin-top:4px}
     .resale-slider-labels span{font-size:8px;color:rgba(255,255,255,.2);font-weight:600}
-    .benefit-neon{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#00ffcc;text-shadow:0 0 15px rgba(0,255,204,.25),0 0 30px rgba(0,255,204,.1);line-height:1.3}
+    .benefit-neon{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:#00ffcc;text-shadow:0 0 15px rgba(0,255,204,.25),0 0 30px rgba(0,255,204,.1);line-height:1.3}
+    .margin-trigger{cursor:pointer;transition:all .15s ease;-webkit-tap-highlight-color:transparent}
+    .margin-trigger:active{opacity:.7}
 
     /* TOP RENTABILITÉ BADGE */
     .tier-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:6px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;z-index:2;line-height:1.2}
@@ -380,6 +391,30 @@
     </div>
   </div>
 
+  <!-- MARGIN SIMULATOR BOTTOM SHEET -->
+  <div id="margin-sheet" class="margin-sheet">
+    <div class="margin-sheet-overlay" onclick="closeMarginSheet()"></div>
+    <div class="margin-sheet-panel">
+      <div class="margin-sheet-handle"></div>
+      <div class="margin-sim-label" id="margin-sheet-title">Simulateur de marge grossiste</div>
+      <div class="text-center mb-4">
+        <div class="text-[9px] text-smoke-500 font-semibold tracking-wide uppercase mb-1">Prix de revente ciblé</div>
+        <div class="resale-value" id="margin-sheet-resale-label">20 <span>€</span></div>
+      </div>
+      <div class="resale-slider-wrap">
+        <input type="range" class="resale-slider" id="margin-sheet-slider" min="10" max="30" step="1" value="20" oninput="updateMarginSheetSlider(this.value)">
+      </div>
+      <div class="resale-slider-labels"><span>10€</span><span>30€</span></div>
+      <div class="mt-5 text-center" id="margin-sheet-benefit">
+        <div class="benefit-neon" id="margin-sheet-amount">+0€</div>
+        <div class="text-[8px] text-smoke-500 mt-1 font-semibold tracking-wider uppercase">Bénéfice net estimé</div>
+      </div>
+      <div class="mt-4 text-center">
+        <div class="text-[8px] text-smoke-600" id="margin-sheet-detail"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- FAQ OVERLAY (legacy, now hidden - content moved to page-faq) -->
   <div id="faq-overlay" class="fixed inset-0 z-50 bg-dark-900 translate-y-full transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-hidden flex flex-col" style="will-change:transform;display:none">
     <div class="max-w-[480px] mx-auto w-full flex flex-col h-full">
@@ -527,8 +562,8 @@
 
     <!-- SKELETONS -->
     <div id="skeletons" class="px-5 space-y-6">
-      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:4/3;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div><div style="height:44px;width:100%;background:#1C1C1C;border-radius:12px;margin-top:12px"></div><div class="flex gap-2 mt-3"><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div></div></div></div>
-      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:4/3;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div></div></div>
+      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:16/10;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div><div style="height:44px;width:100%;background:#1C1C1C;border-radius:12px;margin-top:12px"></div><div class="flex gap-2 mt-3"><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div><div style="height:56px;flex:1;background:#1C1C1C;border-radius:12px"></div></div></div></div>
+      <div class="glass-card rounded-2xl overflow-hidden"><div style="aspect-ratio:16/10;background:linear-gradient(90deg,#151515 25%,#1C1C1C 50%,#151515 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:16px 16px 0 0"></div><div class="p-5 space-y-3"><div style="height:24px;width:65%;background:#1C1C1C;border-radius:8px"></div><div style="height:12px;width:45%;background:#1C1C1C;border-radius:6px"></div></div></div>
     </div>
     <!-- PRODUCTS -->
     <div id="product-list" class="px-5 space-y-6 hidden"></div>
@@ -1218,120 +1253,94 @@
         const t=getActiveTier(p);
         const tierIdx=p.tiers.findIndex(x=>x.min===t.min);
         if(oos) return`
-        <div class="glass-card rounded-2xl overflow-hidden reveal" id="card-${p.id}" style="position:relative;transition-delay:${idx*100}ms;opacity:.55;filter:saturate(.3)">
+        <div class="glass-card overflow-hidden reveal" id="card-${p.id}" style="position:relative;transition-delay:${idx*100}ms;opacity:.55;filter:saturate(.3)">
           <div class="product-glow" style="width:200px;height:200px;top:20%;right:-40px;background:${p.glowColor}"></div>
-          <div class="relative overflow-hidden" style="aspect-ratio:4/3">
+          <div class="relative overflow-hidden" style="aspect-ratio:16/10">
             ${p.badge?`<span class="product-badge text-white text-[8px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full" style="background:rgba(107,114,128,.85)">${p.badge}</span>`:''}
             <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-dark-700\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
-            <div style="position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(to top,#151515,transparent);pointer-events:none"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,8,8,.95),transparent);pointer-events:none"></div>
             ${p.puffs?`<span class="puffs-badge" style="opacity:.5">${p.puffs}</span>`:''}
-          </div>
-          <div class="p-5 relative z-[1]">
-            <h4 class="font-display text-[22px] font-bold tracking-wide uppercase leading-tight text-white/60">${p.name}</h4>
-            <p class="text-[9px] text-smoke-500 mt-1 tracking-[.2em] uppercase">${p.description}</p>
-            <div class="mt-5 glass rounded-xl px-4 py-3 text-center">
-              <div class="text-[8px] font-bold tracking-widest uppercase text-smoke-500 mb-1">Prix dégressifs</div>
-              <div class="flex justify-around">
-                ${p.tiers.map(tier=>`<div class="text-center"><div class="text-[10px] font-extrabold tracking-wider uppercase text-smoke-500">${tier.label}</div><div class="font-display text-[14px] font-bold text-smoke-500 mt-0.5">À venir</div></div>`).join('')}
-              </div>
+            <div style="position:absolute;bottom:10px;left:16px;z-index:2">
+              <h4 class="font-display text-[20px] font-bold tracking-wide uppercase leading-tight text-white/60">${p.name}</h4>
+              <p class="text-[8px] text-smoke-500 mt-0.5 tracking-[.18em] uppercase">${p.description}</p>
             </div>
-            <div class="mt-5 w-full py-4 rounded-xl text-center border-2 border-dashed border-smoke-600/50" style="cursor:not-allowed">
-              <div class="text-[12px] font-display font-bold tracking-wider uppercase text-smoke-500">Indisponible</div>
-              <div class="text-[9px] text-smoke-600 mt-0.5">En rupture de stock</div>
+          </div>
+          <div class="px-4 pb-4 pt-2.5 relative z-[1]">
+            <div class="flex justify-around py-2" style="background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05);border-radius:12px">
+              ${p.tiers.map(tier=>`<div class="text-center"><div class="text-[9px] font-extrabold tracking-wider uppercase text-smoke-500">${tier.label}</div><div class="font-display text-[13px] font-bold text-smoke-500">À venir</div></div>`).join('')}
+            </div>
+            <div class="mt-2.5 w-full py-3 rounded-[14px] text-center border-2 border-dashed border-smoke-600/40" style="cursor:not-allowed">
+              <div class="text-[11px] font-display font-bold tracking-wider uppercase text-smoke-500">Indisponible</div>
+              <div class="text-[8px] text-smoke-600 mt-0.5">En rupture de stock</div>
             </div>
           </div>
           <div class="card-bottom-gradient" style="background:linear-gradient(90deg,transparent,${p.accentColor||'#6B7280'},transparent);opacity:.3"></div>
         </div>`;
         return`
-        <div class="glass-card rounded-2xl overflow-hidden reveal" id="card-${p.id}" style="position:relative;transition-delay:${idx*100}ms">
-          <!-- [T3] GLOW -->
+        <div class="glass-card overflow-hidden reveal" id="card-${p.id}" style="position:relative;transition-delay:${idx*100}ms">
           <div class="product-glow" style="width:200px;height:200px;top:20%;right:-40px;background:${p.glowColor}"></div>
-          <!-- IMAGE + [C4] BADGE -->
-          <div class="relative overflow-hidden" style="aspect-ratio:4/3">
+          <div class="relative overflow-hidden" style="aspect-ratio:16/10">
             ${p.badge?`<span class="product-badge bg-cyan-brand text-dark-900 text-[8px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">${p.badge}</span>`:''}
             <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-dark-700\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
-            <div style="position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(to top,#151515,transparent);pointer-events:none"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,8,8,.95),transparent);pointer-events:none"></div>
             ${p.puffs?`<span class="puffs-badge">${p.puffs}</span>`:''}
+            <div style="position:absolute;bottom:10px;left:16px;z-index:2">
+              <h4 class="font-display text-[20px] font-bold tracking-wide uppercase leading-tight">${p.name}</h4>
+              <p class="text-[8px] text-smoke-400 mt-0.5 tracking-[.18em] uppercase">${p.description}</p>
+            </div>
           </div>
-          <div class="p-5 relative z-[1]">
-            <!-- [F3] XXL NAME -->
-            <h4 class="font-display text-[22px] font-bold tracking-wide uppercase leading-tight">${p.name}</h4>
-            <p class="text-[9px] text-smoke-400 mt-1 tracking-[.2em] uppercase">${p.description}</p>
-            <!-- STOCK FOMO -->
-            <div class="flex items-center gap-1.5 mt-2" style="color:rgba(255,180,50,.7)">
-              <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              <span class="text-[8px] font-semibold tracking-wide">Stock dépôt : Limité <span style="color:rgba(255,255,255,.25)">·</span> Réassort prochainement</span>
+          <div class="px-4 pb-4 pt-2.5 relative z-[1]">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5" style="color:rgba(255,180,50,.65)">
+                <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-[7px] font-semibold tracking-wide">Stock limité</span>
+              </div>
+              ${p.nicotineOptions&&p.nicotineOptions.length>1?`
+              <div class="flex items-center gap-1.5" id="nic-row-${p.id}">
+                <span class="text-[7px] font-bold tracking-widest uppercase text-smoke-500">Nic :</span>
+                ${p.nicotineOptions.map(n=>`<button class="nic-chip ${p.selectedNicotine===n?'active':''}" onclick="setNicotine('${p.id}','${n}')" style="padding:3px 8px;font-size:9px;border-radius:8px">${n}</button>`).join('')}
+              </div>`:(p.nicotineOptions&&p.nicotineOptions.length===1?`
+              <div class="flex items-center gap-1.5">
+                <span class="text-[7px] font-bold tracking-widest uppercase text-smoke-500">Nic :</span>
+                <span class="text-[10px] font-bold text-purple-400">${p.nicotineOptions[0]}</span>
+              </div>`:'')}
             </div>
 
-            <!-- NICOTINE SELECTOR -->
-            ${p.nicotineOptions&&p.nicotineOptions.length>1?`
-            <div class="mt-4 flex items-center gap-2" id="nic-row-${p.id}">
-              <span class="text-[8px] font-bold tracking-widest uppercase text-smoke-500">Nicotine :</span>
-              ${p.nicotineOptions.map(n=>`<button class="nic-chip ${p.selectedNicotine===n?'active':''}" onclick="setNicotine('${p.id}','${n}')">${n}</button>`).join('')}
-            </div>`:(p.nicotineOptions&&p.nicotineOptions.length===1?`
-            <div class="mt-4 flex items-center gap-2">
-              <span class="text-[8px] font-bold tracking-widest uppercase text-smoke-500">Nicotine :</span>
-              <span class="text-[11px] font-bold text-purple-400">${p.nicotineOptions[0]}</span>
-            </div>`:'')}
-
-            <!-- [C1] FLAVOR PICKER -->
-            <button onclick="openFlavorSheet('${p.id}');haptic()" id="flav-${p.id}" class="w-full mt-5 glass rounded-xl px-4 py-3 flex items-center justify-between press">
+            <button onclick="openFlavorSheet('${p.id}');haptic()" id="flav-${p.id}" class="w-full mt-2.5 flex items-center justify-between press" style="background:rgba(255,255,255,.035);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:8px 12px">
               <div>
-                <div class="text-[8px] font-bold tracking-widest uppercase text-smoke-500">Parfum</div>
-                <div class="text-[13px] font-semibold text-white mt-0.5">${p.selectedFlavor}</div>
+                <div class="text-[7px] font-bold tracking-widest uppercase text-smoke-500">Parfum</div>
+                <div class="text-[12px] font-semibold text-white mt-0.5">${p.selectedFlavor}</div>
               </div>
-              <svg class="w-4 h-4 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              <svg class="w-3.5 h-3.5 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
 
-            <!-- [C3] SEGMENTED TIER CONTROL + PRIX BARRÉS + INTEGRATED PROGRESS -->
-            <div class="mt-5">
-              <div class="text-[8px] font-bold tracking-widest uppercase text-smoke-500 mb-2">Prix dégressifs</div>
-              <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.025)">
+            <div class="mt-3">
+              <div class="text-[7px] font-bold tracking-widest uppercase text-smoke-500 mb-1.5">Prix dégressifs</div>
+              <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.035)">
                 <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
                   <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
-                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">Top rentabilité</div>':''}<div class="text-[10px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[10px] mt-0.5" style="text-decoration:line-through;color:rgba(255,255,255,.28)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[15px] font-bold mt-0.5">${tier.price.toFixed(2)}€</div></div>`).join('')}
+                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">Top rentabilité</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[9px]" style="text-decoration:line-through;color:rgba(255,255,255,.25)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`).join('')}
                 </div>
-                <div class="tier-progress" id="progress-${p.id}">
-                  ${renderTierProgress(p)}
-                </div>
+                <div class="tier-progress" id="progress-${p.id}">${renderTierProgress(p)}</div>
               </div>
             </div>
 
-            <!-- [C2] STEPPER + PRICE (aéré, transparent) -->
-            <div class="mt-4" id="qty-row-${p.id}">
-              ${renderQtyRow(p,t)}
-            </div>
+            <div class="mt-2.5" id="qty-row-${p.id}">${renderQtyRow(p,t)}</div>
 
-            <!-- SAVINGS HINT -->
             <div id="savings-${p.id}">${getSavingsHint(p,t)}</div>
 
-            <!-- MARGIN SIMULATOR (Slider Premium) -->
-            <div class="margin-sim" id="margin-${p.id}">
-              <div class="margin-sim-label">Simulateur de marge grossiste</div>
-              <div class="text-center mb-3">
-                <div class="text-[9px] text-smoke-500 font-semibold tracking-wide uppercase mb-1">Prix de revente ciblé</div>
-                <div class="resale-value" id="resale-label-${p.id}">${p.resalePrice||20} <span>€</span></div>
-              </div>
-              <div class="resale-slider-wrap">
-                <input type="range" class="resale-slider" id="resale-${p.id}" min="10" max="30" step="1" value="${p.resalePrice||20}" oninput="updateResaleSlider('${p.id}',this.value)">
-              </div>
-              <div class="resale-slider-labels"><span>10€</span><span>30€</span></div>
-              <div class="mt-4 text-center" id="benefit-display-${p.id}">
-                ${renderBenefitDisplay(p)}
-              </div>
+            <div class="margin-trigger mt-2 text-center" onclick="openMarginSheet('${p.id}');haptic()">
+              <span class="text-[9px] text-cyan-brand font-semibold">📊 Estimer la rentabilité de ce lot</span>
             </div>
 
-            <!-- [C5] ATC BUTTON -->
-            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-4 btn-gradient-outline text-cyan-brand font-display font-bold py-3.5 rounded-xl text-[12px] tracking-wider uppercase press">
+            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-2.5 btn-gradient-outline text-cyan-brand font-display font-bold py-3 rounded-[14px] text-[11px] tracking-wider uppercase press">
               + Ajouter au panier
             </button>
           </div>
           <div class="card-bottom-gradient" style="background:linear-gradient(90deg,transparent,${p.accentColor||'#00F5D4'},transparent)"></div>
         </div>`}).join('');
       c.classList.remove('hidden');
-      // [J5] Trigger scroll reveals
       setTimeout(initRevealObserver,50);
-      setTimeout(()=>{document.querySelectorAll('.resale-slider').forEach(styleSliderTrack)},60);
     }
 
     function renderTierProgress(p){
@@ -1342,47 +1351,9 @@
       return`<div class="tier-progress-fill ${atTier?'next-tier':''}" style="width:${pct}%"></div>${markers}`;
     }
 
-    function renderBenefitDisplay(p){
-      const t=getActiveTier(p);
-      const resale=p.resalePrice||20;
-      const benefit=Math.round((p.qty*resale)-(p.qty*t.price));
-      return`<div class="benefit-neon" id="benefit-amount-${p.id}">${formatBenefit(benefit)}</div>
-        <div class="text-[8px] text-smoke-500 mt-1 font-semibold tracking-wider uppercase">Bénéfice net estimé</div>`;
-    }
-
-    function updateResaleSlider(pid,val){
-      const p=products.find(x=>x.id===pid);if(!p)return;
-      const v=parseInt(val)||20;
-      p.resalePrice=v;
-      const label=document.getElementById('resale-label-'+pid);
-      if(label)label.innerHTML=v+' <span>€</span>';
-      const slider=document.getElementById('resale-'+pid);
-      if(slider)styleSliderTrack(slider);
-      animateBenefit(pid);
-    }
     function styleSliderTrack(el){
       const pct=((el.value-el.min)/(el.max-el.min))*100;
       el.style.background=`linear-gradient(90deg,rgba(0,245,212,.35) ${pct}%,rgba(255,255,255,.08) ${pct}%)`;
-    }
-
-    function animateBenefit(pid){
-      const p=products.find(x=>x.id===pid);if(!p)return;
-      const t=getActiveTier(p);
-      const resale=p.resalePrice||20;
-      const target=Math.round((p.qty*resale)-(p.qty*t.price));
-      const el=document.getElementById('benefit-amount-'+pid);
-      if(!el)return;
-      const duration=600;
-      const startVal=parseInt(el.textContent.replace(/[^0-9-]/g,''))||0;
-      const startTime=performance.now();
-      function step(now){
-        const progress=Math.min((now-startTime)/duration,1);
-        const eased=1-Math.pow(1-progress,3);
-        const current=Math.round(startVal+(target-startVal)*eased);
-        el.textContent=formatBenefit(current);
-        if(progress<1)requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
     }
 
     function formatBenefit(val){
@@ -1390,42 +1361,84 @@
       return sign+Math.abs(val).toLocaleString('fr-FR')+'€';
     }
 
-    function updateBenefitIfOpen(p){
-      const el=document.getElementById('benefit-display-'+p.id);
-      if(!el)return;
+    let marginSheetPid=null;
+    function openMarginSheet(pid){
+      marginSheetPid=pid;
+      const p=products.find(x=>x.id===pid);if(!p)return;
       const t=getActiveTier(p);
       const resale=p.resalePrice||20;
       const benefit=Math.round((p.qty*resale)-(p.qty*t.price));
-      const amtEl=document.getElementById('benefit-amount-'+p.id);
-      if(amtEl)amtEl.textContent=formatBenefit(benefit);
+      const sheet=document.getElementById('margin-sheet');
+      const slider=document.getElementById('margin-sheet-slider');
+      const label=document.getElementById('margin-sheet-resale-label');
+      const amount=document.getElementById('margin-sheet-amount');
+      const detail=document.getElementById('margin-sheet-detail');
+      const title=document.getElementById('margin-sheet-title');
+      title.textContent='Marge · '+p.name;
+      slider.value=resale;
+      label.innerHTML=resale+' <span>€</span>';
+      amount.textContent=formatBenefit(benefit);
+      detail.textContent=p.qty+' × '+resale+'€ − '+p.qty+' × '+t.price.toFixed(2)+'€';
+      styleSliderTrack(slider);
+      sheet.classList.add('open');
     }
+    function closeMarginSheet(){
+      document.getElementById('margin-sheet').classList.remove('open');
+      marginSheetPid=null;
+    }
+    function updateMarginSheetSlider(val){
+      if(!marginSheetPid)return;
+      const p=products.find(x=>x.id===marginSheetPid);if(!p)return;
+      const v=parseInt(val)||20;
+      p.resalePrice=v;
+      const t=getActiveTier(p);
+      const target=Math.round((p.qty*v)-(p.qty*t.price));
+      const label=document.getElementById('margin-sheet-resale-label');
+      const amount=document.getElementById('margin-sheet-amount');
+      const detail=document.getElementById('margin-sheet-detail');
+      const slider=document.getElementById('margin-sheet-slider');
+      label.innerHTML=v+' <span>€</span>';
+      detail.textContent=p.qty+' × '+v+'€ − '+p.qty+' × '+t.price.toFixed(2)+'€';
+      styleSliderTrack(slider);
+      const startVal=parseInt(amount.textContent.replace(/[^0-9-]/g,''))||0;
+      const startTime=performance.now();
+      function step(now){
+        const progress=Math.min((now-startTime)/500,1);
+        const eased=1-Math.pow(1-progress,3);
+        amount.textContent=formatBenefit(Math.round(startVal+(target-startVal)*eased));
+        if(progress<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function updateBenefitIfOpen(p){}
 
     function getSavingsHint(p,t){
       const ti=p.tiers.findIndex(x=>x.min===t.min);
-      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[9px] text-green-400/80 mt-3 px-1 py-2">🔥 Plus que <strong class="text-white">${diff} pièces</strong> pour débloquer le tarif <strong class="text-white">${next.label}</strong> et économiser <strong class="text-green-400">${saved} €</strong> supplémentaires !</div>`}
+      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[8px] text-green-400/70 mt-1.5 px-0.5">🔥 <strong class="text-white">${diff}</strong> de plus → tarif <strong class="text-white">${next.label}</strong> (−${saved}€)</div>`}
       return '';
     }
 
     function renderQtyRow(p,t){
       const isEditing=editingQty===p.id;
       return`
-        <div class="flex items-center justify-between" style="padding:6px 0">
+        <div class="flex items-center justify-between" style="padding:4px 0">
           <div class="stepper" style="flex-shrink:0">
-            <button onclick="changeQty('${p.id}',-10)" class="stepper-btn text-smoke-400">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
+            <button onclick="changeQty('${p.id}',-10)" class="stepper-btn text-smoke-400" style="width:34px;height:34px">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
             </button>
             ${isEditing
-              ?`<input type="number" id="qi-${p.id}" class="stepper-input" value="${p.qty}" min="${MIN_QTY}" onblur="commitQtyInput('${p.id}')" onkeydown="if(event.key==='Enter')this.blur()">`
-              :`<div class="stepper-val" onclick="toggleQtyInput('${p.id}')">${p.qty}</div>`
+              ?`<input type="number" id="qi-${p.id}" class="stepper-input" value="${p.qty}" min="${MIN_QTY}" onblur="commitQtyInput('${p.id}')" onkeydown="if(event.key==='Enter')this.blur()" style="width:40px;font-size:13px">`
+              :`<div class="stepper-val" onclick="toggleQtyInput('${p.id}')" style="width:40px;font-size:14px">${p.qty}</div>`
             }
-            <button onclick="changeQty('${p.id}',10)" class="stepper-btn text-cyan-brand">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
+            <button onclick="changeQty('${p.id}',10)" class="stepper-btn text-cyan-brand" style="width:34px;height:34px">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
-          <div style="width:1px;height:28px;background:rgba(255,255,255,.06);margin:0 8px"></div>
+          <div style="width:1px;height:24px;background:rgba(255,255,255,.06);margin:0 6px"></div>
           <div class="text-right">
-            <div class="text-[8px] text-smoke-500">${p.qty} × ${t.price.toFixed(2)}€</div>
-            <div class="font-display font-bold text-cyan-brand whitespace-nowrap text-[16px]">${formatPriceBig(p.qty*t.price)}</div>
+            <div class="text-[7px] text-smoke-500">${p.qty} × ${t.price.toFixed(2)}€</div>
+            <div class="font-display font-bold text-cyan-brand whitespace-nowrap text-[15px]">${formatPriceBig(p.qty*t.price)}</div>
           </div>
         </div>`;
     }

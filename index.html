@@ -35,7 +35,7 @@
 
     /* [T2] GLASS SURFACES */
     .glass{background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 4px 30px rgba(0,0,0,.2)}
-    .glass-strong{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 30px rgba(0,0,0,.2)}
+    .glass-strong{background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 4px 30px rgba(0,0,0,.2)}
     .glass-card{background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.2)}
 
     /* [T5] LIGHT LINE */
@@ -55,7 +55,7 @@
     .splash-title{animation:splash-text-in .6s ease .4s both}
     .splash-sub{animation:splash-text-in .6s ease .55s both}
     @keyframes splash-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .splash-bar{width:48px;height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:28px;animation:splash-text-in .4s ease .7s both}
+    .splash-bar{width:48px;height:2px;border-radius:2px;background:rgba(255,255,255,.05);overflow:hidden;margin-top:28px;animation:splash-text-in .4s ease .7s both}
     .splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#00F5D4,#00C4AA);border-radius:2px;animation:load-bar 1.4s ease .8s forwards;box-shadow:0 0 8px rgba(0,245,212,.4)}
     @keyframes load-bar{to{width:100%}}
 
@@ -109,13 +109,13 @@
     .timeline-step:last-child{padding-bottom:0}
     .timeline-step:last-child .timeline-line{display:none}
     .timeline-dot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.1);transition:all .4s ease;position:relative;z-index:1}
+      background:rgba(255,255,255,.02);border:2px solid rgba(255,255,255,.08);transition:all .4s ease;position:relative;z-index:1}
     .timeline-step.done .timeline-dot{background:rgba(0,245,212,.12);border-color:#00F5D4}
     .timeline-step.current .timeline-dot{background:rgba(0,245,212,.08);border-color:#00F5D4;box-shadow:0 0 16px rgba(0,245,212,.25);animation:pulse-dot 2s infinite}
     @keyframes pulse-dot{0%,100%{box-shadow:0 0 16px rgba(0,245,212,.25)}50%{box-shadow:0 0 24px rgba(0,245,212,.4)}}
-    .timeline-line{position:absolute;left:15px;top:32px;bottom:0;width:2px;background:rgba(255,255,255,.06)}
+    .timeline-line{position:absolute;left:15px;top:32px;bottom:0;width:2px;background:rgba(255,255,255,.05)}
     .timeline-step.done .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(0,245,212,.3))}
-    .timeline-step.current .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(255,255,255,.06))}
+    .timeline-step.current .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(255,255,255,.05))}
 
     /* MODAL */
     .modal-overlay{transition:opacity .3s ease}
@@ -156,7 +156,7 @@
     /* [C2] STEPPER */
     .stepper{display:flex;align-items:center;border-radius:12px;overflow:hidden}
     .stepper-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;transition:all .15s cubic-bezier(.34,1.56,.64,1)}
-    .stepper-btn:active{transform:scale(.88);background:rgba(255,255,255,.06)}
+    .stepper-btn:active{transform:scale(.88);background:rgba(255,255,255,.05)}
     .stepper-val{width:44px;text-align:center;font-weight:900;font-size:15px;cursor:pointer;padding:6px 0;transition:background .15s}
     .stepper-val:active{background:rgba(0,245,212,.08);border-radius:8px}
     .stepper-input{width:44px;text-align:center;background:rgba(0,245,212,.08);border:1.5px solid #00F5D4;border-radius:8px;color:#fff;font-weight:800;font-size:14px;padding:5px 0}
@@ -192,15 +192,15 @@
     .card-bottom-gradient{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 16px 16px;opacity:.6}
 
     /* QUICK QTY CHIPS */
-    .qty-chip{display:inline-flex;align-items:center;justify-content:center;min-width:36px;padding:4px 8px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5)}
+    .qty-chip{display:inline-flex;align-items:center;justify-content:center;min-width:36px;padding:4px 8px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);color:rgba(255,255,255,.5)}
     .qty-chip:active{transform:scale(.92)}
     .qty-chip.active{background:rgba(0,245,212,.1);border-color:rgba(0,245,212,.3);color:#00F5D4}
-    .nic-chip{display:inline-flex;align-items:center;justify-content:center;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5)}
+    .nic-chip{display:inline-flex;align-items:center;justify-content:center;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);color:rgba(255,255,255,.5)}
     .nic-chip:active{transform:scale(.92)}
     .nic-chip.active{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.4);color:#a855f7}
 
     /* PROGRESS BAR (integrated into seg-control bottom) */
-    .tier-progress{height:3px;border-radius:0 0 12px 12px;background:rgba(255,255,255,.04);position:relative;overflow:hidden;margin-top:0}
+    .tier-progress{height:3px;border-radius:0 0 12px 12px;background:rgba(255,255,255,.02);position:relative;overflow:hidden;margin-top:0}
     .tier-progress-fill{height:100%;border-radius:0 0 12px 12px;background:linear-gradient(90deg,rgba(0,245,212,.3),#00F5D4);transition:width .5s cubic-bezier(.34,1.56,.64,1);position:relative}
     .tier-progress-fill.next-tier{background:linear-gradient(90deg,#00F5D4,#22c55e);box-shadow:0 0 6px rgba(0,245,212,.4)}
     .tier-progress-marker{position:absolute;top:0;width:1px;height:3px;background:rgba(255,255,255,.15);border-radius:0}
@@ -266,7 +266,7 @@
     }
 
     /* PAYMENT SELECTOR */
-    .pay-option{position:relative;cursor:pointer;border:1.5px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+    .pay-option{position:relative;cursor:pointer;border:1.5px solid rgba(255,255,255,.05);border-radius:16px;padding:14px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
     .pay-option:active{transform:scale(.97)}
     .pay-option.selected{border-color:rgba(0,245,212,.4);background:rgba(0,245,212,.04)}
     .pay-option.crypto-selected{border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.04)}
@@ -293,7 +293,7 @@
     .shimmer-badge{background:linear-gradient(90deg,rgba(168,85,247,.2),rgba(168,85,247,.4),rgba(168,85,247,.2));background-size:200% 100%;animation:shimmer-badge 2s linear infinite}
 
     /* FAQ ACCORDION */
-    .faq-item{border:1px solid rgba(255,255,255,.04);border-radius:16px;overflow:hidden;transition:border-color .3s ease}
+    .faq-item{border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;transition:border-color .3s ease}
     .faq-item.open{border-color:rgba(0,245,212,.12)}
     .faq-q{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
     .faq-q:active{background:rgba(255,255,255,.02)}
@@ -418,7 +418,7 @@
   </div>
 
   <!-- FAQ OVERLAY (legacy, now hidden - content moved to page-faq) -->
-  <div id="faq-overlay" class="fixed inset-0 z-50 bg-dark-900 translate-y-full transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-hidden flex flex-col" style="will-change:transform;display:none">
+  <div id="faq-overlay" class="fixed inset-0 z-50 bg-[#080C14] translate-y-full transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] overflow-hidden flex flex-col" style="will-change:transform;display:none">
     <div class="max-w-[480px] mx-auto w-full flex flex-col h-full">
       <div class="flex items-center justify-between px-5 py-4 border-b border-white/[.06]">
         <div class="flex items-center gap-2.5">
@@ -552,7 +552,7 @@
     <div class="px-5 py-2">
       <div class="relative">
         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" id="search-input" placeholder="Rechercher un produit ou un parfum..." oninput="filterProducts()" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none">
+        <input type="text" id="search-input" placeholder="Rechercher un produit ou un parfum..." oninput="filterProducts()" class="w-full bg-white/[.02] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none">
       </div>
     </div>
 
@@ -627,7 +627,7 @@
       <div class="px-5">
         <div id="panier-items" class="space-y-2.5 mb-4"></div>
         <div id="panier-empty" class="text-center py-12">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[.03] border border-white/[.06] flex items-center justify-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[.02] border border-white/[.06] flex items-center justify-center">
             <svg class="w-7 h-7 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           </div>
           <p class="text-smoke-500 text-sm font-semibold">Panier vide</p>
@@ -645,7 +645,7 @@
           </div>
         </div>
         <div id="panier-total-section" class="hidden">
-          <div class="flex justify-between items-center pt-3 mb-6" style="border-top:1px solid rgba(255,255,255,.06)">
+          <div class="flex justify-between items-center pt-3 mb-6" style="border-top:1px solid rgba(255,255,255,.05)">
             <span class="text-sm font-semibold text-smoke-400">Total</span>
             <span class="font-display text-xl font-bold text-cyan-brand" id="panier-total">0,00 €</span>
           </div>
@@ -659,22 +659,22 @@
 
           <!-- B2C FORM -->
           <div id="pform-b2c" class="space-y-3">
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label><input id="pb2c-name" type="text" placeholder="Jean Dupont" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2c-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2c-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2c-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2c-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label><input id="pb2c-name" type="text" placeholder="Jean Dupont" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2c-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2c-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2c-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2c-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
           </div>
 
           <!-- B2B FORM -->
           <div id="pform-b2b" class="space-y-3 hidden">
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label><input id="pb2b-shop" type="text" placeholder="Tabac du Centre" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label><input id="pb2b-siret" type="text" placeholder="123 456 789 00012" class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2b-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2b-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2b-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2b-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label><input id="pb2b-shop" type="text" placeholder="Tabac du Centre" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label><input id="pb2b-siret" type="text" placeholder="123 456 789 00012" class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2b-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2b-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2b-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2b-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
           </div>
 
-          <div class="mt-4"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label><textarea id="porder-notes" rows="2" placeholder="Instructions spéciales..." class="field w-full bg-white/[.03] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea></div>
+          <div class="mt-4"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label><textarea id="porder-notes" rows="2" placeholder="Instructions spéciales..." class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea></div>
 
           <!-- PAYMENT METHOD -->
           <div class="mt-5">
@@ -682,7 +682,7 @@
             <div class="space-y-2.5">
               <div class="pay-option selected" id="ppay-classic" onclick="setPayment('classic')">
                 <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-lg bg-white/[.06] flex items-center justify-center flex-shrink-0">
+                  <div class="w-8 h-8 rounded-lg bg-white/[.05] flex items-center justify-center flex-shrink-0">
                     <svg class="w-4 h-4 text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                   </div>
                   <div class="flex-1">
@@ -750,11 +750,11 @@
       <div class="px-5 mt-3">
         <div class="relative mb-5">
           <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-smoke-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input type="text" id="suivi-search" placeholder="Entrez votre n° de commande (ex: YK-XXXXX)" class="w-full bg-white/[.03] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none" oninput="searchOrder()">
+          <input type="text" id="suivi-search" placeholder="Entrez votre n° de commande (ex: YK-XXXXX)" class="w-full bg-white/[.02] border border-white/[.06] rounded-xl pl-10 pr-4 py-2.5 text-[12px] text-white placeholder-smoke-600 focus:border-cyan-brand/50 focus:shadow-[0_0_0_2px_rgba(0,245,212,.1)] transition-all" style="outline:none" oninput="searchOrder()">
         </div>
 
         <div id="suivi-no-order" class="text-center py-10">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[.03] border border-white/[.06] flex items-center justify-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[.02] border border-white/[.06] flex items-center justify-center">
             <svg class="w-7 h-7 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
           </div>
           <p class="text-smoke-500 text-sm font-semibold">Aucune commande trouvée</p>
@@ -935,7 +935,7 @@
 
   <!-- ORDER HISTORY MODAL -->
   <div id="history-modal" class="fixed inset-0 z-50 hidden">
-    <div class="modal-overlay absolute inset-0 bg-black/60 backdrop-filter backdrop-blur-md" onclick="closeHistory()"></div>
+    <div class="modal-overlay absolute inset-0 bg-[rgba(8,12,20,.85)] backdrop-filter backdrop-blur-md" onclick="closeHistory()"></div>
     <div class="modal-panel absolute bottom-0 left-0 right-0 glass-strong rounded-t-3xl max-h-[85vh] overflow-y-auto">
       <div class="p-5">
         <div class="w-10 h-1 bg-white/10 rounded-full mx-auto mb-4"></div>
@@ -1146,7 +1146,7 @@
           <div class="product-glow" style="width:200px;height:200px;top:20%;right:-40px;background:${p.glowColor}"></div>
           <div class="relative overflow-hidden" style="aspect-ratio:16/10">
             ${p.badge?`<span class="product-badge text-white text-[8px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full" style="background:rgba(107,114,128,.85)">${p.badge}</span>`:''}
-            <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-dark-700\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
+            <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-[#131820]\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
             <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,8,8,.95),transparent);pointer-events:none"></div>
             ${p.puffs?`<span class="puffs-badge" style="opacity:.5">${p.puffs}</span>`:''}
             <div style="position:absolute;bottom:10px;left:16px;z-index:2">
@@ -1170,7 +1170,7 @@
           <div class="product-glow" style="width:200px;height:200px;top:20%;right:-40px;background:${p.glowColor}"></div>
           <div class="relative overflow-hidden" style="aspect-ratio:16/10">
             ${p.badge?`<span class="product-badge bg-cyan-brand text-dark-900 text-[8px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">${p.badge}</span>`:''}
-            <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-dark-700\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
+            <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-[#131820]\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
             <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,8,8,.95),transparent);pointer-events:none"></div>
             ${p.puffs?`<span class="puffs-badge">${p.puffs}</span>`:''}
             <div style="position:absolute;bottom:10px;left:16px;right:16px;z-index:2">
@@ -1690,9 +1690,9 @@
           <div class="glass-card rounded-xl p-4 text-left mb-4 space-y-2">
             <div class="text-[9px] font-bold tracking-widest uppercase text-smoke-500 mb-2">Récapitulatif</div>
             ${savedCart.map(c=>`<div class="flex justify-between items-center"><div><span class="text-[12px] font-semibold">${c.name}</span><span class="text-[10px] text-smoke-400 ml-2">${c.flavor}</span></div><div class="text-right"><span class="text-[10px] text-smoke-400">${c.qty}×</span> <span class="text-[12px] font-bold text-cyan-brand">${formatPrice(c.lineTotal)}</span></div></div>`).join('')}
-            ${savedCart.reduce((s,c)=>s+c.qty,0)>=70?'<div class="flex items-center gap-2 pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,.04)"><span class="text-sm">🎁</span><span class="text-[10px] text-green-400 font-semibold">+10 puffs offertes — parfum choisi par Yuko</span></div>':''}
-            ${isCrypto?`<div class="flex justify-between items-center pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,.04)"><span class="text-[10px] text-smoke-400">Sous-total</span><span class="text-[10px] text-smoke-400 line-through">${formatPrice(rawTotal)}</span></div><div class="flex justify-between items-center"><span class="text-[10px] text-purple-400 font-semibold">Remise Éco-Crypto -8%</span><span class="text-[10px] text-green-400 font-bold">-${formatPrice(+(rawTotal-savedTotal).toFixed(2))}</span></div>`:''}
-            <div class="pt-2 mt-2 flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,.06)">
+            ${savedCart.reduce((s,c)=>s+c.qty,0)>=70?'<div class="flex items-center gap-2 pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,.05)"><span class="text-sm">🎁</span><span class="text-[10px] text-green-400 font-semibold">+10 puffs offertes — parfum choisi par Yuko</span></div>':''}
+            ${isCrypto?`<div class="flex justify-between items-center pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,.05)"><span class="text-[10px] text-smoke-400">Sous-total</span><span class="text-[10px] text-smoke-400 line-through">${formatPrice(rawTotal)}</span></div><div class="flex justify-between items-center"><span class="text-[10px] text-purple-400 font-semibold">Remise Éco-Crypto -8%</span><span class="text-[10px] text-green-400 font-bold">-${formatPrice(+(rawTotal-savedTotal).toFixed(2))}</span></div>`:''}
+            <div class="pt-2 mt-2 flex justify-between items-center" style="border-top:1px solid rgba(255,255,255,.05)">
               <span class="text-[11px] font-semibold text-smoke-400">Total à payer</span>
               <span class="font-display text-lg font-bold ${isCrypto?'text-purple-400':'text-cyan-brand'}">${formatPrice(savedTotal)}</span>
             </div>

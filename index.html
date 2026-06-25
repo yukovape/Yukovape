@@ -1319,7 +1319,7 @@
               <div style="border-radius:14px;overflow:visible;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:relative">
                 <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
                   <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
-                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div style="position:absolute;top:-9px;right:0;font-size:9px;padding:2px 5px;white-space:nowrap;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:800;letter-spacing:.05em;text-transform:uppercase;z-index:2;line-height:1.2;">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[9px]" style="text-decoration:line-through;color:rgba(255,255,255,.25)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`).join('')}
+                  ${p.tiers.map((tier,i)=>{const crossedPrice=i===0?p.basePrice:p.tiers[i-1].price;return`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div style="position:absolute;top:-9px;right:0;font-size:9px;padding:2px 5px;white-space:nowrap;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:800;letter-spacing:.05em;text-transform:uppercase;z-index:2;line-height:1.2;">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${crossedPrice?`<div style="color:#94A3B8;font-size:11px;text-decoration:line-through;opacity:.6;display:block;margin-bottom:2px;">${crossedPrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`}).join('')}
                 </div>
                 <div class="tier-progress" id="progress-${p.id}">${renderTierProgress(p)}</div>
               </div>
@@ -1329,11 +1329,11 @@
 
             <div id="savings-${p.id}">${getSavingsHint(p,t)}</div>
 
-            <button class="estimate-btn" onclick="openMarginSheet('${p.id}');haptic()" style="width:100%;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#00F5D4;font-weight:500;font-size:12px;text-align:center;cursor:pointer;transition:transform .1s ease,background .2s ease;margin-top:10px;" onmousedown="this.style.transform='scale(0.96)'" onmouseup="this.style.transform='scale(1)'">
+            <button class="estimate-btn" onclick="openMarginSheet('${p.id}');haptic()" style="width:100%;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#00F5D4;font-weight:500;font-size:12px;text-align:center;cursor:pointer;transition:transform .1s ease;margin-top:10px;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
               📊 Estimer mes bénéfices
             </button>
 
-            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-2.5 btn-gradient-outline text-cyan-brand font-display font-bold py-3 rounded-[14px] text-[11px] tracking-wider uppercase press">
+            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-2.5 btn-gradient-outline text-cyan-brand font-display font-bold py-3 rounded-[14px] text-[11px] tracking-wider uppercase" style="transition:transform .1s ease;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
               + Ajouter au panier
             </button>
           </div>

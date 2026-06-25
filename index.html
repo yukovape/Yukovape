@@ -1316,10 +1316,10 @@
 
             <div class="mt-3">
               <div class="text-[7px] font-medium tracking-[.08em] uppercase text-smoke-400 mb-1.5">Prix dégressifs</div>
-              <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)">
+              <div style="border-radius:14px;overflow:visible;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:relative">
                 <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
                   <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
-                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[9px]" style="text-decoration:line-through;color:rgba(255,255,255,.25)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`).join('')}
+                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div style="position:absolute;top:-9px;right:0;font-size:9px;padding:2px 5px;white-space:nowrap;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:800;letter-spacing:.05em;text-transform:uppercase;z-index:2;line-height:1.2;">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[9px]" style="text-decoration:line-through;color:rgba(255,255,255,.25)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`).join('')}
                 </div>
                 <div class="tier-progress" id="progress-${p.id}">${renderTierProgress(p)}</div>
               </div>
@@ -1329,9 +1329,9 @@
 
             <div id="savings-${p.id}">${getSavingsHint(p,t)}</div>
 
-            <div class="margin-trigger mt-2 text-center" onclick="openMarginSheet('${p.id}');haptic()">
-              <span class="text-[9px] text-cyan-brand font-semibold">📊 Estimer mes bénéfices</span>
-            </div>
+            <button class="estimate-btn" onclick="openMarginSheet('${p.id}');haptic()" style="width:100%;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#00F5D4;font-weight:500;font-size:12px;text-align:center;cursor:pointer;transition:transform .1s ease,background .2s ease;margin-top:10px;" onmousedown="this.style.transform='scale(0.96)'" onmouseup="this.style.transform='scale(1)'">
+              📊 Estimer mes bénéfices
+            </button>
 
             <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-2.5 btn-gradient-outline text-cyan-brand font-display font-bold py-3 rounded-[14px] text-[11px] tracking-wider uppercase press">
               + Ajouter au panier
@@ -1415,7 +1415,7 @@
 
     function getSavingsHint(p,t){
       const ti=p.tiers.findIndex(x=>x.min===t.min);
-      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[8px] mt-1.5 px-0.5" style="color:#94A3B8">+<strong class="text-white">${diff}</strong> pièces → palier <strong class="text-white">${next.label}</strong> (−${saved}€)</div>`}
+      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[11px] mt-2 px-0.5" style="color:#94A3B8">🔥 Ajoutez <strong class="text-white">${diff}</strong> pièces pour économiser <strong class="text-cyan-brand">${saved}€</strong> de plus !</div>`}
       return '';
     }
 

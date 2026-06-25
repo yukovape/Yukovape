@@ -229,7 +229,7 @@
     .margin-trigger:active{opacity:.7}
 
     /* TOP RENTABILITÉ BADGE */
-    .tier-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:6px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;z-index:2;line-height:1.2}
+    .tier-badge{position:absolute;top:-9px;right:4px;white-space:nowrap;font-size:7px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;z-index:2;line-height:1.2}
 
     /* RECAP OVERLAY */
     .recap-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .35s ease}
@@ -1319,7 +1319,7 @@
               <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)">
                 <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
                   <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
-                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">Top rentabilité</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[9px]" style="text-decoration:line-through;color:rgba(255,255,255,.25)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`).join('')}
+                  ${p.tiers.map((tier,i)=>`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div class="tier-badge">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${p.basePrice?`<div class="text-[9px]" style="text-decoration:line-through;color:rgba(255,255,255,.25)">${p.basePrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`).join('')}
                 </div>
                 <div class="tier-progress" id="progress-${p.id}">${renderTierProgress(p)}</div>
               </div>

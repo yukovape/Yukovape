@@ -1178,25 +1178,45 @@
               <p class="text-[8px] text-smoke-400 mt-0.5 tracking-[.18em] uppercase">${p.description}</p>
             </div>
           </div>
-          <div class="px-4 pb-4 pt-3 relative z-[1]">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <span class="font-display text-[18px] font-bold text-cyan-brand" style="text-shadow:0 0 12px rgba(0,245,212,.2)">À partir de ${t.price.toFixed(2)}€</span>
-                ${p.basePrice?`<span style="color:#94A3B8;font-size:12px;text-decoration:line-through;opacity:.5">${p.basePrice.toFixed(2)}€</span>`:''}
+          <div class="px-4 pb-4 pt-2.5 relative z-[1]">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5" style="color:rgba(255,180,50,.55)">
+                <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Stock limité</span>
               </div>
               ${p.nicotineOptions&&p.nicotineOptions.length>1?`
-              <div class="flex items-center gap-1" id="nic-row-${p.id}">
+              <div class="flex items-center gap-1.5" id="nic-row-${p.id}">
+                <span style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Nic :</span>
                 ${p.nicotineOptions.map(n=>`<button class="nic-chip ${p.selectedNicotine===n?'active':''}" onclick="setNicotine('${p.id}','${n}')" style="padding:3px 8px;font-size:9px;border-radius:8px">${n}</button>`).join('')}
-              </div>`:(p.nicotineOptions&&p.nicotineOptions.length===1?`<span class="text-[10px] font-bold text-purple-400">${p.nicotineOptions[0]}</span>`:'')}
+              </div>`:(p.nicotineOptions&&p.nicotineOptions.length===1?`
+              <div class="flex items-center gap-1.5">
+                <span style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Nic :</span>
+                <span class="text-[10px] font-bold text-purple-400">${p.nicotineOptions[0]}</span>
+              </div>`:'')}
             </div>
 
-            <button onclick="openFlavorSheet('${p.id}');haptic()" id="flav-${p.id}" class="w-full flex items-center justify-between press" style="background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:10px 14px;box-shadow:0 4px 30px rgba(0,0,0,.2)">
+            <button onclick="openFlavorSheet('${p.id}');haptic()" id="flav-${p.id}" class="w-full mt-2.5 flex items-center justify-between press" style="background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:10px 14px;box-shadow:0 4px 30px rgba(0,0,0,.2)">
               <div>
                 <div style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Parfum</div>
                 <div class="text-[13px] font-semibold text-white mt-0.5">${p.selectedFlavor}</div>
               </div>
               <svg class="w-4 h-4 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
+
+            <div class="mt-3">
+              <div style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase;margin-bottom:6px">Prix dégressifs</div>
+              <div style="border-radius:16px;overflow:visible;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;box-shadow:0 4px 30px rgba(0,0,0,.2)">
+                <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
+                  <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
+                  ${p.tiers.map((tier,i)=>{const crossedPrice=i===0?p.basePrice:p.tiers[i-1].price;return`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div style="position:absolute;top:-9px;right:0;font-size:9px;padding:2px 5px;white-space:nowrap;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:800;letter-spacing:.05em;text-transform:uppercase;z-index:2;line-height:1.2;">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${crossedPrice?`<div style="color:#94A3B8;font-size:11px;text-decoration:line-through;opacity:.6;display:block;margin-bottom:2px;">${crossedPrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`}).join('')}
+                </div>
+                <div class="tier-progress" id="progress-${p.id}">${renderTierProgress(p)}</div>
+              </div>
+            </div>
+
+            <div class="mt-2.5" id="qty-row-${p.id}">${renderQtyRow(p,t)}</div>
+
+            <div id="savings-${p.id}">${getSavingsHint(p,t)}</div>
 
             <button class="estimate-btn" onclick="openMarginSheet('${p.id}');haptic()" style="width:100%;padding:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:16px;color:#00F5D4;font-weight:500;font-size:12px;text-align:center;cursor:pointer;transition:transform .1s ease;margin-top:10px;box-shadow:0 4px 30px rgba(0,0,0,.2)" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
               📊 Estimer la rentabilité
@@ -1341,8 +1361,16 @@
 
     function updateProductCard(p){
       const t=getActiveTier(p);
+      const tierIdx=p.tiers.findIndex(x=>x.min===t.min);
+      const qr=document.getElementById('qty-row-'+p.id);if(qr)qr.innerHTML=renderQtyRow(p,t);
+      const sh=document.getElementById('savings-'+p.id);if(sh)sh.innerHTML=getSavingsHint(p,t);
       const fb=document.getElementById('flav-'+p.id);
       if(fb){const valEl=fb.querySelector('.text-\\[13px\\]');if(valEl)valEl.textContent=p.selectedFlavor}
+      const ind=document.getElementById('seg-ind-'+p.id);
+      if(ind){ind.style.left=tierIdx*(100/p.tiers.length)+'%';ind.style.width=100/p.tiers.length+'%'}
+      const seg=document.getElementById('seg-'+p.id);
+      if(seg){seg.querySelectorAll('.seg-btn').forEach((btn,i)=>{btn.classList.toggle('active',i===tierIdx)})}
+      const pg=document.getElementById('progress-'+p.id);if(pg)pg.innerHTML=renderTierProgress(p);
       updateBenefitIfOpen(p);
     }
 

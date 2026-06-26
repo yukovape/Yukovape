@@ -1104,19 +1104,20 @@
       return Math.round((1-t.price/base)*100);
     }
 
+    // ============= RENDER HELPERS =============
     function renderTierPills(p){
       const t=getActiveTier(p);
-      const basePrice=p.basePrice||0;
+      const base=p.basePrice||0;
       const lastIdx=p.tiers.length-1;
       return p.tiers.map((tier,i)=>{
-        const isActive=tier.min===t.min;
-        const isBest=i===lastIdx;
-        const ecoPct=basePrice?Math.round((1-tier.price/basePrice)*100):0;
-        return`<div class="flex-1 text-center rounded-xl" style="padding:8px 4px;border:1px solid ${isActive?'rgba(0,245,212,.5)':'rgba(255,255,255,.05)'};${isActive?'background:rgba(0,245,212,.08)':''};min-width:0">
-          <div class="text-[9px] uppercase font-bold tracking-wide" style="color:${isActive?'#00F5D4':isBest?'rgba(0,245,212,.4)':'var(--muted)'}">${tier.label}</div>
-          ${basePrice?`<div class="text-[9px] line-through" style="color:#94A3B8;opacity:.4;margin-top:2px">${basePrice.toFixed(2)}€</div>`:''}
-          <div class="font-bold" style="color:${isActive?'#00F5D4':'#fff'};font-size:${isActive?'15px':'13px'}">${tier.price.toFixed(2)}€</div>
-          ${isActive&&ecoPct>0?`<span class="economy-badge" style="font-size:8px;padding:2px 5px;margin-top:3px;display:inline-block">-${ecoPct}%</span>`:''}
+        const active=tier.min===t.min;
+        const best=i===lastIdx;
+        const eco=base?Math.round((1-tier.price/base)*100):0;
+        return`<div class="flex-1 text-center rounded-xl" style="padding:8px 4px;border:1px solid ${active?'rgba(0,245,212,.5)':'rgba(255,255,255,.05)'};${active?'background:rgba(0,245,212,.08)':''};min-width:0">
+          <div class="text-[9px] uppercase font-bold tracking-wide" style="color:${active?'#00F5D4':best?'rgba(0,245,212,.4)':'var(--muted)'}">${tier.label}</div>
+          ${base?`<div class="text-[9px] line-through" style="color:#94A3B8;opacity:.4;margin-top:2px">${base.toFixed(2)}€</div>`:''}
+          <div class="font-bold" style="color:${active?'#00F5D4':'#fff'};font-size:${active?'15px':'13px'}">${tier.price.toFixed(2)}€</div>
+          ${active&&eco>0?`<span class="economy-badge" style="font-size:8px;padding:2px 5px;margin-top:3px;display:inline-block">-${eco}%</span>`:''}
         </div>`}).join('');
     }
 
@@ -1136,15 +1137,80 @@
       const total=products.filter(x=>x.inStock!==false).reduce((s,p)=>s+p.qty,0);
       const pct=Math.min((total/100)*100,100);
       const reached=total>=100;
-      const color=reached?'#00F5D4':'#F59E0B';
+      const clr=reached?'#00F5D4':'#F59E0B';
+      return`<div style="padding:8px 0">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-[10px] font-bold" style="color:${reached?'#00F5D4':'#94A3B8'}">${reached?'🎁 Bonus débloqué ! +10 puffs offertes':'🎁 10 puffs offertes si total > 100 pièces'}</span>
+          <span class="text-[10px] font-bold" style="color:${clr}">${total}/100</span>
+        </div>
+        <div class="bonus-bar"><div class="bonus-bar-fill" style="width:${pct}%;background:${reached?'linear-gradient(90deg,#00F5D4,#00C4AA)':'linear-gradient(90deg,#F59E0B,#EAB308)'}"></div></div>
+      </div>`;
+    }
+
+    function renderFlavorNic(p){
+      const nics=p.nicotineOptions||[];
       return`
-        <div style="padding:10px 0">
-          <div class="flex items-center justify-between mb-1.5">
-            <span class="text-[10px] font-bold" style="color:${reached?'#00F5D4':'#94A3B8'}">${reached?'🎁 Bonus débloqué ! +10 puffs offertes':'🎁 10 puffs offertes si total > 100 pièces'}</span>
-            <span class="text-[10px] font-bold" style="color:${color}">${total}/100</span>
+        <div class="mb-3">
+          <div class="text-[9px] uppercase font-bold tracking-widest mb-1.5" style="color:var(--muted)">Parfum</div>
+          <div id="flav-${p.id}" onclick="openFlavorSheet('${p.id}');haptic()" class="flex items-center justify-between px-3 py-2.5 rounded-xl press" style="border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);cursor:pointer">
+            <span class="text-[12px] font-medium truncate" style="color:${p.selectedFlavor?'#fff':'var(--muted)'}">${p.selectedFlavor||'Choisir un parfum'}</span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;opacity:.4"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div class="bonus-bar"><div class="bonus-bar-fill" style="width:${pct}%;background:${reached?'linear-gradient(90deg,#00F5D4,#00C4AA)':'linear-gradient(90deg,#F59E0B,#EAB308)'}"></div></div>
-        </div>`;
+        </div>
+        ${nics.length?`<div class="mb-4">
+          <div class="text-[9px] uppercase font-bold tracking-widest mb-1.5" style="color:var(--muted)">Nicotine</div>
+          <div id="nic-row-${p.id}" class="flex gap-2">
+            ${nics.map(n=>`<button onclick="selectNicotine('${p.id}','${n}');haptic()" class="flex-1 py-2 rounded-xl text-[11px] font-bold uppercase press" style="border:1px solid ${n===p.selectedNicotine?'rgba(0,245,212,.5)':'rgba(255,255,255,.06)'};background:${n===p.selectedNicotine?'rgba(0,245,212,.08)':'rgba(255,255,255,.02)'};color:${n===p.selectedNicotine?'#00F5D4':'var(--muted)'}">${n}</button>`).join('')}
+          </div>
+        </div>`:''}`;
+    }
+
+    function renderQtyRow(p,t){
+      const isEditing=editingQty===p.id;
+      return`<div class="flex flex-col items-center" style="padding:6px 0">
+        <div class="stepper" style="padding:4px">
+          <button onclick="changeQty('${p.id}',-10)" class="stepper-btn" style="width:44px;height:44px;color:var(--muted)">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M5 12h14"/></svg>
+          </button>
+          ${isEditing
+            ?`<input type="number" id="qi-${p.id}" class="stepper-input" value="${p.qty}" min="${MIN_QTY}" onblur="commitQtyInput('${p.id}')" onkeydown="if(event.key==='Enter')this.blur()" style="width:60px;font-size:20px">`
+            :`<div class="stepper-val" onclick="toggleQtyInput('${p.id}')" style="width:60px;font-size:22px">${p.qty}</div>`
+          }
+          <button onclick="changeQty('${p.id}',10)" class="stepper-btn" style="width:44px;height:44px;color:#00F5D4">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <div class="text-center mt-2">
+          <span style="color:#64748B;font-size:11px;font-weight:500">${p.qty} × ${t.price.toFixed(2)}€ = </span>
+          <span class="font-display font-bold" style="color:#00F5D4;font-size:15px">${(p.qty*t.price).toFixed(2).replace('.',',')} €</span>
+        </div>
+      </div>`;
+    }
+
+    function renderAtcLabel(p){
+      const t=getActiveTier(p);
+      return`AJOUTER ${p.qty} PIÈCES — ${(p.qty*t.price).toFixed(2).replace('.',',')} €`;
+    }
+
+    function selectNicotine(pid,nic){
+      const p=products.find(x=>x.id===pid);if(!p)return;
+      p.selectedNicotine=nic;
+      const row=document.getElementById('nic-row-'+pid);
+      if(row){
+        row.querySelectorAll('button').forEach(b=>{
+          const sel=b.textContent.trim()===nic;
+          b.style.borderColor=sel?'rgba(0,245,212,.5)':'rgba(255,255,255,.06)';
+          b.style.background=sel?'rgba(0,245,212,.08)':'rgba(255,255,255,.02)';
+          b.style.color=sel?'#00F5D4':'var(--muted)';
+        });
+      }
+    }
+
+    function tryAddToCart(pid){
+      const p=products.find(x=>x.id===pid);if(!p)return;
+      if(!p.selectedFlavor){showToast('⚠️ Choisissez un parfum');haptic();return}
+      if((p.nicotineOptions||[]).length&&!p.selectedNicotine){showToast('⚠️ Choisissez un taux de nicotine');haptic();return}
+      addToCart(pid);
     }
 
     // ============= RENDER =============
@@ -1152,13 +1218,8 @@
       const c=document.getElementById('product-list');
       c.innerHTML=products.map((p,idx)=>{
         const oos=p.inStock===false;
-        const t=getActiveTier(p);
-        const lastTierIdx=p.tiers.length-1;
-        const basePrice=p.basePrice||0;
-        const ecoPct=getEconomyPct(p);
-
         if(oos) return`
-        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;margin-bottom:24px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);opacity:.5;filter:saturate(.3);transition-delay:${idx*100}ms">
+        <div class="reveal" id="card-${p.id}" style="background:var(--glass-bg);border:var(--glass-border);border-radius:16px;overflow:hidden;margin-bottom:24px;backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);opacity:.5;filter:saturate(.3);transition-delay:${idx*100}ms">
           <div class="relative" style="aspect-ratio:16/9;overflow:hidden">
             <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
             ${p.badge?`<span style="position:absolute;top:12px;left:12px;background:rgba(107,114,128,.85);color:#fff;font-size:8px;font-weight:900;padding:4px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;z-index:3">${p.badge}</span>`:''}
@@ -1173,8 +1234,9 @@
           </div>
         </div>`;
 
+        const t=getActiveTier(p);
         return`
-        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;margin-bottom:24px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition-delay:${idx*100}ms">
+        <div class="reveal" id="card-${p.id}" style="background:var(--glass-bg);border:var(--glass-border);border-radius:16px;overflow:hidden;margin-bottom:24px;backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);transition-delay:${idx*100}ms">
           <div class="relative" style="aspect-ratio:16/9;overflow:hidden">
             <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
             ${p.badge?`<span style="position:absolute;top:12px;left:12px;background:#00F5D4;color:#080C14;font-size:8px;font-weight:900;padding:4px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;z-index:3">${p.badge}</span>`:''}
@@ -1183,25 +1245,26 @@
             <h4 class="text-white font-bold text-[18px] uppercase tracking-wide mb-1">${p.name}</h4>
             <p class="text-[9px] uppercase tracking-widest mb-4" style="color:var(--muted)">${p.description}</p>
 
-            <!-- GRILLE PALIERS PREMIUM -->
-            <div id="tier-pills-${p.id}" class="flex gap-2 mb-3">${renderTierPills(p)}</div>
+            <div id="flavor-nic-${p.id}">${renderFlavorNic(p)}</div>
 
-            <!-- BARRE PROGRESSION -->
+            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);margin:0 0 12px"></div>
+
+            <div class="text-[9px] uppercase font-bold tracking-widest mb-2" style="color:var(--muted)">Prix dégressifs</div>
+            <div id="tier-pills-${p.id}" class="flex gap-2 mb-3">${renderTierPills(p)}</div>
             <div id="progress-${p.id}" class="mb-3">${renderProgressSection(p)}</div>
 
-            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);margin:0 0 14px"></div>
+            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);margin:0 0 12px"></div>
 
-            <!-- STEPPER QUANTITÉ -->
+            <div class="text-[9px] uppercase font-bold tracking-widest mb-1" style="color:var(--muted)">Quantité</div>
             <div id="qty-row-${p.id}" class="mb-3">${renderQtyRow(p,t)}</div>
 
-            <!-- BONUS COUNTER -->
             <div id="bonus-${p.id}" class="mb-3">${renderBonusCounter()}</div>
 
             <button class="w-full py-3 mb-2 rounded-xl text-[11px] font-semibold uppercase press" style="border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);color:#00F5D4" onclick="openMarginSheet('${p.id}');haptic()">
               📊 Estimer ma rentabilité
             </button>
-            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="w-full py-3.5 rounded-xl font-bold text-[12px] uppercase press" style="background:linear-gradient(135deg,#00F5D4,#00C4AA)!important;color:#080C14!important">
-              AJOUTER ${p.qty} PIÈCES — ${(p.qty*t.price).toFixed(2).replace('.',',')} €
+            <button onclick="tryAddToCart('${p.id}')" id="atc-${p.id}" class="w-full py-3.5 rounded-xl font-bold text-[12px] uppercase press" style="background:linear-gradient(135deg,#00F5D4,#00C4AA)!important;color:#080C14!important">
+              ${renderAtcLabel(p)}
             </button>
           </div>
         </div>`}).join('');
@@ -1306,9 +1369,7 @@
     }
     function setNicotine(pid,nic){
       const p=products.find(x=>x.id===pid);if(!p)return;
-      p.selectedNicotine=nic;haptic();
-      const row=document.getElementById('nic-row-'+pid);
-      if(row)row.querySelectorAll('.nic-chip').forEach(c=>{c.classList.toggle('active',c.textContent===nic)});
+      p.selectedNicotine=nic;haptic();selectNicotine(pid,nic);
     }
 
     function flyToCart(btnEl){
@@ -1330,6 +1391,9 @@
     function updateProductCard(p){
       const t=getActiveTier(p);
 
+      const fn=document.getElementById('flavor-nic-'+p.id);
+      if(fn)fn.innerHTML=renderFlavorNic(p);
+
       const pills=document.getElementById('tier-pills-'+p.id);
       if(pills)pills.innerHTML=renderTierPills(p);
 
@@ -1340,7 +1404,7 @@
       if(qr)qr.innerHTML=renderQtyRow(p,t);
 
       const atc=document.getElementById('atc-'+p.id);
-      if(atc)atc.textContent=`AJOUTER ${p.qty} PIÈCES — ${(p.qty*t.price).toFixed(2).replace('.',',')} €`;
+      if(atc)atc.textContent=renderAtcLabel(p);
 
       products.filter(x=>x.inStock!==false).forEach(pr=>{
         const b=document.getElementById('bonus-'+pr.id);

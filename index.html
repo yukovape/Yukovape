@@ -1067,40 +1067,61 @@
       c.innerHTML=products.map((p,idx)=>{
         const oos=p.inStock===false;
         const t=getActiveTier(p);
-        const crossedPrice=p.basePrice||0;
+        const lastTierIdx=p.tiers.length-1;
+
         if(oos) return`
-        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02)!important;border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:16px;margin-bottom:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);opacity:.5;filter:saturate(.3);transition-delay:${idx*100}ms">
-          <div class="flex items-center gap-4 mb-4">
-            <img src="${p.image}" alt="${p.name}" class="w-16 h-16 rounded-lg object-cover" loading="lazy" onerror="this.style.display='none'">
-            <div>
-              <h4 class="text-white/60 font-bold text-[16px]">${p.name}</h4>
-              <p class="text-[10px] uppercase tracking-widest" style="color:var(--muted)">${p.description}</p>
+        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02)!important;border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;margin-bottom:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);opacity:.5;filter:saturate(.3);transition-delay:${idx*100}ms">
+          <div class="relative" style="aspect-ratio:16/10;overflow:hidden">
+            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
+            <div style="position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(8,12,20,.95),transparent);pointer-events:none"></div>
+            <div style="position:absolute;bottom:12px;left:16px;z-index:2">
+              <h4 class="font-bold text-[18px] text-white/60 uppercase tracking-wide">${p.name}</h4>
+              <p class="text-[9px] uppercase tracking-widest" style="color:#475569">${p.description}</p>
             </div>
           </div>
-          <div class="w-full py-3 rounded-xl text-center border-2 border-dashed" style="border-color:rgba(255,255,255,.1);cursor:not-allowed">
-            <div class="text-[11px] font-bold tracking-wider uppercase" style="color:var(--muted)">Indisponible</div>
-            <div class="text-[8px] mt-0.5" style="color:#475569">En rupture de stock</div>
+          <div class="p-4">
+            <div class="w-full py-3 rounded-xl text-center border-2 border-dashed" style="border-color:rgba(255,255,255,.08);cursor:not-allowed">
+              <div class="text-[11px] font-bold tracking-wider uppercase" style="color:var(--muted)">Indisponible</div>
+              <div class="text-[8px] mt-0.5" style="color:#475569">En rupture de stock</div>
+            </div>
           </div>
         </div>`;
+
         return`
-        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02)!important;border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:16px;margin-bottom:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition-delay:${idx*100}ms">
-          <div class="flex items-center gap-4 mb-4">
-            <img src="${p.image}" alt="${p.name}" class="w-16 h-16 rounded-lg object-cover" loading="lazy" onerror="this.style.display='none'">
-            <div>
-              <h4 class="text-white font-bold text-[16px]">${p.name}</h4>
-              <p class="text-[10px] uppercase tracking-widest" style="color:var(--muted)">${p.description}</p>
+        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02)!important;border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;margin-bottom:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition-delay:${idx*100}ms">
+
+          <div class="relative" style="aspect-ratio:16/10;overflow:hidden">
+            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
+            <div style="position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(8,12,20,.95),transparent);pointer-events:none"></div>
+            ${p.puffs?`<span style="position:absolute;bottom:12px;right:12px;z-index:5;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:3px 8px;font-size:9px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.85);text-transform:uppercase">${p.puffs}</span>`:''}
+            <div style="position:absolute;bottom:12px;left:16px;z-index:2">
+              <h4 class="font-bold text-[18px] text-white uppercase tracking-wide leading-tight">${p.name}</h4>
+              <p class="text-[9px] uppercase tracking-widest mt-0.5" style="color:var(--muted)">${p.description}</p>
             </div>
           </div>
-          <div class="flex justify-between items-center mb-4">
-            <div class="text-[12px] line-through opacity-60" style="color:#94A3B8">${crossedPrice.toFixed(2)}€</div>
-            <div class="font-bold text-[18px]" style="color:var(--accent);text-shadow:0 0 12px rgba(0,245,212,.2)">${t.price.toFixed(2)}€ / pce</div>
+
+          <div class="p-4">
+            <div class="text-[9px] font-bold tracking-widest uppercase mb-2" style="color:var(--muted)">Prix dégressifs</div>
+            <div class="grid grid-cols-3 gap-2">
+              ${p.tiers.map((tier,i)=>{
+                const crossed=i===0?(p.basePrice||0):p.tiers[i-1].price;
+                const isBest=i===lastTierIdx;
+                return`<div class="text-center rounded-xl py-3 px-1 relative" style="background:rgba(255,255,255,.02);border:1px solid ${isBest?'#00F5D4':'rgba(255,255,255,.05)'};${isBest?'box-shadow:0 0 12px rgba(0,245,212,.1)':''}">
+                  ${isBest?'<div style="position:absolute;top:-8px;right:4px;font-size:7px;padding:2px 6px;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:800;letter-spacing:.05em;text-transform:uppercase;line-height:1.2">BEST</div>':''}
+                  <div class="text-[9px] font-extrabold tracking-wider uppercase" style="color:${isBest?'#00F5D4':'var(--muted)'}">${tier.label}</div>
+                  <div class="text-[10px] line-through mt-1" style="color:#94A3B8;opacity:.5">${crossed.toFixed(2)}€</div>
+                  <div class="font-bold text-[16px] mt-0.5" style="color:${isBest?'#00F5D4':'#fff'};${isBest?'text-shadow:0 0 12px rgba(0,245,212,.2)':''}">${tier.price.toFixed(2)}€</div>
+                </div>`}).join('')}
+            </div>
+
+            <button class="w-full py-3 mt-3 rounded-xl press" style="border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);color:var(--accent);font-weight:600;font-size:12px" onclick="openMarginSheet('${p.id}');haptic()">
+              📊 Estimer ma rentabilité
+            </button>
+
+            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="w-full py-3 mt-2 rounded-xl font-bold text-[12px] tracking-wider uppercase press" style="background:linear-gradient(135deg,#00F5D4,#00C4AA)!important;color:#080C14!important">
+              + AJOUTER AU PANIER
+            </button>
           </div>
-          <button class="w-full py-3 mb-2 rounded-xl press" style="border:1px solid rgba(255,255,255,.05);background:var(--glass-bg);color:var(--accent);font-weight:600;font-size:12px" onclick="openMarginSheet('${p.id}');haptic()">
-            📊 Estimer ma rentabilité
-          </button>
-          <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="w-full py-3 rounded-xl font-bold text-[12px] press" style="background:linear-gradient(135deg,#00F5D4,#00C4AA)!important;color:#080C14!important">
-            + AJOUTER AU PANIER
-          </button>
         </div>`}).join('');
       c.classList.remove('hidden');
       setTimeout(initRevealObserver,50);

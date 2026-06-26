@@ -23,40 +23,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
+    /* ═══════════════════════════════════════════════
+       OBSIDIAN FINTECH — SINGLE SOURCE OF TRUTH
+       Background: #080C14 | Text: #fff | Accent: #00F5D4
+       Glass: rgba(255,255,255,.02) + blur(20px) + border .05
+       ═══════════════════════════════════════════════ */
+    :root{--bg:#080C14;--text:#fff;--accent:#00F5D4;--accent-dim:#00C4AA;--muted:#64748B;--glass-bg:rgba(255,255,255,.02);--glass-blur:blur(20px);--glass-border:1px solid rgba(255,255,255,.05);--glass-shadow:0 4px 30px rgba(0,0,0,.2);--overlay:rgba(8,12,20,.95);--spring:cubic-bezier(.34,1.56,.64,1)}
+
     *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
-    body{font-family:'Inter',system-ui,sans-serif;background:#080C14;color:#fff;overscroll-behavior-y:contain}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);overscroll-behavior-y:contain}
     ::-webkit-scrollbar{width:0}
     .font-display{font-family:'Space Grotesk','Inter',sans-serif}
 
-    /* [T1] NOISE GRAIN OVERLAY */
+    /* GLASS — one definition, three variants */
+    .glass,.glass-strong{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:var(--glass-border);box-shadow:var(--glass-shadow)}
+    .glass-card{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:var(--glass-border);border-radius:16px;box-shadow:var(--glass-shadow)}
+
+    /* GRAIN OVERLAY */
     body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.04;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-repeat:repeat;background-size:180px}
 
-    /* [T2] GLASS SURFACES */
-    .glass{background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 4px 30px rgba(0,0,0,.2)}
-    .glass-strong{background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 4px 30px rgba(0,0,0,.2)}
-    .glass-card{background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.2)}
-
-    /* [T5] LIGHT LINE */
+    /* LIGHT LINE */
     .light-line{height:1px;background:linear-gradient(90deg,transparent,rgba(0,245,212,.08),transparent);position:relative;overflow:hidden}
     .light-line::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,245,212,.3),transparent);background-size:40% 100%;animation:light-sweep 4s linear infinite}
     @keyframes light-sweep{0%{background-position:-40% 0}100%{background-position:140% 0}}
 
     /* SPLASH */
-    #splash{position:fixed;inset:0;z-index:100;background:#080C14;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s cubic-bezier(.4,0,.2,1);overflow:hidden}
+    #splash{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease;overflow:hidden}
     #splash.fade-out{opacity:0;pointer-events:none}
-    #splash::before{content:'';position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,212,.08) 0%,rgba(0,245,212,.03) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-52%);animation:splash-glow-pulse 3s ease-in-out infinite;filter:blur(60px)}
-    #splash::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.06) 0%,transparent 70%);top:44%;left:55%;transform:translate(-50%,-50%);filter:blur(50px);animation:splash-glow-2 4s ease-in-out infinite}
-    @keyframes splash-glow-pulse{0%,100%{opacity:.6;transform:translate(-50%,-52%) scale(1)}50%{opacity:1;transform:translate(-50%,-52%) scale(1.1)}}
+    #splash::before{content:'';position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,212,.08),rgba(0,245,212,.03) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-52%);animation:splash-glow 3s ease-in-out infinite;filter:blur(60px)}
+    #splash::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(168,85,247,.06),transparent 70%);top:44%;left:55%;transform:translate(-50%,-50%);filter:blur(50px);animation:splash-glow-2 4s ease-in-out infinite}
+    @keyframes splash-glow{0%,100%{opacity:.6;transform:translate(-50%,-52%) scale(1)}50%{opacity:1;transform:translate(-50%,-52%) scale(1.1)}}
     @keyframes splash-glow-2{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1)}50%{opacity:.7;transform:translate(-50%,-50%) scale(1.15)}}
-    .splash-logo{width:100px;height:100px;object-fit:contain;border-radius:22px;animation:splash-logo-in .7s cubic-bezier(.34,1.56,.64,1) both;filter:drop-shadow(0 0 40px rgba(0,245,212,.15))}
+    .splash-logo{width:100px;height:100px;object-fit:contain;border-radius:22px;animation:splash-logo-in .7s var(--spring) both;filter:drop-shadow(0 0 40px rgba(0,245,212,.15))}
     @keyframes splash-logo-in{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-    .splash-title{animation:splash-text-in .6s ease .4s both}
-    .splash-sub{animation:splash-text-in .6s ease .55s both}
-    @keyframes splash-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .splash-bar{width:48px;height:2px;border-radius:2px;background:rgba(255,255,255,.05);overflow:hidden;margin-top:28px;animation:splash-text-in .4s ease .7s both}
-    .splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#00F5D4,#00C4AA);border-radius:2px;animation:load-bar 1.4s ease .8s forwards;box-shadow:0 0 8px rgba(0,245,212,.4)}
+    .splash-title{animation:fade-up .6s ease .4s both}
+    .splash-sub{animation:fade-up .6s ease .55s both}
+    @keyframes fade-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .splash-bar{width:48px;height:2px;border-radius:2px;background:rgba(255,255,255,.05);overflow:hidden;margin-top:28px;animation:fade-up .4s ease .7s both}
+    .splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-dim));border-radius:2px;animation:load-bar 1.4s ease .8s forwards;box-shadow:0 0 8px rgba(0,245,212,.4)}
     @keyframes load-bar{to{width:100%}}
 
     /* MARQUEE */
@@ -64,187 +70,122 @@
     .marquee-track{display:flex;gap:28px;width:max-content;animation:marquee 22s linear infinite}
     @keyframes marquee{to{transform:translateX(-50%)}}
 
-    /* [J1] SPRING CURVES */
-    .spring{transition-timing-function:cubic-bezier(.34,1.56,.64,1)}
-
-    /* [J2] DEEP PRESS */
-    .press{transition:all .15s cubic-bezier(.34,1.56,.64,1)}
+    /* INTERACTIONS */
+    .spring{transition-timing-function:var(--spring)}
+    .press{transition:all .15s var(--spring)}
     .press:active{transform:scale(.96);filter:brightness(.92)}
-
-    /* [J4] RIPPLE */
     .ripple{position:relative;overflow:hidden}
     .ripple-circle{position:absolute;border-radius:50%;background:rgba(0,245,212,.12);transform:scale(0);animation:ripple-expand .6s ease-out forwards;pointer-events:none}
     @keyframes ripple-expand{to{transform:scale(4);opacity:0}}
 
-    /* [J5] SCROLL REVEAL */
+    /* SCROLL REVEAL */
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.25,.46,.45,.94)}
     .reveal.visible{opacity:1;transform:translateY(0)}
     .glass-card img{transition:opacity .5s ease;opacity:0}
     .glass-card img.loaded,.glass-card .reveal.visible img{opacity:1}
 
-    /* [J6] CART GLOW PULSE */
+    /* CART PULSE */
     @keyframes cart-pulse{0%{box-shadow:0 0 0 0 rgba(0,245,212,.4)}100%{box-shadow:0 0 0 20px rgba(0,245,212,0)}}
     .cart-pulse{animation:cart-pulse .6s ease-out}
 
     /* BOTTOM NAV */
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;max-width:480px;margin:0 auto;
-      background:rgba(8,12,20,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      border-top:1px solid rgba(255,255,255,.05);padding-bottom:env(safe-area-inset-bottom,0px)}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;max-width:480px;margin:0 auto;background:var(--overlay);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-top:var(--glass-border);padding-bottom:env(safe-area-inset-bottom,0px)}
     .bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;padding:6px 0 4px}
-    .nav-tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;cursor:pointer;
-      -webkit-tap-highlight-color:transparent;transition:all .25s ease;position:relative;border:none;background:none}
+    .nav-tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .25s ease;position:relative;border:none;background:none}
     .nav-tab svg,.nav-tab .nav-icon{width:22px;height:22px;color:rgba(255,255,255,.35);transition:color .25s ease}
     .nav-tab span{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .25s ease}
-    .nav-tab.active svg,.nav-tab.active .nav-icon{color:#00F5D4}
-    .nav-tab.active span{color:#00F5D4}
-    .nav-tab .nav-badge{position:absolute;top:2px;right:6px;min-width:16px;height:16px;border-radius:8px;
-      background:#00F5D4;color:#080808;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;
-      transform:scale(0);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .nav-tab.active svg,.nav-tab.active .nav-icon{color:var(--accent)}
+    .nav-tab.active span{color:var(--accent)}
+    .nav-tab .nav-badge{position:absolute;top:2px;right:6px;min-width:16px;height:16px;border-radius:8px;background:var(--accent);color:var(--bg);font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;transform:scale(0);transition:transform .3s var(--spring)}
     .nav-tab .nav-badge.visible{transform:scale(1)}
     .page-container{display:none}
     .page-container.active{display:block}
 
-    /* SUIVI TIMELINE */
+    /* TIMELINE */
     .timeline-step{display:flex;gap:14px;position:relative;padding-bottom:28px}
     .timeline-step:last-child{padding-bottom:0}
     .timeline-step:last-child .timeline-line{display:none}
-    .timeline-dot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(255,255,255,.02);border:2px solid rgba(255,255,255,.08);transition:all .4s ease;position:relative;z-index:1}
-    .timeline-step.done .timeline-dot{background:rgba(0,245,212,.12);border-color:#00F5D4}
-    .timeline-step.current .timeline-dot{background:rgba(0,245,212,.08);border-color:#00F5D4;box-shadow:0 0 16px rgba(0,245,212,.25);animation:pulse-dot 2s infinite}
+    .timeline-dot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--glass-bg);border:2px solid rgba(255,255,255,.05);transition:all .4s ease;position:relative;z-index:1}
+    .timeline-step.done .timeline-dot{background:rgba(0,245,212,.12);border-color:var(--accent)}
+    .timeline-step.current .timeline-dot{background:rgba(0,245,212,.08);border-color:var(--accent);box-shadow:0 0 16px rgba(0,245,212,.25);animation:pulse-dot 2s infinite}
     @keyframes pulse-dot{0%,100%{box-shadow:0 0 16px rgba(0,245,212,.25)}50%{box-shadow:0 0 24px rgba(0,245,212,.4)}}
     .timeline-line{position:absolute;left:15px;top:32px;bottom:0;width:2px;background:rgba(255,255,255,.05)}
-    .timeline-step.done .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(0,245,212,.3))}
-    .timeline-step.current .timeline-line{background:linear-gradient(to bottom,#00F5D4,rgba(255,255,255,.05))}
+    .timeline-step.done .timeline-line{background:linear-gradient(to bottom,var(--accent),rgba(0,245,212,.3))}
+    .timeline-step.current .timeline-line{background:linear-gradient(to bottom,var(--accent),rgba(255,255,255,.05))}
 
-    /* MODAL */
+    /* MODALS */
     .modal-overlay{transition:opacity .3s ease}
-    .modal-panel{transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+    .modal-panel{transition:transform .35s var(--spring)}
     @media(min-width:640px){.modal-panel{position:absolute!important;bottom:auto!important;top:50%!important;left:50%!important;right:auto!important;transform:translate(-50%,-50%)!important;max-width:440px;width:90%;border-radius:24px!important;max-height:85vh}}
 
-    /* [C1] FLAVOR BOTTOM SHEET */
+    /* FLAVOR SHEET */
     .flavor-sheet{position:fixed;inset:0;z-index:60;display:none}
     .flavor-sheet.open{display:block}
     .flavor-sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .flavor-sheet-panel{position:absolute;bottom:0;left:0;right:0;max-height:65vh;overflow-y:auto;border-radius:24px 24px 0 0;padding-bottom:env(safe-area-inset-bottom,16px);
-      transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+    .flavor-sheet-panel{position:absolute;bottom:0;left:0;right:0;max-height:65vh;overflow-y:auto;border-radius:24px 24px 0 0;padding-bottom:env(safe-area-inset-bottom,16px);transform:translateY(100%);transition:transform .35s var(--spring)}
     .flavor-sheet.open .flavor-sheet-panel{transform:translateY(0)}
-    .flavor-chip{transition:all .15s cubic-bezier(.34,1.56,.64,1)}
+    .flavor-chip{transition:all .15s var(--spring)}
     .flavor-chip:active{transform:scale(.95)}
-    .flavor-chip.selected{background:rgba(0,245,212,.12);border-color:#00F5D4;color:#00F5D4}
+    .flavor-chip.selected{background:rgba(0,245,212,.12);border-color:var(--accent);color:var(--accent)}
 
-    /* [C3] SEGMENTED CONTROL */
-    .seg-control{position:relative;display:flex;border-radius:16px;padding:3px}
-    .seg-indicator{position:absolute;top:3px;bottom:3px;border-radius:13px;background:rgba(0,245,212,.1);border:1px solid rgba(0,245,212,.2);transition:left .35s cubic-bezier(.34,1.56,.64,1),width .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
-    .seg-btn{position:relative;z-index:1;flex:1;text-align:center;padding:7px 4px;cursor:pointer;transition:color .2s}
-    .seg-btn.active{color:#00F5D4}
-
-    /* [C4] ANGLED BADGE */
-    .product-badge{position:absolute;top:14px;left:-4px;z-index:5;transform:rotate(-2deg);
-      box-shadow:2px 3px 12px rgba(0,0,0,.4)}
-
-    /* [C5] GRADIENT BUTTON */
-    .btn-gradient{background:linear-gradient(135deg,#00F5D4,#00C4AA);background-size:200% 200%;transition:all .3s ease;position:relative;overflow:hidden}
+    /* BUTTONS */
+    .btn-gradient{background:linear-gradient(135deg,var(--accent),var(--accent-dim));background-size:200% 200%;transition:all .3s ease;position:relative;overflow:hidden}
     .btn-gradient:active{background-position:100% 100%;transform:scale(.97)}
-    .btn-gradient-outline{background:linear-gradient(135deg,rgba(0,245,212,.08),rgba(0,245,212,.04));border:1px solid rgba(0,245,212,.25);transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+    .btn-gradient-outline{background:linear-gradient(135deg,rgba(0,245,212,.08),rgba(0,245,212,.04));border:1px solid rgba(0,245,212,.25);transition:all .3s var(--spring)}
     .btn-gradient-outline:active{transform:scale(.96);background:rgba(0,245,212,.12)}
 
-    /* [J3] COUNTER SLIDE */
-    .counter-wrap{display:inline-flex;overflow:hidden;height:1.5em;align-items:center;vertical-align:middle}
-    .counter-val{display:inline-block;transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .2s}
-
-    /* [C2] STEPPER */
-    .stepper{display:flex;align-items:center;border-radius:12px;overflow:hidden}
-    .stepper-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;transition:all .15s cubic-bezier(.34,1.56,.64,1)}
-    .stepper-btn:active{transform:scale(.88);background:rgba(255,255,255,.05)}
-    .stepper-val{width:44px;text-align:center;font-weight:900;font-size:15px;cursor:pointer;padding:6px 0;transition:background .15s}
-    .stepper-val:active{background:rgba(0,245,212,.08);border-radius:8px}
-    .stepper-input{width:44px;text-align:center;background:rgba(0,245,212,.08);border:1.5px solid #00F5D4;border-radius:8px;color:#fff;font-weight:800;font-size:14px;padding:5px 0}
-
     /* TABS */
-    .tab-btn{transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-    .tab-btn.active{background:#00F5D4;color:#080808}
+    .tab-btn{transition:all .2s var(--spring)}
+    .tab-btn.active{background:var(--accent);color:var(--bg)}
 
     /* TOAST */
-    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);z-index:200;pointer-events:none;white-space:nowrap;padding-bottom:env(safe-area-inset-bottom,0)}
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;transition:all .35s var(--spring);z-index:200;pointer-events:none;white-space:nowrap;padding-bottom:env(safe-area-inset-bottom,0)}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .toast.show.has-action{pointer-events:auto}
 
-    /* VALIDATION */
+    /* FORM VALIDATION */
     input.valid,textarea.valid{border-color:rgba(34,197,94,.5)!important;box-shadow:0 0 0 2px rgba(34,197,94,.1)!important}
     input.invalid,textarea.invalid{border-color:rgba(239,68,68,.5)!important;box-shadow:0 0 0 2px rgba(239,68,68,.1)!important}
     input:focus,select:focus,textarea:focus{outline:none;border-color:rgba(0,245,212,.5);box-shadow:0 0 0 2px rgba(0,245,212,.15)}
-
-    .delete-btn{transition:all .15s cubic-bezier(.34,1.56,.64,1)}
+    .delete-btn{transition:all .15s var(--spring)}
     .delete-btn:active{transform:scale(.8)}
-
-    /* ATC BUTTON STATES */
     .atc-btn.success{background:rgba(34,197,94,.1)!important;border-color:rgba(34,197,94,.3)!important;color:#22c55e!important}
-
-    /* PUFFS BADGE */
-    .puffs-badge{position:absolute;bottom:12px;right:12px;z-index:5;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:3px 8px;font-size:9px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.85);text-transform:uppercase}
 
     /* FLY TO CART */
     @keyframes fly-to-cart{0%{opacity:1;transform:translate(0,0) scale(1)}80%{opacity:.7}100%{opacity:0;transform:translate(var(--fly-x),var(--fly-y)) scale(.3)}}
     .fly-icon{position:fixed;z-index:999;pointer-events:none;animation:fly-to-cart .55s cubic-bezier(.22,.68,.36,1) forwards}
 
-    /* PRODUCT CARD GRADIENT */
-    .card-bottom-gradient{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 16px 16px;opacity:.6}
 
-    /* QUICK QTY CHIPS */
-    .qty-chip{display:inline-flex;align-items:center;justify-content:center;min-width:36px;padding:4px 8px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);color:rgba(255,255,255,.5)}
-    .qty-chip:active{transform:scale(.92)}
-    .qty-chip.active{background:rgba(0,245,212,.1);border-color:rgba(0,245,212,.3);color:#00F5D4}
-    .nic-chip{display:inline-flex;align-items:center;justify-content:center;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);color:rgba(255,255,255,.5)}
-    .nic-chip:active{transform:scale(.92)}
-    .nic-chip.active{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.4);color:#a855f7}
-
-    /* PROGRESS BAR (integrated into seg-control bottom) */
-    .tier-progress{height:3px;border-radius:0 0 12px 12px;background:rgba(255,255,255,.02);position:relative;overflow:hidden;margin-top:0}
-    .tier-progress-fill{height:100%;border-radius:0 0 12px 12px;background:linear-gradient(90deg,rgba(0,245,212,.3),#00F5D4);transition:width .5s cubic-bezier(.34,1.56,.64,1);position:relative}
-    .tier-progress-fill.next-tier{background:linear-gradient(90deg,#00F5D4,#22c55e);box-shadow:0 0 6px rgba(0,245,212,.4)}
-    .tier-progress-marker{position:absolute;top:0;width:1px;height:3px;background:rgba(255,255,255,.15);border-radius:0}
-
-    /* MARGIN SIMULATOR BOTTOM SHEET */
+    /* MARGIN SIMULATOR */
     .margin-sheet{position:fixed;inset:0;z-index:65;display:none;pointer-events:none}
     .margin-sheet.open{display:block;pointer-events:auto}
     .margin-sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .3s ease}
     .margin-sheet.open .margin-sheet-overlay{opacity:1}
-    .margin-sheet-panel{position:absolute;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;border-radius:20px 20px 0 0;padding:20px 20px env(safe-area-inset-bottom,16px);
-      background:rgba(8,12,20,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      border:1px solid rgba(255,255,255,.05);border-bottom:none;
-      transform:translateY(100%);transition:transform .35s cubic-bezier(.22,.68,.36,1)}
+    .margin-sheet-panel{position:absolute;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;border-radius:20px 20px 0 0;padding:20px 20px env(safe-area-inset-bottom,16px);background:var(--overlay);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:var(--glass-border);border-bottom:none;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,.68,.36,1)}
     .margin-sheet.open .margin-sheet-panel{transform:translateY(0)}
     .margin-sheet-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:0 auto 16px}
-    .margin-sim-label{font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:#64748B;margin-bottom:16px;text-align:center}
-    .resale-value{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#fff}
+    .margin-sim-label{font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;text-align:center}
+    .resale-value{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--text)}
     .resale-value span{color:rgba(255,255,255,.35);font-weight:500}
     .resale-slider-wrap{position:relative;width:100%;height:36px;display:flex;align-items:center}
-    .resale-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.08);outline:none;cursor:pointer}
-    .resale-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35),0 2px 8px rgba(0,0,0,.3);transition:transform .15s ease,box-shadow .15s ease}
+    .resale-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.05);outline:none;cursor:pointer}
+    .resale-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dim));border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35),0 2px 8px rgba(0,0,0,.3);transition:transform .15s ease,box-shadow .15s ease}
     .resale-slider::-webkit-slider-thumb:active{transform:scale(1.2);box-shadow:0 0 20px rgba(0,245,212,.5),0 2px 12px rgba(0,0,0,.4)}
-    .resale-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00F5D4,#00C4AA);border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35)}
+    .resale-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dim));border:2px solid rgba(0,0,0,.3);cursor:pointer;box-shadow:0 0 12px rgba(0,245,212,.35)}
     .resale-slider-labels{display:flex;justify-content:space-between;margin-top:4px}
     .resale-slider-labels span{font-size:8px;color:rgba(255,255,255,.2);font-weight:600}
-    .benefit-neon{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;color:#00F5D4;text-shadow:0 0 12px rgba(0,245,212,.2);line-height:1.3}
+    .benefit-neon{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;color:var(--accent);text-shadow:0 0 12px rgba(0,245,212,.2);line-height:1.3}
     .margin-trigger{cursor:pointer;transition:all .15s ease;-webkit-tap-highlight-color:transparent}
     .margin-trigger:active{opacity:.7}
 
-    /* TOP RENTABILITÉ BADGE */
-    .tier-badge{position:absolute;top:-9px;right:4px;white-space:nowrap;font-size:7px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;z-index:2;line-height:1.2}
-
-    /* RECAP OVERLAY */
+    /* OVERLAYS */
     .recap-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .35s ease}
     .recap-overlay.open{display:flex;opacity:1}
-
-    /* INVOICE LOADER */
-    .invoice-loader{position:fixed;inset:0;z-index:115;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;opacity:0;transition:opacity .3s ease}
+    .invoice-loader{position:fixed;inset:0;z-index:115;background:rgba(0,0,0,.85);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;opacity:0;transition:opacity .3s ease}
     .invoice-loader.open{display:flex;opacity:1}
     @keyframes inv-spin{to{transform:rotate(360deg)}}
-    .inv-spinner{width:48px;height:48px;border:3px solid rgba(0,245,212,.15);border-top-color:#00F5D4;border-radius:50%;animation:inv-spin .8s linear infinite}
-
-    /* INVOICE OVERLAY */
-    .invoice-overlay{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;align-items:flex-start;justify-content:center;padding:0;opacity:0;transition:opacity .35s ease;overflow-y:auto}
+    .inv-spinner{width:48px;height:48px;border:3px solid rgba(0,245,212,.15);border-top-color:var(--accent);border-radius:50%;animation:inv-spin .8s linear infinite}
+    .invoice-overlay{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.85);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);display:none;align-items:flex-start;justify-content:center;padding:0;opacity:0;transition:opacity .35s ease;overflow-y:auto}
     .invoice-overlay.open{display:flex;opacity:1}
     .invoice-paper{width:100%;max-width:440px;background:linear-gradient(180deg,#fafafa,#f1f1f1);color:#1a1a1a;padding:28px 20px 24px;position:relative}
     .invoice-paper *{color:#1a1a1a}
@@ -257,58 +198,44 @@
     .invoice-btn{flex:1;padding:14px 10px;border-radius:14px;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s ease;border:none;text-align:center}
     .invoice-btn:active{transform:scale(.96)}
     .invoice-btn-pdf{background:#fff;color:#1a1a1a;border:1.5px solid #d0d0d0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-    .invoice-btn-send{background:linear-gradient(135deg,#00F5D4,#00C4AA);color:#080808;box-shadow:0 4px 16px rgba(0,245,212,.25)}
-    @media print{
-      body>*:not(.invoice-overlay){display:none!important}
-      .invoice-overlay{position:static!important;display:block!important;opacity:1!important;background:#fff!important;backdrop-filter:none!important;overflow:visible!important}
-      .invoice-paper{min-height:auto!important;padding-bottom:20px!important;box-shadow:none!important}
-      .invoice-actions{display:none!important}
-    }
+    .invoice-btn-send{background:linear-gradient(135deg,var(--accent),var(--accent-dim));color:var(--bg);box-shadow:0 4px 16px rgba(0,245,212,.25)}
+    @media print{body>*:not(.invoice-overlay){display:none!important}.invoice-overlay{position:static!important;display:block!important;opacity:1!important;background:#fff!important;backdrop-filter:none!important;overflow:visible!important}.invoice-paper{min-height:auto!important;padding-bottom:20px!important;box-shadow:none!important}.invoice-actions{display:none!important}}
 
-    /* PAYMENT SELECTOR */
-    .pay-option{position:relative;cursor:pointer;border:1.5px solid rgba(255,255,255,.05);border-radius:16px;padding:14px;transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+    /* PAYMENT */
+    .pay-option{position:relative;cursor:pointer;border:1.5px solid rgba(255,255,255,.05);border-radius:16px;padding:14px;transition:all .25s var(--spring)}
     .pay-option:active{transform:scale(.97)}
     .pay-option.selected{border-color:rgba(0,245,212,.4);background:rgba(0,245,212,.04)}
     .pay-option.crypto-selected{border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.04)}
     .pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
-    .pay-option.selected .pay-radio,.pay-option.crypto-selected .pay-radio{border-color:#00F5D4}
+    .pay-option.selected .pay-radio,.pay-option.crypto-selected .pay-radio{border-color:var(--accent)}
     .pay-option.crypto-selected .pay-radio{border-color:#a855f7}
-    .pay-radio-dot{width:8px;height:8px;border-radius:50%;background:#00F5D4;transform:scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+    .pay-radio-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .2s var(--spring)}
     .pay-option.crypto-selected .pay-radio-dot{background:#a855f7}
     .pay-option.selected .pay-radio-dot,.pay-option.crypto-selected .pay-radio-dot{transform:scale(1)}
 
-    /* CRYPTO HELP MODAL */
+    /* CRYPTO */
     .crypto-help-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
     .crypto-help-overlay.open{display:flex}
-
-    /* CRYPTO WELCOME POPUP */
     .crypto-welcome{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .4s ease}
     .crypto-welcome.open{display:flex;opacity:1}
-    .crypto-welcome-card{max-width:400px;width:100%;max-height:88vh;overflow-y:auto;border-radius:24px;padding:28px 22px;
-      background:linear-gradient(160deg,rgba(168,85,247,.06),rgba(0,0,0,.3) 40%,rgba(0,245,212,.04));
-      border:1px solid rgba(168,85,247,.15);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(168,85,247,.06);
-      transform:translateY(30px) scale(.95);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+    .crypto-welcome-card{max-width:400px;width:100%;max-height:88vh;overflow-y:auto;border-radius:24px;padding:28px 22px;background:linear-gradient(160deg,rgba(168,85,247,.06),rgba(0,0,0,.3) 40%,rgba(0,245,212,.04));border:1px solid rgba(168,85,247,.15);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 80px rgba(168,85,247,.06);transform:translateY(30px) scale(.95);transition:transform .5s var(--spring)}
     .crypto-welcome.open .crypto-welcome-card{transform:translateY(0) scale(1)}
     @keyframes shimmer-badge{0%{background-position:-200% 0}100%{background-position:200% 0}}
     .shimmer-badge{background:linear-gradient(90deg,rgba(168,85,247,.2),rgba(168,85,247,.4),rgba(168,85,247,.2));background-size:200% 100%;animation:shimmer-badge 2s linear infinite}
 
-    /* FAQ ACCORDION */
-    .faq-item{border:1px solid rgba(255,255,255,.05);border-radius:16px;overflow:hidden;transition:border-color .3s ease}
+    /* FAQ */
+    .faq-item{border:var(--glass-border);border-radius:16px;overflow:hidden;transition:border-color .3s ease}
     .faq-item.open{border-color:rgba(0,245,212,.12)}
     .faq-q{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-    .faq-q:active{background:rgba(255,255,255,.02)}
-    .faq-arrow{width:20px;height:20px;flex-shrink:0;transition:transform .35s cubic-bezier(.4,.0,.2,1);color:rgba(255,255,255,.25)}
-    .faq-item.open .faq-arrow{transform:rotate(180deg);color:#00f5d4}
-    .faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,.0,.2,1),padding .3s ease}
+    .faq-q:active{background:var(--glass-bg)}
+    .faq-arrow{width:20px;height:20px;flex-shrink:0;transition:transform .35s ease;color:rgba(255,255,255,.25)}
+    .faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--accent)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease}
     .faq-item.open .faq-a{max-height:500px}
 
-    /* [F5] VERTICAL TEXT */
+    /* MISC */
     .vertical-text{writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.25em}
-
-    /* SKELETON SHIMMER */
     @keyframes shimmer{to{background-position:-200% 0}}
-
-    /* [T3] PRODUCT GLOW */
     .product-glow{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
   </style>
 </head>
@@ -519,14 +446,14 @@
       </div>
       <!-- NAV -->
       <header class="flex items-center justify-between px-5 py-3">
-        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center press" onclick="openHistory()" style="cursor:pointer">
+        <div class="w-9 h-9 rounded-full border border-white/[.05] flex items-center justify-center press" onclick="openHistory()" style="cursor:pointer">
           <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </div>
         <div class="flex flex-col items-center">
           <span class="font-display text-sm font-bold tracking-[.35em] uppercase">YUKO</span>
           <span class="text-[8px] tracking-[.5em] uppercase text-cyan-brand/70 -mt-0.5">VAPE</span>
         </div>
-        <div class="w-9 h-9 rounded-full border border-white/[.08] flex items-center justify-center relative press" onclick="if(cart.length)switchTab('panier')">
+        <div class="w-9 h-9 rounded-full border border-white/[.05] flex items-center justify-center relative press" onclick="if(cart.length)switchTab('panier')">
           <svg class="w-[16px] h-[16px] text-smoke-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <span id="header-cart-badge" class="hidden absolute -top-1 -right-1 bg-cyan-brand text-dark-900 text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </div>
@@ -659,22 +586,22 @@
 
           <!-- B2C FORM -->
           <div id="pform-b2c" class="space-y-3">
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label><input id="pb2c-name" type="text" placeholder="Jean Dupont" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2c-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2c-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2c-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2c-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Prénom & Nom</label><input id="pb2c-name" type="text" placeholder="Jean Dupont" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2c-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2c-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2c-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2c-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
           </div>
 
           <!-- B2B FORM -->
           <div id="pform-b2b" class="space-y-3 hidden">
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label><input id="pb2b-shop" type="text" placeholder="Tabac du Centre" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label><input id="pb2b-siret" type="text" placeholder="123 456 789 00012" class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2b-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
-            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2b-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2b-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
-            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2b-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Nom de la boutique</label><input id="pb2b-shop" type="text" placeholder="Tabac du Centre" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">SIRET <span class="text-smoke-600 normal-case">(Optionnel)</span></label><input id="pb2b-siret" type="text" placeholder="123 456 789 00012" class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Adresse</label><input id="pb2b-address" type="text" placeholder="12 Rue de Paris" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
+            <div class="flex gap-3"><div class="w-1/3"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Code postal</label><input id="pb2b-zip" type="text" placeholder="75001" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div><div class="flex-1"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Ville</label><input id="pb2b-city" type="text" placeholder="Paris" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div></div>
+            <div><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Téléphone</label><input id="pb2b-phone" type="tel" placeholder="+33 6 12 34 56 78" data-required class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600"></div>
           </div>
 
-          <div class="mt-4"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label><textarea id="porder-notes" rows="2" placeholder="Instructions spéciales..." class="field w-full bg-white/[.02] border border-white/[.08] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea></div>
+          <div class="mt-4"><label class="block text-[9px] font-bold tracking-wider uppercase text-smoke-400 mb-1.5">Notes <span class="text-smoke-600 normal-case">(Optionnel)</span></label><textarea id="porder-notes" rows="2" placeholder="Instructions spéciales..." class="field w-full bg-white/[.02] border border-white/[.05] rounded-xl px-4 py-3 text-sm text-white placeholder-smoke-600 resize-none" style="outline:none"></textarea></div>
 
           <!-- PAYMENT METHOD -->
           <div class="mt-5">
@@ -1140,109 +1067,48 @@
       c.innerHTML=products.map((p,idx)=>{
         const oos=p.inStock===false;
         const t=getActiveTier(p);
-        const tierIdx=p.tiers.findIndex(x=>x.min===t.min);
+        const crossedPrice=p.basePrice||0;
         if(oos) return`
-        <div class="glass-card overflow-hidden reveal" id="card-${p.id}" style="position:relative;transition-delay:${idx*100}ms;opacity:.55;filter:saturate(.3)">
-          <div class="product-glow" style="width:200px;height:200px;top:20%;right:-40px;background:${p.glowColor}"></div>
-          <div class="relative overflow-hidden" style="aspect-ratio:16/10">
-            ${p.badge?`<span class="product-badge text-white text-[8px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full" style="background:rgba(107,114,128,.85)">${p.badge}</span>`:''}
-            <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-[#131820]\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
-            <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,8,8,.95),transparent);pointer-events:none"></div>
-            ${p.puffs?`<span class="puffs-badge" style="opacity:.5">${p.puffs}</span>`:''}
-            <div style="position:absolute;bottom:10px;left:16px;z-index:2">
-              <h4 class="font-display text-[20px] font-bold tracking-wide uppercase leading-tight text-white/60">${p.name}</h4>
-              <p class="text-[8px] text-smoke-500 mt-0.5 tracking-[.18em] uppercase">${p.description}</p>
+        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02)!important;border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:16px;margin-bottom:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);opacity:.5;filter:saturate(.3);transition-delay:${idx*100}ms">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="${p.image}" alt="${p.name}" class="w-16 h-16 rounded-lg object-cover" loading="lazy" onerror="this.style.display='none'">
+            <div>
+              <h4 class="text-white/60 font-bold text-[16px]">${p.name}</h4>
+              <p class="text-[10px] uppercase tracking-widest" style="color:var(--muted)">${p.description}</p>
             </div>
           </div>
-          <div class="px-4 pb-4 pt-2.5 relative z-[1]">
-            <div class="flex justify-around py-2" style="background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05);border-radius:12px">
-              ${p.tiers.map(tier=>`<div class="text-center"><div class="text-[9px] font-extrabold tracking-wider uppercase text-smoke-500">${tier.label}</div><div class="font-display text-[13px] font-bold text-smoke-500">À venir</div></div>`).join('')}
-            </div>
-            <div class="mt-2.5 w-full py-3 rounded-[14px] text-center border-2 border-dashed border-smoke-600/40" style="cursor:not-allowed">
-              <div class="text-[11px] font-display font-bold tracking-wider uppercase text-smoke-500">Indisponible</div>
-              <div class="text-[8px] text-smoke-600 mt-0.5">En rupture de stock</div>
-            </div>
+          <div class="w-full py-3 rounded-xl text-center border-2 border-dashed" style="border-color:rgba(255,255,255,.1);cursor:not-allowed">
+            <div class="text-[11px] font-bold tracking-wider uppercase" style="color:var(--muted)">Indisponible</div>
+            <div class="text-[8px] mt-0.5" style="color:#475569">En rupture de stock</div>
           </div>
-          <div class="card-bottom-gradient" style="background:linear-gradient(90deg,transparent,${p.accentColor||'#6B7280'},transparent);opacity:.3"></div>
         </div>`;
         return`
-        <div class="glass-card overflow-hidden reveal" id="card-${p.id}" style="position:relative;transition-delay:${idx*100}ms">
-          <div class="product-glow" style="width:200px;height:200px;top:20%;right:-40px;background:${p.glowColor}"></div>
-          <div class="relative overflow-hidden" style="aspect-ratio:16/10">
-            ${p.badge?`<span class="product-badge bg-cyan-brand text-dark-900 text-[8px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">${p.badge}</span>`:''}
-            <img src="${p.image}" alt="${p.name}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'flex items-center justify-center w-full h-full bg-[#131820]\\'><svg class=\\'w-12 h-12 text-smoke-600/40\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1\\' d=\\'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4\\'/></svg></div>')" class="w-full h-full object-cover">
-            <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,8,8,.95),transparent);pointer-events:none"></div>
-            ${p.puffs?`<span class="puffs-badge">${p.puffs}</span>`:''}
-            <div style="position:absolute;bottom:10px;left:16px;right:16px;z-index:2">
-              <h4 class="font-display text-[20px] font-bold tracking-wide uppercase leading-tight">${p.name}</h4>
-              <p class="text-[8px] text-smoke-400 mt-0.5 tracking-[.18em] uppercase">${p.description}</p>
+        <div class="reveal" id="card-${p.id}" style="background:rgba(255,255,255,.02)!important;border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:16px;margin-bottom:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition-delay:${idx*100}ms">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="${p.image}" alt="${p.name}" class="w-16 h-16 rounded-lg object-cover" loading="lazy" onerror="this.style.display='none'">
+            <div>
+              <h4 class="text-white font-bold text-[16px]">${p.name}</h4>
+              <p class="text-[10px] uppercase tracking-widest" style="color:var(--muted)">${p.description}</p>
             </div>
           </div>
-          <div class="px-4 pb-4 pt-2.5 relative z-[1]">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1.5" style="color:rgba(255,180,50,.55)">
-                <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Stock limité</span>
-              </div>
-              ${p.nicotineOptions&&p.nicotineOptions.length>1?`
-              <div class="flex items-center gap-1.5" id="nic-row-${p.id}">
-                <span style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Nic :</span>
-                ${p.nicotineOptions.map(n=>`<button class="nic-chip ${p.selectedNicotine===n?'active':''}" onclick="setNicotine('${p.id}','${n}')" style="padding:3px 8px;font-size:9px;border-radius:8px">${n}</button>`).join('')}
-              </div>`:(p.nicotineOptions&&p.nicotineOptions.length===1?`
-              <div class="flex items-center gap-1.5">
-                <span style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Nic :</span>
-                <span class="text-[10px] font-bold text-purple-400">${p.nicotineOptions[0]}</span>
-              </div>`:'')}
-            </div>
-
-            <button onclick="openFlavorSheet('${p.id}');haptic()" id="flav-${p.id}" class="w-full mt-2.5 flex items-center justify-between press" style="background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:10px 14px;box-shadow:0 4px 30px rgba(0,0,0,.2)">
-              <div>
-                <div style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase">Parfum</div>
-                <div class="text-[13px] font-semibold text-white mt-0.5">${p.selectedFlavor}</div>
-              </div>
-              <svg class="w-4 h-4 text-smoke-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-
-            <div class="mt-3">
-              <div style="color:#64748B;font-weight:500;letter-spacing:.05em;font-size:11px;text-transform:uppercase;margin-bottom:6px">Prix dégressifs</div>
-              <div style="border-radius:16px;overflow:visible;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;box-shadow:0 4px 30px rgba(0,0,0,.2)">
-                <div class="seg-control" id="seg-${p.id}" style="background:transparent;border:none;border-radius:0">
-                  <div class="seg-indicator" id="seg-ind-${p.id}" style="left:${tierIdx*(100/p.tiers.length)}%;width:${100/p.tiers.length}%"></div>
-                  ${p.tiers.map((tier,i)=>{const crossedPrice=i===0?p.basePrice:p.tiers[i-1].price;return`<div class="seg-btn ${i===tierIdx?'active':''}" data-seg="${p.id}-${i}" style="position:relative">${i===p.tiers.length-1?'<div style="position:absolute;top:-9px;right:0;font-size:9px;padding:2px 5px;white-space:nowrap;border-radius:4px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:800;letter-spacing:.05em;text-transform:uppercase;z-index:2;line-height:1.2;">MAX MARGE</div>':''}<div class="text-[9px] font-extrabold tracking-wider uppercase">${tier.label}</div>${crossedPrice?`<div style="color:#94A3B8;font-size:11px;text-decoration:line-through;opacity:.6;display:block;margin-bottom:2px;">${crossedPrice.toFixed(2)}€</div>`:''}<div class="font-display text-[14px] font-bold">${tier.price.toFixed(2)}€</div></div>`}).join('')}
-                </div>
-                <div class="tier-progress" id="progress-${p.id}">${renderTierProgress(p)}</div>
-              </div>
-            </div>
-
-            <div class="mt-2.5" id="qty-row-${p.id}">${renderQtyRow(p,t)}</div>
-
-            <div id="savings-${p.id}">${getSavingsHint(p,t)}</div>
-
-            <button class="estimate-btn" onclick="openMarginSheet('${p.id}');haptic()" style="width:100%;padding:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:16px;color:#00F5D4;font-weight:500;font-size:12px;text-align:center;cursor:pointer;transition:transform .1s ease;margin-top:10px;box-shadow:0 4px 30px rgba(0,0,0,.2)" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
-              📊 Estimer la rentabilité
-            </button>
-
-            <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-2.5 btn-gradient-outline text-cyan-brand font-display font-bold py-3 rounded-[16px] text-[11px] tracking-wider uppercase" style="transition:transform .1s ease;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
-              + Ajouter au panier
-            </button>
+          <div class="flex justify-between items-center mb-4">
+            <div class="text-[12px] line-through opacity-60" style="color:#94A3B8">${crossedPrice.toFixed(2)}€</div>
+            <div class="font-bold text-[18px]" style="color:var(--accent);text-shadow:0 0 12px rgba(0,245,212,.2)">${t.price.toFixed(2)}€ / pce</div>
           </div>
-          <div class="card-bottom-gradient" style="background:linear-gradient(90deg,transparent,${p.accentColor||'#00F5D4'},transparent)"></div>
+          <button class="w-full py-3 mb-2 rounded-xl press" style="border:1px solid rgba(255,255,255,.05);background:var(--glass-bg);color:var(--accent);font-weight:600;font-size:12px" onclick="openMarginSheet('${p.id}');haptic()">
+            📊 Estimer ma rentabilité
+          </button>
+          <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="w-full py-3 rounded-xl font-bold text-[12px] press" style="background:linear-gradient(135deg,#00F5D4,#00C4AA)!important;color:#080C14!important">
+            + AJOUTER AU PANIER
+          </button>
         </div>`}).join('');
       c.classList.remove('hidden');
       setTimeout(initRevealObserver,50);
     }
 
-    function renderTierProgress(p){
-      const maxTier=p.tiers[p.tiers.length-1].min;
-      const pct=Math.min((p.qty/maxTier)*100,100);
-      const atTier=p.tiers.some(t=>p.qty>=t.min&&t.min>p.tiers[0].min);
-      const markers=p.tiers.slice(1).map(t=>`<div class="tier-progress-marker" style="left:${(t.min/maxTier)*100}%"></div>`).join('');
-      return`<div class="tier-progress-fill ${atTier?'next-tier':''}" style="width:${pct}%"></div>${markers}`;
-    }
-
     function styleSliderTrack(el){
       const pct=((el.value-el.min)/(el.max-el.min))*100;
-      el.style.background=`linear-gradient(90deg,rgba(0,245,212,.35) ${pct}%,rgba(255,255,255,.08) ${pct}%)`;
+      el.style.background=`linear-gradient(90deg,rgba(0,245,212,.35) ${pct}%,rgba(255,255,255,.05) ${pct}%)`;
     }
 
     function formatBenefit(val){

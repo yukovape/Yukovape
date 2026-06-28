@@ -1096,14 +1096,14 @@
     ];
 
     // ============= CART =============
-    let cart=JSON.parse(localStorage.getItem('yuko_cart')||'[]');
+    let cart=(()=>{try{return JSON.parse(localStorage.getItem('yuko_cart')||'[]')}catch(e){return[]}})();
     let cartIdCounter=cart.length?Math.max(...cart.map(c=>c.cartId)):0;
     let lastDeleted=null;
-    function saveCart(){localStorage.setItem('yuko_cart',JSON.stringify(cart))}
+    function saveCart(){try{localStorage.setItem('yuko_cart',JSON.stringify(cart))}catch(e){}}
 
     let addLock=false;
     function addToCart(pid){
-      if(addLock)return;addLock=true;setTimeout(()=>addLock=false,350);
+      if(addLock)return;addLock=true;setTimeout(()=>addLock=false,1300);
       const p=products.find(x=>x.id===pid);
       if(!p||p.inStock===false){showToast('⚠️ Ce produit n\'est pas encore disponible');return}
       if(p.qty<MIN_QTY){showToast(`⚠️ Minimum ${MIN_QTY} pièces par article`);return}
@@ -1167,7 +1167,18 @@
       const newT=getActiveTier(p);
       updateProductCard(p);
       // [A3/C3] Animate segment indicator
-      if(oldT.min!==newT.min)haptic();
+      if(oldT.min!==newT.min){
+        haptic();haptic();
+        const saved=((oldT.price-newT.price)*p.qty).toFixed(2).replace('.',',');
+        const tierIdx=p.tiers.findIndex(t=>t.min===newT.min);
+        const hasNext=tierIdx<p.tiers.length-1;
+        const nextMsg=hasNext?' · encore '+(p.tiers[tierIdx+1].min-p.qty)+'u pour le suivant':'';
+        const toastEl=document.getElementById('toast');
+        if(toastEl)toastEl.classList.add('tier-unlock');
+        showToast('🎯 Palier '+newT.label+' débloqué — économie +'+saved+'€'+nextMsg);
+        setTimeout(()=>{if(toastEl)toastEl.classList.remove('tier-unlock')},3100);
+      }
+      updateProductCard(p);
     }
 
     // ============= [C1] FLAVOR SHEET =============
@@ -1274,7 +1285,7 @@
 
             <!-- [C5] ATC BUTTON -->
             <button onclick="addToCart('${p.id}')" id="atc-${p.id}" class="ripple atc-btn w-full mt-5 btn-gradient-outline text-cyan-brand font-display font-bold py-3.5 rounded-xl text-[12px] tracking-wider uppercase press">
-              + Ajouter au panier
+              + Ajouter — <span id="atc-price-${p.id}">${(p.qty*getActiveTier(p).price).toFixed(2).replace('.',',')}&nbsp;€</span>
             </button>
           </div>
           <div class="card-bottom-gradient" style="background:linear-gradient(90deg,transparent,${p.accentColor||'#00F5D4'},transparent)"></div>
@@ -1355,6 +1366,12 @@
       if(ind){ind.style.left=tierIdx*(100/p.tiers.length)+'%';ind.style.width=100/p.tiers.length+'%'}
       const seg=document.getElementById('seg-'+p.id);
       if(seg){seg.querySelectorAll('.seg-btn').forEach((btn,i)=>{btn.classList.toggle('active',i===tierIdx)})}
+      const atcSpan=document.getElementById('atc-price-'+p.id);
+      if(atcSpan){
+        atcSpan.textContent=(p.qty*t.price).toFixed(2).replace('.',',')+' €';
+        atcSpan.classList.add('price-flash');
+        setTimeout(()=>atcSpan.classList.remove('price-flash'),300);
+      }
     }
 
     // ============= CART BAR =============
@@ -1815,7 +1832,7 @@
 
     // ============= TAB NAVIGATION =============
     let currentTab='catalogue';
-    function switchTab(tab){
+    function switchTab(tab){editingQty=null;
       if(currentTab===tab)return;
       currentTab=tab;
       document.querySelectorAll('.page-container').forEach(p=>p.classList.remove('active'));

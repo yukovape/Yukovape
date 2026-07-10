@@ -250,6 +250,9 @@
     .economy-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:800;background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.2);animation:badge-pop .3s var(--spring)}
     @keyframes badge-pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
 
+    /* RING SPIN IN */
+    @keyframes ring-spin-in{0%{opacity:0;transform:scale(.7) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+
     /* BONUS COUNTER */
     .bonus-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.05);overflow:hidden}
     .bonus-bar-fill{height:100%;border-radius:2px;transition:width .4s var(--spring)}
@@ -1066,12 +1069,6 @@
       haptic();closeFlavorSheet();
     }
 
-    function getEconomyPct(p,tier){
-      const base=p.basePrice||0;if(!base)return 0;
-      const t=tier||getActiveTier(p);
-      return Math.round((1-t.price/base)*100);
-    }
-
     // ============= RENDER HELPERS =============
     function renderTierPills(p){
       const t=getActiveTier(p);
@@ -1282,12 +1279,6 @@
     }
 
 
-    function getSavingsHint(p,t){
-      const ti=p.tiers.findIndex(x=>x.min===t.min);
-      if(ti<p.tiers.length-1){const next=p.tiers[ti+1];const diff=next.min-p.qty;const saved=((t.price-next.price)*next.min).toFixed(2);if(diff>0)return`<div class="text-[11px] mt-2 px-0.5" style="color:#94A3B8">🔥 Ajoutez <strong class="text-white">${diff}</strong> pièces pour économiser <strong class="text-cyan-brand">${saved}€</strong> de plus !</div>`}
-      return '';
-    }
-
     function renderQtyRow(p,t){
       const isEditing=editingQty===p.id;
       return`
@@ -1309,15 +1300,6 @@
             <span class="font-display font-bold" style="color:#00F5D4;font-size:15px">${(p.qty*t.price).toFixed(2).replace('.',',')} €</span>
           </div>
         </div>`;
-    }
-
-    function setQuickQty(pid,qty){
-      const p=products.find(x=>x.id===pid);if(!p)return;
-      p.qty=qty;haptic();updateProductCard(p);
-    }
-    function setNicotine(pid,nic){
-      const p=products.find(x=>x.id===pid);if(!p)return;
-      p.selectedNicotine=nic;haptic();selectNicotine(pid,nic);
     }
 
     function flyToCart(btnEl){
@@ -1390,9 +1372,6 @@
     }
 
     // ============= CHECKOUT =============
-    function openCheckout(){if(!cart.length){showToast('⚠️ Panier vide');return}switchTab('panier')}
-    function closeCheckout(){switchTab('catalogue')}
-
     // ============= TABS =============
     let clientType='b2c';
     function setClientType(t){clientType=t;
@@ -1749,7 +1728,7 @@
         list.innerHTML=history.map(o=>{
           const d=new Date(o.date);const ds=d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
           return`<div class="glass-card rounded-xl p-3.5 mb-2.5">
-            <div class="flex justify-between items-start mb-2"><div><span class="font-mono text-[10px] text-cyan-brand/70">${o.id}</span><div class="text-[10px] text-smoke-500 mt-0.5">${ds}</div></div><span class="font-display font-bold text-cyan-brand text-[14px]">${formatPrice(o.total)}</span></div>
+            <div class="flex justify-between items-start mb-2"><div><span class="font-mono text-[10px] text-cyan-brand/70">${o.id}</span><div class="text-[10px] text-smoke-500 mt-0.5">${ds}</div></div><span class="font-display font-bold text-cyan-brand text-[14px]">${o.totalRaw?formatPrice(o.totalRaw):o.total}</span></div>
             <div class="space-y-1">${o.items.map(it=>`<div class="flex justify-between text-[10px]"><span class="text-smoke-400">${it.qty}× ${it.name} — ${it.flavor}</span><span class="text-white/70">${formatPrice(it.lineTotal)}</span></div>`).join('')}</div>
           </div>`}).join('');
       }
@@ -1765,8 +1744,6 @@
 
     function haptic(){try{tg?.HapticFeedback?.impactOccurred('light')}catch(e){}}
     function formatPrice(n){return n.toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}
-    function formatPriceBig(n,colorClass='text-cyan-brand'){const s=n.toFixed(2).replace('.',',');const[main,dec]=s.split(',');return`<span class="text-[20px]">${main}</span><span class="text-[12px] ${colorClass}/60">,${dec} €</span>`}
-
     // ============= [J4] RIPPLE =============
     document.addEventListener('pointerdown',e=>{
       const btn=e.target.closest('.ripple');if(!btn)return;

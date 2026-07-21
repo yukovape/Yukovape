@@ -93,7 +93,7 @@
     .bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;padding:6px 0 4px}
     .nav-tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .25s ease;position:relative;border:none;background:none}
     .nav-tab svg,.nav-tab .nav-icon{width:22px;height:22px;color:rgba(255,255,255,.35);transition:color .25s ease}
-    .nav-tab span{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .25s ease}
+    .nav-tab span{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);transition:color .25s ease}
     .nav-tab.active svg,.nav-tab.active .nav-icon{color:var(--accent)}
     .nav-tab.active span{color:var(--accent)}
     .nav-tab .nav-badge{position:absolute;top:2px;right:6px;min-width:16px;height:16px;border-radius:8px;background:var(--accent);color:var(--bg);font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;transform:scale(0);transition:transform .3s var(--spring)}
@@ -438,6 +438,7 @@
         <span class="text-[9px] text-smoke-500 font-medium">🔒 100% Garanti</span>
       </div>
       <div class="light-line mt-3"></div>
+      <div id="min-order-hero" class="mt-3"></div>
     </section>
 
     <!-- SEARCH -->
@@ -1208,6 +1209,23 @@
       </div>`;
     }
 
+    function renderMinOrderHero(){
+      const el=document.getElementById('min-order-hero');
+      if(!el)return;
+      const total=products.filter(x=>x.inStock!==false).reduce((s,p)=>s+p.qty,0);
+      const pct=Math.min((total/MIN_ORDER)*100,100);
+      const reached=total>=MIN_ORDER;
+      if(reached){
+        el.innerHTML=`<div class="flex items-center gap-2 text-[10px] font-bold" style="color:#00F5D4">✓ Minimum de commande atteint (${MIN_ORDER} puffs)</div>`;
+        return;
+      }
+      el.innerHTML=`<div class="flex items-center justify-between mb-1">
+          <span class="text-[10px] font-bold" style="color:#F59E0B">⚠️ Minimum de commande : ${MIN_ORDER} puffs</span>
+          <span class="text-[10px] font-bold" style="color:#F59E0B">${total}/${MIN_ORDER}</span>
+        </div>
+        <div class="tier-progress-bar"><div class="tier-progress-fill" style="width:${pct}%;background:linear-gradient(90deg,#F59E0B,#EAB308)"></div></div>`;
+    }
+
     function renderFlavorNic(p){
       const nics=p.nicotineOptions||[];
       return`
@@ -1312,6 +1330,7 @@
         </div>`}).join('');
       c.classList.remove('hidden');
       initRevealObserver();
+      renderMinOrderHero();
     }
 
     function styleSliderTrack(el){
@@ -1437,6 +1456,7 @@
         if(b)b.innerHTML=renderBonusCounter();
       });
 
+      renderMinOrderHero();
     }
 
     // ============= CART BAR =============
@@ -1748,8 +1768,23 @@
       saveOrderToHistory(d.orderId,d.savedCart,d.savedTotal,d.customer);
       localStorage.removeItem('yuko_cart');
       cart=[];saveCart();updateCartBar();
-      showConfirmationScreen(d.orderId,d.savedCart,d.savedTotal,d.customer,d.message,d.isCrypto,d.rawTotal);
       haptic();
+
+      if(tg&&typeof tg.sendData==='function'){
+        try{
+          const payload=JSON.stringify({
+            orderId:d.orderId,
+            total:d.savedTotal,
+            isCrypto:d.isCrypto,
+            customer:d.customer,
+            items:d.savedCart.map(c=>({productId:c.productId,name:c.name,flavor:c.flavor,nicotine:c.nicotine,qty:c.qty,unitPrice:c.unitPrice,lineTotal:c.lineTotal}))
+          });
+          tg.sendData(payload);
+          return;
+        }catch(e){}
+      }
+
+      showConfirmationScreen(d.orderId,d.savedCart,d.savedTotal,d.customer,d.message,d.isCrypto,d.rawTotal);
     }
 
     function showConfirmationScreen(orderId,savedCart,savedTotal,customer,message,isCrypto,rawTotal){

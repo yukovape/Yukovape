@@ -1175,12 +1175,24 @@
         const active=tier.min===t.min;
         const best=i===lastIdx;
         const eco=base?Math.round((1-tier.price/base)*100):0;
-        return`<div class="flex-1 text-center rounded-xl" style="padding:8px 4px;border:1px solid ${active?'rgba(0,245,212,.5)':'rgba(255,255,255,.05)'};${active?'background:rgba(0,245,212,.08)':''};min-width:0">
-          <div class="text-[9px] uppercase font-bold tracking-wide" style="color:${active?'#00F5D4':best?'rgba(0,245,212,.4)':'var(--muted)'}">${tier.label}</div>
-          ${base?`<div class="text-[9px] line-through" style="color:#94A3B8;opacity:.4;margin-top:2px">${base.toFixed(2)}€</div>`:''}
-          <div class="font-bold" style="color:${active?'#00F5D4':'#fff'};font-size:${active?'15px':'13px'}">${tier.price.toFixed(2)}€</div>
-          ${active&&eco>0?`<span class="economy-badge" style="font-size:8px;padding:2px 5px;margin-top:3px;display:inline-block">-${eco}%</span>`:''}
+        const total=(tier.min*tier.price).toFixed(0);
+        const borderColor=active?'rgba(0,245,212,.5)':best?'rgba(168,85,247,.3)':'rgba(255,255,255,.05)';
+        const bg=active?'background:rgba(0,245,212,.08)':best?'background:rgba(168,85,247,.04)':'';
+        return`<div class="flex-1 text-center rounded-xl press" onclick="jumpToTier('${p.id}',${tier.min})" style="padding:8px 4px;border:1px solid ${borderColor};${bg};min-width:0;cursor:pointer;position:relative">
+          ${best&&!active?`<div style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:#a855f7;color:#fff;font-size:7px;font-weight:800;padding:1px 6px;border-radius:6px;letter-spacing:.04em;white-space:nowrap">⭐ MEILLEUR PRIX</div>`:''}
+          <div class="text-[9px] uppercase font-bold tracking-wide" style="color:${active?'#00F5D4':best?'#a855f7':'var(--muted)'}">${tier.label}</div>
+          <div class="font-bold" style="color:${active?'#00F5D4':'#fff'};font-size:${active?'15px':'13px'};margin-top:2px">${tier.price.toFixed(2)}€</div>
+          <div class="text-[8px] mt-0.5" style="color:rgba(255,255,255,.35)">≈ ${total}€ total</div>
+          ${eco>0?`<span class="economy-badge" style="font-size:8px;padding:2px 5px;margin-top:4px;display:inline-block;${!active?'opacity:.55':''}${best&&!active?';background:rgba(168,85,247,.12);color:#c084fc;border-color:rgba(168,85,247,.2)':''}">-${eco}%</span>`:''}
         </div>`}).join('');
+    }
+
+    function jumpToTier(pid,minQty){
+      const p=products.find(x=>x.id===pid);if(!p)return;
+      if(p.qty===minQty)return;
+      p.qty=minQty;
+      haptic();
+      updateProductCard(p);
     }
 
     function renderProgressSection(p){
@@ -1190,9 +1202,12 @@
       const next=p.tiers[ti+1];
       const diff=next.min-p.qty;
       const pct=Math.min(((p.qty-t.min)/(next.min-t.min))*100,100);
+      const best=p.tiers[p.tiers.length-1];
+      const showBest=ti+2<=p.tiers.length-1;
       return`
         <div class="tier-progress-bar"><div class="tier-progress-fill" style="width:${pct}%"></div></div>
-        <div class="text-[10px] mt-1.5" style="color:#94A3B8">🔥 Plus que <strong class="text-white">${diff}</strong> pièces pour <strong style="color:#00F5D4">${next.price.toFixed(2)}€/pce</strong></div>`;
+        <div class="text-[10px] mt-1.5" style="color:#94A3B8">🔥 Plus que <strong class="text-white">${diff}</strong> pièces pour <strong style="color:#00F5D4">${next.price.toFixed(2)}€/pce</strong></div>
+        ${showBest?`<div class="text-[9px] mt-1" style="color:rgba(255,255,255,.3)">Ou visez direct <strong style="color:rgba(0,245,212,.6)">${best.min}+ pièces à ${best.price.toFixed(2)}€/pce</strong> — touchez le palier ci-dessus</div>`:''}`;
     }
 
     function renderBonusCounter(){
@@ -1308,9 +1323,12 @@
 
             <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);margin:0 0 12px"></div>
 
-            <div class="text-[9px] uppercase font-bold tracking-widest mb-2" style="color:var(--muted)">Prix dégressifs</div>
+            <div class="text-[9px] uppercase font-bold tracking-widest mb-2 flex items-center justify-between" style="color:var(--muted)">
+              <span>Prix dégressifs</span>
+              ${p.basePrice?`<span style="color:#94A3B8;opacity:.5;text-transform:none;letter-spacing:0;font-weight:600">Prix normal : <s>${p.basePrice.toFixed(2)}€</s></span>`:''}
+            </div>
+            <div id="progress-${p.id}" class="mb-2">${renderProgressSection(p)}</div>
             <div id="tier-pills-${p.id}" class="flex gap-2 mb-3">${renderTierPills(p)}</div>
-            <div id="progress-${p.id}" class="mb-3">${renderProgressSection(p)}</div>
 
             <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);margin:0 0 12px"></div>
 

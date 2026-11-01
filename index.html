@@ -1788,8 +1788,7 @@
       cart=[];saveCart();updateCartBar();
       haptic();
 
-      if(tg&&typeof tg.sendData==='function'){
-        try{
+if(false&&tg&&typeof tg.sendData==='function'){        try{
           const payload=JSON.stringify({
             orderId:d.orderId,
             total:d.savedTotal,

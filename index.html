@@ -1071,6 +1071,7 @@
       const p=products.find(x=>x.id===pid);
       if(!p||p.inStock===false){showToast('⚠️ Ce produit n\'est pas encore disponible');return}
       if(p.qty<MIN_QTY){showToast(`⚠️ Minimum ${MIN_QTY} pièces par article`);return}
+      const unitsBefore=getCartUnits();
       const nic=p.selectedNicotine||'';
       const existing=cart.find(c=>c.productId===p.id&&c.flavor===p.selectedFlavor&&c.nicotine===nic);
       if(existing){
@@ -1083,6 +1084,7 @@
       }
       saveCart();haptic();
       showToast(`✅ ${p.qty}× ${p.name} — ${p.selectedFlavor}`);
+      if(unitsBefore<70&&getCartUnits()>=70)setTimeout(()=>showCongrats('🎁 Bonus débloqué ! +10 puffs offertes sur votre commande'),900);
       // [C5] Fly-to-cart animation
       const btn=document.getElementById('atc-'+p.id);
       if(btn)flyToCart(btn);
@@ -1126,17 +1128,12 @@
     function changeQty(pid,delta){
       const p=products.find(x=>x.id===pid);if(!p)return;
       const oldT=getActiveTier(p);
-      const oldTotal=products.filter(x=>x.inStock!==false).reduce((s,x)=>s+x.qty,0);
       p.qty=Math.max(MIN_QTY,p.qty+delta);
       const newT=getActiveTier(p);
-      const newTotal=products.filter(x=>x.inStock!==false).reduce((s,x)=>s+x.qty,0);
       updateProductCard(p);
       if(oldT.min!==newT.min){
         haptic();
         showCongrats(`🔥 Palier ${newT.label} débloqué ! Prix réduit à ${newT.price.toFixed(2)}€/pce`);
-      }
-      if(oldTotal<70&&newTotal>=70){
-        showCongrats('🎁 Bonus débloqué ! +10 puffs offertes sur votre commande');
       }
     }
 
@@ -1211,14 +1208,14 @@
     }
 
     function renderBonusCounter(){
-      const total=products.filter(x=>x.inStock!==false).reduce((s,p)=>s+p.qty,0);
+      const total=getCartUnits();
       const pct=Math.min((total/70)*100,100);
       const reached=total>=70;
       const clr=reached?'#00F5D4':'#F59E0B';
       return`<div style="padding:8px 0">
         <div class="flex items-center justify-between mb-1.5">
           <span class="text-[10px] font-bold" style="color:${reached?'#00F5D4':'#94A3B8'}">${reached?'🎁 Bonus débloqué ! +10 puffs offertes':'🎁 10 puffs offertes si total > 70 pièces'}</span>
-          <span class="text-[10px] font-bold" style="color:${clr}">${total}/70</span>
+          <span class="text-[10px] font-bold" style="color:${clr}">${Math.min(total,70)}/70</span>
         </div>
         <div class="bonus-bar"><div class="bonus-bar-fill" style="width:${pct}%;background:${reached?'linear-gradient(90deg,#00F5D4,#00C4AA)':'linear-gradient(90deg,#F59E0B,#EAB308)'}"></div></div>
       </div>`;
@@ -1227,7 +1224,7 @@
     function renderMinOrderHero(){
       const el=document.getElementById('min-order-hero');
       if(!el)return;
-      const total=products.filter(x=>x.inStock!==false).reduce((s,p)=>s+p.qty,0);
+      const total=getCartUnits();
       const pct=Math.min((total/MIN_ORDER)*100,100);
       const reached=total>=MIN_ORDER;
       if(reached){
@@ -1491,6 +1488,8 @@
       }
       if(currentTab==='panier')renderPanierPage();
       updateStickyCmd();
+      products.filter(x=>x.inStock!==false).forEach(pr=>{const b=document.getElementById('bonus-'+pr.id);if(b)b.innerHTML=renderBonusCounter()});
+      renderMinOrderHero();
     }
     function updateStickyCmd(){
       const bar=document.getElementById('sticky-cmd');if(!bar)return;
@@ -1594,7 +1593,7 @@
         </div>
         <div class="space-y-2 mb-4">
           ${savedCart.map(c=>`<div class="glass rounded-xl px-3 py-2.5 flex justify-between items-center">
-            <div><div class="text-[12px] font-semibold">${c.name}</div><div class="text-[9px] text-smoke-400">${c.flavor} · ${c.qty}× · ${c.tierLabel}</div></div>
+            <div><div class="text-[12px] font-semibold">${c.name}</div><div class="text-[9px] text-smoke-400">${c.flavor} · ${c.qty} pièces</div></div>
             <div class="text-[13px] font-bold ${isCrypto?'text-purple-400':'text-cyan-brand'}">${formatPrice(c.lineTotal)}</div>
           </div>`).join('')}
         </div>
